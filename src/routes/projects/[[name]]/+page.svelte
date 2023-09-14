@@ -1,0 +1,101 @@
+
+<svelte:head>
+	<title>{categoryNameDisplay} - PineStore</title>
+	<meta property="og:type" content="website">
+	<meta property="og:site_name" content="pinestore.cc" />
+	<meta property="og:title" content="{categoryNameDisplay} - PineStore" />
+	<meta property="og:description" content="Find ComputerCraft projects in the {categoryNameDisplay} category!" />
+	<meta name="description" content="Find ComputerCraft projects in the {categoryNameDisplay} category!" />
+	<meta name="twitter:description" content="Find ComputerCraft projects in the {categoryNameDisplay} category!" />
+	<meta property="og:url" content="https://pinestore.cc/projects/{categoryName}" />
+	<meta property="og:image" content="/pinestore_cropped.png" />
+	<meta name="keywords" content="{categoryName}, category, categories, fun, tools, turtle, audio, other, computercraft, computer, craft, lua, minecraft, mine, programming, library, games, programs, collection, store">
+</svelte:head>
+
+<script>
+	import { capitalizeFirstLetter } from "./../../lib/util.js";
+    import ProjectList from "./../../ProjectList.svelte";
+    import CategoryList from "./../../CategoryList.svelte";
+
+	import { page } from "$app/stores";
+	$: categoryName = $page.params.name ?? "all";
+	$: categoryNameDisplay = capitalizeFirstLetter(categoryName);
+
+	export let data;
+	let projects = [];
+
+	let sortingMethod = "recent_downloads";	
+	if (data.sort) sortingMethod = data.sort;
+
+	function sortProjects() {
+		projects = projects.sort((a, b) => {
+			if (sortingMethod == "recent_downloads")
+				return b.downloads_recent - a.downloads_recent;
+			else if (sortingMethod == "total_downloads")
+				return b.downloads - a.downloads;
+			else if (sortingMethod == "recent_added")
+				return b.date_added - a.date_added;
+			else if (sortingMethod == "recent_update")
+				return (b.date_updated || b.date_added) - (a.date_updated || a.date_added); // using || since date_updated is 0 by default
+		});
+	}
+
+	$: if (data.projects || sortingMethod) { // sort at least once and every time sortingMethod updates
+		projects = data.projects;
+		sortProjects();		
+
+		// update query param, but quick check to make sure it doesn't run server side
+		if (typeof window != "undefined") {
+			let queryParams = "";
+			if (sortingMethod != "recent_downloads")
+				queryParams = `?sort=${sortingMethod}`;
+			window.history.pushState("changed sorting", "changed sorting", `/projects${categoryName != "all" ? `/${categoryName}` : ""}${queryParams}`);
+		}
+	}
+
+</script>
+
+<div id="backgroundContainer"></div>
+
+<div class="page-container">
+	<div class="page shadow">
+		<CategoryList selectedCategory={categoryName} />
+
+		<div class="category-header">
+			<h2>Projects in {categoryNameDisplay}</h2>
+
+			<select bind:value={sortingMethod}>
+				<option value="recent_downloads">Recent downloads</option>
+				<option value="total_downloads">Total downloads</option>
+				<option value="recent_update">Recently updated</option>
+				<option value="recent_added">Recently added</option>
+			</select>
+		</div>
+
+		{#if projects.length > 0}
+			<ProjectList projects={projects} blocks={true} />
+		{:else}
+			<i>There are currently no projects available in this category.</i>
+		{/if}
+	</div>
+</div>
+
+<style>
+	.category-header {
+		margin-top: 4rem;
+		position: relative;
+	}
+	.category-header select {
+		position: absolute;
+		top: 0;
+		right: 0;
+	}
+
+	@media (max-width: 30rem) {
+		.category-header select {
+			position: relative;
+			margin-bottom: 2rem;
+			width: 100%;
+		}
+	}
+</style>

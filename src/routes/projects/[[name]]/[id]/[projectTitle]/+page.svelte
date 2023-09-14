@@ -1,0 +1,317 @@
+
+<svelte:head>
+	<title>{project.name} by {project.owner_name}</title>
+	<meta property="og:type" content="website">
+	<meta property="og:site_name" content="pinestore.cc" />
+	<meta property="og:title" content="{project.name} by {project.owner_name}" />
+	<meta property="og:description" content="{project.description_short || project.description?.slice(0, 200) || "This project does not yet have a description."}" />
+	<meta name="description" content="{project.description_short || project.description?.slice(0, 200) || "This project does not yet have a description."}" />
+	<meta name="twitter:description" content="{project.description_short || project.description?.slice(0, 200) || "This project does not yet have a description."}" />
+	<meta property="og:url" content="https://pinestore.cc{getLink(project)}" />
+	<meta property="og:image" content="{project.thumbnail_link_png || "/project-placeholder.png"}" />
+	<meta name="keywords" content="{project.name}, {project.owner_name}, {project.keywords}, computercraft, computer, craft, lua, minecraft, mine, programming, library, games, programs, collection, store">
+</svelte:head>
+
+<script>
+	import { fade } from "svelte/transition";
+	
+	import SvelteMarkdown from "svelte-markdown";
+	import MDImage from "./MDImage.svelte";
+	import MDCode from "./MDCode.svelte";
+
+	export let data;
+	let project = data.project;
+
+	const DESCRIPTION_PLACEHOLDER = `*This project does not have any description set.*\n\nUse the Discord bot to edit your poject with the /editproject command to configure a description.`;
+
+	let copied = false;
+	function copyInstall() {
+		let temp = document.createElement("input");
+		temp.setAttribute("type", "text");
+		temp.value = project.install_command && `wget run https://pinestore.cc/d/${project.id}` || "No command";
+		document.body.appendChild(temp);
+
+		temp.select();
+		document.execCommand("copy");
+		document.body.removeChild(temp);
+
+		copied = true;
+	}
+
+	let imageLinks = [];
+	$: if (project.screenshot_links) {
+		try {
+			// let links = JSON.parse(project.screenshot_links);
+			let links = project.screenshot_links.split(",");
+			if (links.length > 0)
+				imageLinks = links;
+		} catch(e) {
+			console.log(e);
+		}
+	}
+
+	let viewIndex = undefined;
+	let viewImgSrc;
+	let openedImg = Date.now();
+	function viewImg(e) {
+		openedImg = Date.now();
+		viewIndex = e.target.getAttribute("data-index");
+		viewImgSrc = imageLinks[viewIndex];
+	}
+	function closeImgView(e) {
+		if (Date.now() > openedImg + 100)
+			viewImgSrc = undefined;
+	}
+	function keypressed(e) {
+		if (viewImgSrc) {
+			if (e.key == "ArrowLeft" || e.key == "a") {
+				viewIndex = (viewIndex - 1 + imageLinks.length) % imageLinks.length;
+				viewImgSrc = imageLinks[viewIndex];
+			} else if (e.key == "ArrowRight" || e.key == "d") {
+				viewIndex = (viewIndex + 1) % imageLinks.length;
+				viewImgSrc = imageLinks[viewIndex];
+			} else {
+				if (Date.now() > openedImg + 100)
+					viewImgSrc = undefined;
+			}
+		}
+	}
+	function scrolled(e) {
+		if (viewImgSrc) {
+			e.preventDefault();
+			if (e.wheelDeltaY > 0) {
+				viewIndex = (viewIndex - 1 + imageLinks.length) % imageLinks.length;
+				viewImgSrc = imageLinks[viewIndex];
+			} else if (e.wheelDeltaY < 0) {
+				viewIndex = (viewIndex + 1) % imageLinks.length;
+				viewImgSrc = imageLinks[viewIndex];
+			}
+		}
+	}
+
+	function getLink(project) {
+		let encodedName = encodeURIComponent(project.name.replace(/[^a-zA-Z0-9]+/g," ").replaceAll(" ", "-").toLowerCase());
+		return `/project/${project.id}/${encodedName}`;
+	}
+
+	let projectDate = new Date(Math.max(project.date_added, project.date_updated));
+	projectDate = projectDate.toLocaleDateString("en-US", {
+		day: "numeric",
+		month: "short",
+		year: "numeric",
+	});
+</script>
+
+<div id="backgroundContainer"></div>
+
+<div class="page-container">
+	<div class="page page-thin shadow">
+		<a href="/user/{project.owner_discord}"><img class="pfp" src="https://pinestore.cc/pfp/{project.owner_discord}.png" alt="profile"></a>
+
+		<span class="total-downloads">{project.downloads} {project.downloads == 1 ? "download" : "downloads"}</span>
+		<span class="project-date">{projectDate}</span>
+
+		<h1>
+			{project.name}
+			<span class="subheader">by <a href="/user/{project.owner_discord}">{project.owner_name}</a></span>
+		</h1>
+
+		<div id="description" class="markdown-container">
+			{#if project.thumbnail_link_png}
+				<img class="project-image shadow" src="{project.thumbnail_link_png}" alt="project thumbnail">
+			{:else}
+				<img class="project-image shadow" src="/project-placeholder.webp" alt="project thumbnail">
+			{/if}
+			
+			{#if project.description_markdown}
+				<SvelteMarkdown source={project.description_markdown} renderers={{ image: MDImage, code: MDCode }} />
+			{:else if project.description}
+				<SvelteMarkdown source={project.description} renderers={{ image: MDImage, code: MDCode }} />
+			{:else}
+				<SvelteMarkdown source={DESCRIPTION_PLACEHOLDER} renderers={{ image: MDImage, code: MDCode }} />
+			{/if}
+		</div>
+
+		<div id="sources">
+			<!-- svelte-ignore a11y-click-events-have-key-events -->
+			<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
+			<pre type="text" class="command" class:copied={copied} on:click={copyInstall}>{#if copied}<i id="copiedText" in:fade="{{ duration: 100 }}">Copied!</i>{/if}{project.install_command && `wget run https://pinestore.cc/d/${project.id}` || "no install command"}<i id="copyInstallButton" class="fas fa-copy"></i></pre>
+			<a target="_blank" rel="noreferrer" class="button" class:disabled="{!project.repository}" href="{project.repository}">Git Repository <i style="margin-left:0.5rem;" class="fa-solid fa-up-right-from-square"></i></a>
+		</div>
+
+		{#if imageLinks.length > 0}
+			<div id="imagesSection">
+				{#each imageLinks as url, i}
+					<!-- svelte-ignore a11y-click-events-have-key-events -->
+					<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
+					<img data-index="{i}" src="{url}" class="shadow" on:click={viewImg} alt="project screenshot">
+				{/each}
+			</div>
+		{/if}
+	</div>
+</div>
+
+{#if viewImgSrc}
+	<div id="imageViewBg"></div>
+	<img id="imageView" src={viewImgSrc} alt="screenshot viewer" on:wheel={scrolled}>
+{/if}
+
+<svelte:window on:keydown={keypressed} on:click={closeImgView}/>
+
+<style>
+	h1 {
+		font-size: 4rem;
+	}
+
+	.pfp {
+		border-radius: 100vw;
+		float: right;
+		position: relative;
+		top: 3rem;
+		width: 6rem;
+	}
+
+	.total-downloads {
+		position: absolute;
+		color: var(--text-color-dark);
+		padding-left: 0.25rem;
+	}
+	.project-date {
+		position: absolute;
+		right: 2rem;
+		color: var(--text-color-dark);
+	}
+
+	.project-image {
+		width: 25rem;
+		float: right;
+		border-radius: 1rem;
+		margin-left: 1rem;
+		margin-bottom: 1rem;
+	}
+	@media screen and (max-width: 45rem) {
+		h1 {
+			font-size: 2.5rem;
+		}
+
+		.pfp {
+			width: 4rem;
+			top: 2rem;
+		}
+
+		.project-image {
+			float: unset;
+			width: 100%;
+			margin-left: 0;
+			margin-bottom: 1.5rem;
+		}
+	}
+	@media screen and (max-width: 30rem) {
+		h1 {
+			font-size: 1.75rem;
+			margin-top: 2rem;
+			margin-bottom: 2rem;
+		}
+	}
+
+	#description {
+		overflow: hidden;
+		padding: 1.5rem;
+		margin: -1.5rem;
+		padding-bottom: 0;
+	}
+
+	#sources {
+		margin-top: 3rem;
+		width: 100%;
+	}
+	#sources > * {
+		display: block;
+		text-align: center;
+		margin-bottom: 1rem;
+	}
+
+	.command {
+		position: relative;
+		user-select: none;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+	.command:hover {
+		cursor: pointer;
+		color: grey;
+	}
+
+	#copyInstallButton {
+		position: absolute;
+		right: 0.75rem;
+		top: 50%;
+		transform: translateY(-50%);
+		color: grey;
+		pointer-events: none;
+	}
+	#copiedText {
+		color: #57A64E;
+		position: absolute;
+		left: 1rem;
+	}
+
+	@media screen and (max-width: 48rem) {
+		#copiedText {
+			display: none;
+		}
+		.command.copied {
+			background-color: #3d620d;
+		}
+		.command.copied #copyInstallButton {
+			color: var(--cc-lightGray);
+		}
+	}
+	@media screen and (max-width: 40rem) {
+		.command {
+			padding-right: 3rem;
+		}
+	}
+
+	#imagesSection {
+		margin-top: 3rem;
+		width: 100%;
+		display: flex;
+		flex-direction: row;
+		justify-content: center;
+		flex-wrap: wrap;
+		gap: 1rem;
+	}
+	#imagesSection img {
+		border-radius: 1rem;
+		max-width: calc(50% - 0.5rem);
+		object-fit: cover;
+		cursor: pointer;
+	}
+	@media (max-width: 40rem) {
+		#imagesSection img {
+			max-width: 100%;
+		}
+	}
+
+	#imageView {
+		position: fixed;
+		z-index: 100;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		object-fit: contain;
+		cursor: pointer;
+	}
+	#imageViewBg {
+		z-index: 99;
+		background-color: rgba(0, 0, 0, 0.65);
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+	}
+</style>
