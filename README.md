@@ -1,6 +1,6 @@
 # PineStore-site
 <img align="right" width="100" height="100" src="static/pinestore_cropped.png">
-The frontend for [PineStore](https://pinestore.cc/) in Svelte.
+The frontend for PineStore in Svelte: https://pinestore.cc/ .
 
 Feel free to help out on the development on the site. Come have a chat on [Discord](https://discord.gg/MjsNjK2psB) about bugfixes, possible changes or suggestions!
 
