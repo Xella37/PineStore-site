@@ -12,11 +12,12 @@ body {
 	--text-color: white;
 	--text-color-medium: #C8C8C8;
 	--text-color-dark: #999999;
-
+	
 	--cc-blue: #3366CC;
 	--cc-lightGray: #999999;
 	--cc-gray: #4C4C4C;
 	--cc-cyan: #4C99B2;
+	--cc-orange: #F2B233;
 
 	font-family: "Lato", sans-serif;
 	margin: 0;
@@ -303,4 +304,29 @@ pre {
 }
 .ruler-text span {
 	white-space: nowrap;
+}
+
+.info-block {
+	position: relative;
+	box-sizing: border-box;
+	width: 100%;
+	padding: 1rem;
+	text-align: center;
+	border-radius: 1rem;
+	margin-block: 1.5rem;
+	font-size: 1.25rem;
+	padding-left: 4rem;
+	background-color: var(--cc-gray);
+}
+.info-block i {
+	position: absolute;
+	font-size: 2rem;
+	top: 50%;
+	left: 2rem;
+	transform: translate(0, -50%);
+}
+
+.info-block.warning {
+	background-color: var(--cc-orange);
+	color: black;
 }

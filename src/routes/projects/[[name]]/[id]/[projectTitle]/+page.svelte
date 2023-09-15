@@ -106,6 +106,13 @@
 
 <div class="page-container">
 	<div class="page page-thin shadow">
+		{#if project.visible == 0}
+			<div class="info-block warning">
+				<i class="fa-solid fa-triangle-exclamation"></i>
+				This project is currently not visible. Set your project to visible once it's ready.
+			</div>
+		{/if}
+
 		<a href="/user/{project.owner_discord}"><img class="pfp" src="https://pinestore.cc/pfp/{project.owner_discord}.png" alt="profile"></a>
 
 		<span class="total-downloads">{project.downloads} {project.downloads == 1 ? "download" : "downloads"}</span>
