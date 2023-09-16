@@ -315,6 +315,14 @@ The returned JSON object always has a "success" value with an "error" value as a
           name: "screenshot_links",
           description: "comma separated list of urls to images (can include gifs) (max 1000)",
         },
+        {
+          name: "visible",
+          description: "true / false",
+        },
+        {
+          name: "date_release",
+          description: "number, timestamp in ms for countdown timer",
+        },
 			],
 			body: `Using your personal token, you can update existing project info using this endpoint. The projectId must be specified. All other parameters are optional. Any unspecified property is left unchanged.`,
 			example_return: `{
