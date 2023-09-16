@@ -14,6 +14,7 @@ body {
 	--text-color-dark: #999999;
 	
 	--cc-blue: #3366CC;
+	--cc-lightBlue: #99B2F2;
 	--cc-lightGray: #999999;
 	--cc-gray: #4C4C4C;
 	--cc-cyan: #4C99B2;
@@ -328,5 +329,10 @@ pre {
 
 .info-block.warning {
 	background-color: var(--cc-orange);
+	color: black;
+}
+
+.info-block.info {
+	background-color: var(--cc-lightBlue);
 	color: black;
 }

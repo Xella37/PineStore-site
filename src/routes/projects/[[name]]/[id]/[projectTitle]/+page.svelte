@@ -14,6 +14,7 @@
 
 <script>
 	import { fade } from "svelte/transition";
+	import { onMount, onDestroy } from "svelte";
 	
 	import SvelteMarkdown from "svelte-markdown";
 	import MDImage from "./MDImage.svelte";
@@ -100,6 +101,46 @@
 		month: "short",
 		year: "numeric",
 	});
+
+	let timerText = "TIME";
+	let showTimer = project.date_release > Date.now() && !(project.install_command?.length > 0);
+	if (showTimer) {
+		function updateTimerText() {
+			let dt = Math.floor((project.date_release - Date.now()) / 1000);
+			if (dt < 0) {
+				timerText = "0";
+				location.reload(true);
+			} else if (dt < 60) {
+				timerText = dt + " seconds";
+			} else if (dt < 60*60) {
+				let mins = Math.floor(dt / 60);
+				let secs = dt % 60;
+				timerText = `${mins}m, ${secs}s`;
+			} else if (dt < 60*60*24) {
+				dt = Math.floor(dt / 60);
+				let hrs = Math.floor(dt / 60);
+				let mins = dt % 60;
+				timerText = `${hrs}h, ${mins}m`;
+			} else {
+				dt = Math.floor(dt / 60 / 60 / 24);
+				timerText = `${dt} days`;
+			}
+		}
+		updateTimerText();
+
+		let interval;
+
+		function resetInterval(){
+			clearInterval(interval);
+			interval = setInterval(updateTimerText, 1000);
+		}
+		onMount(()=>{
+			resetInterval();
+		});
+		onDestroy(()=>{
+			clearInterval(interval);
+		});
+	}
 </script>
 
 <div id="backgroundContainer"></div>
@@ -110,6 +151,13 @@
 			<div class="info-block warning">
 				<i class="fa-solid fa-triangle-exclamation"></i>
 				This project is currently not visible. Set your project to visible once it's ready.
+			</div>
+		{/if}
+
+		{#if showTimer}
+			<div class="info-block info">
+				<i class="fa-regular fa-hourglass-half"></i>
+				This project will release in {timerText}
 			</div>
 		{/if}
 
