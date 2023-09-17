@@ -1,6 +1,14 @@
 
 import { error } from "@sveltejs/kit";
 
+function getCookie(cookieId) {
+	const cookieValue = document.cookie
+		.split("; ")
+		.find((row) => row.startsWith(cookieId + "="))
+		?.split("=")[1];
+	return cookieValue;
+}
+
 export async function getProject(id) {
 	let raw = await fetch(`https://pinestore.cc/api/project/${id}`);
 	let data = await raw.json();
@@ -55,4 +63,100 @@ export async function getUserProjects(id) {
 	});
 
 	return data;
+}
+
+export async function authDiscord(code) {
+	let raw = await fetch(`https://pinestore.cc/api/discordauth/${code}`);
+	let data = await raw.json();
+	return data;
+}
+
+export async function myProfile() {
+	let session = getCookie("session");
+	let raw = await fetch(`https://pinestore.cc/api/auth/profile`, {
+		headers: {
+			authorization: session,
+		},
+	});
+	let data = await raw.json();
+	return data;
+}
+
+export async function setProfileInfo(profileData) {
+	for (const key in profileData) {
+		if (typeof profileData[key] == "string" && !profileData[key]?.length > 0)
+			profileData[key] = null;
+	}
+
+	let session = getCookie("session");
+	let raw = await fetch(`https://pinestore.cc/api/auth/update-acc`, {
+		headers: {
+			authorization: session,
+			"Content-Type": "application/json",
+		},
+		method: "POST",
+		body: JSON.stringify({
+			allow_null: true,
+			name: profileData.name,
+			about: profileData.about,
+			about_markdown: profileData.about_markdown,
+		}),
+	});
+	let data = await raw.json();
+	return data;
+}
+
+export async function setProjectInfo(projectData) {
+	for (const key in projectData) {
+		if (typeof projectData[key] == "string" && !projectData[key]?.length > 0)
+			projectData[key] = null;
+	}
+
+	let session = getCookie("session");
+	let raw = await fetch(`https://pinestore.cc/api/auth/update-p`, {
+		headers: {
+			authorization: session,
+			"Content-Type": "application/json",
+		},
+		method: "POST",
+		body: JSON.stringify({allow_null: true, projectId: projectData.id, ...projectData}),
+	});
+	let data = await raw.json();
+	return data;
+}
+
+export async function newProject(name) {
+	let session = getCookie("session");
+	let raw = await fetch(`https://pinestore.cc/api/auth/newproject`, {
+		headers: {
+			authorization: session,
+			"Content-Type": "application/json",
+		},
+		method: "POST",
+		body: JSON.stringify({
+			name: name,
+		}),
+	});
+	let data = await raw.json();
+	return data;
+}
+
+export async function deleteProject(id) {
+	let session = getCookie("session");
+	let raw = await fetch(`https://pinestore.cc/api/auth/delete`, {
+		headers: {
+			authorization: session,
+			"Content-Type": "application/json",
+		},
+		method: "POST",
+		body: JSON.stringify({
+			projectId: id,
+		}),
+	});
+	let data = await raw.json();
+	return data;
+}
+
+export function isLoggedIn() {
+	return getCookie("session");
 }

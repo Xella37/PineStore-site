@@ -1,6 +1,10 @@
 
 <script>
 	import { fade } from "svelte/transition";
+	import { isLoggedIn } from "./lib/database.js";
+    import { onMount } from "svelte";
+
+	const loginURL = `https://discord.com/api/oauth2/authorize?client_id=1073728324142116948&redirect_uri=https%3A%2F%2Fpinestore.cc%2Fdiscordauth&response_type=code&scope=identify`;
 
 	let mobileHeaderOpen = false;
 	function toggleHeader() {
@@ -10,6 +14,11 @@
 	function closeHeader() {
 		mobileHeaderOpen = false;
 	}
+
+	let loggedIn = false;
+	onMount(() => {
+		loggedIn = isLoggedIn();
+	});
 </script>
 
 <div id="headerContainer">
@@ -35,12 +44,12 @@
 				<span>Projects</span>
 			</div>
 		</a>
-		<a class="no-link" href="/uploading" on:click={closeHeader}>
+		<!-- <a class="no-link" href="/uploading" on:click={closeHeader}>
 			<div class="header-item">
 				<i class="fa-solid fa-arrow-up-from-bracket"></i>
 				<span>Upload</span>
 			</div>
-		</a>
+		</a> -->
 		<a class="no-link" href="/documentation" on:click={closeHeader}>
 			<div class="header-item">
 				<i class="fa-solid fa-book"></i>
@@ -53,6 +62,22 @@
 				<span>Search</span>
 			</div>
 		</a>
+
+		{#if loggedIn}
+			<a class="no-link" href="/profile" on:click={closeHeader}>
+				<div class="header-item">
+					<i class="fa-solid fa-user"></i>
+					<span>Profile</span>
+				</div>
+			</a>
+		{:else}
+			<a class="no-link" href="{loginURL}" on:click={closeHeader}>
+				<div class="header-item call-to-action">
+					<i class="fa-brands fa-discord"></i>
+					<span>Login</span>
+				</div>
+			</a>
+		{/if}
 	</div>
 
 	{#if mobileHeaderOpen}
@@ -72,9 +97,9 @@
 		display: flex;
 		justify-content: center;
 		flex-wrap: wrap;
-		padding: 2rem;
+		padding: 1rem;
 		background-color: #444;
-		gap: 1.5rem 6rem;
+		gap: 1.5rem 3rem;
 		padding-left: 2rem;
 		padding-right: 2rem;
 		z-index: 10;
@@ -84,6 +109,9 @@
 		position: relative;
 		color: white;
 		font-size: 1.5rem;
+		padding: 1.5rem;
+		padding-top: 1rem;
+		padding-bottom: 1rem;
 	}
 	.header-item i {
 		margin-right: 1rem;
@@ -95,7 +123,7 @@
 		background-color: var(--cc-lightGray);
 		border-radius: 1rem;
 		position: absolute;
-		bottom: -0.5rem;
+		bottom: 0.25rem;
 		height: 0.25rem;
 		left: 50%;
 		right: 50%;
@@ -104,8 +132,8 @@
 	}
 	.header-item:hover::after {
 		opacity: 1;
-		left: -1rem;
-		right: -1rem;
+		left: 1rem;
+		right: 1rem;
 		outline: none;
 	}
 	a:focus {
@@ -115,6 +143,23 @@
 		opacity: 1;
 		left: -1rem;
 		right: -1rem;
+	}
+
+	.call-to-action {
+		/* background-color: var(--cc-blue); */
+		background-color: #333;
+		border-radius: 1rem;
+		/* box-shadow: rgba(0, 0, 0, 0.5) 0rem 0.125rem 1rem 0rem inset; */
+		box-shadow: rgba(0, 0, 0, 0.25) 0rem 0.125rem 1rem 0rem inset;
+		transition: all ease 200ms;
+	}
+	a:focus .call-to-action, .call-to-action:hover {
+		/* transform: scale(1.04); */
+		background-color: var(--cc-blue);
+		box-shadow: rgba(0, 0, 0, 0) 0rem 0rem 0rem 0rem inset;
+	}
+	a:focus .call-to-action::after, .call-to-action:hover::after {
+		display: none;
 	}
 
 	#mobileHeader {

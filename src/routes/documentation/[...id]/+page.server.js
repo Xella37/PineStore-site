@@ -267,6 +267,10 @@ The returned JSON object always has a "success" value with an "error" value as a
 			path: "/api/auth/update-p",
 			type: "POST",
 			post_params: [
+        {
+          name: "allow_null",
+          description: "if true, overwrites all values even if some are set to null (each parameter is no longer optional, useful when having to remove data)",
+        },
 				{
 					name: "projectId",
 					description: "id of the project for which to update properties",
@@ -335,6 +339,10 @@ The returned JSON object always has a "success" value with an "error" value as a
 			type: "POST",
 			post_params: [
         {
+          name: "allow_null",
+          description: "if true, overwrites all values even if some are set to null (each parameter is no longer optional, useful when having to remove data)",
+        },
+        {
           name: "name (max 40)",
           description: "your name as it should be displayed",
         },
@@ -383,11 +391,8 @@ The returned JSON object always has a "success" value with an "error" value as a
     },
 	];
 	
-	console.log("Page id:");
-	console.log(pageId);
 	let thisPage;
 	for (const p of pages) {
-		console.log(p.id);
 		if (p.id == pageId) {
 			thisPage = p;
 			break;

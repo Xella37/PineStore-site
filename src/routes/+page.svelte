@@ -25,7 +25,7 @@
 		rotateLogo = false; // Wait for a moment to allow the class to update after setting to false. Makes sure the animation reset
 		setTimeout(() => {
 			rotateLogo = true;
-		}, 0);
+		}, 1);
 	}
 </script>
 

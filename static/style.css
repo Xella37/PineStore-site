@@ -19,6 +19,7 @@ body {
 	--cc-gray: #4C4C4C;
 	--cc-cyan: #4C99B2;
 	--cc-orange: #F2B233;
+	--cc-red: #CC4C4C;
 
 	font-family: "Lato", sans-serif;
 	margin: 0;
@@ -204,6 +205,19 @@ input:focus {
 	background-color: #555;
 }
 
+textarea {
+	background-color: #444;
+	border: none;
+	font-size: 1.25rem;
+	border-radius: 1rem;
+	padding: 0.5rem 1rem;
+	color: white;
+	width: 100%;
+	min-height: 10rem;
+	box-sizing: border-box;
+	resize: block;
+}
+
 .command {
 	background-color: rgba(0, 0, 0, 0.5);
 	padding: 0.5rem 1rem;
@@ -233,6 +247,12 @@ input:focus {
 	cursor: not-allowed;
 	color: #DDD!important;
 	box-shadow: unset!important;
+}
+.button.red {
+	background-color: var(--cc-red);
+}
+.button.red:hover {
+	background-color: var(--cc-orange);
 }
 
 .lua-codeblock {
@@ -273,7 +293,7 @@ pre {
 }
 
 .ruler-text {
-	display: flex;
+	display: flex!important;
 	justify-content: space-between;
 	font-size: 1.125rem;
 	color: var(--text-color-dark);
