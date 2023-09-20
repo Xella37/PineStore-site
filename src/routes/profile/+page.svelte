@@ -9,7 +9,7 @@
 	import MDCode from "./MDCode.svelte";
 	import { onMount } from "svelte";
 	import { fade, fly } from "svelte/transition";
-	import { getUserProjects, myProfile, newProject, setProfileInfo, deleteProject } from "./../lib/database.js";
+	import { getMyProjects, myProfile, newProject, setProfileInfo, deleteProject } from "$lib/database.js";
 
 	let profile = {
 		name: "loading...",
@@ -21,15 +21,13 @@
 	let editingProfile = false;
 
 	async function loadProjects() {
-		let projectsData = await getUserProjects(profile.discord_id);
+		let projectsData = await getMyProjects();
 		projects = projectsData.projects;
 	}
 
 	async function loadProfile() {
 		let profileData = await myProfile();
 		profile = profileData.user;
-
-		loadProjects();
 	}
 
 	async function saveProfile() {
@@ -62,7 +60,10 @@
 		await loadProjects();
 	}
 
-	onMount(loadProfile);
+	onMount(() => {
+		loadProfile();
+		loadProjects();
+	});
 </script>
 
 <div id="backgroundContainer"></div>

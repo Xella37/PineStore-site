@@ -1,24 +1,21 @@
 
 <script>
+	import { getProjectLink } from "$lib/util.js";
+
 	export let projects;
 	export let blocks = false;
-
-	function getLink(project) {
-		let encodedName = encodeURIComponent(project.name.replace(/[^a-zA-Z0-9]+/g," ").replaceAll(" ", "-").toLowerCase());
-		return `/projects/${project.category || "uncategorized"}/${project.id}/${encodedName}`;
-	}
 </script>
 
 <div class="flex-list" class:flex-blocks={blocks}>
 	{#each projects as project}
-		<a href="{getLink(project)}">
+		<a href="{getProjectLink(project.id, project.name)}">
 			<div class="project-tile shadow">
 				<span class="name">{project.name}</span>
 				<span class="author">by {project.owner_name}</span>
 				<div class="image-container">
 					<span class="downloads"><i class="fa-solid fa-download"></i> {project.downloads}</span>
-					{#if project.thumbnail_link_png}
-						<div class="div-img" style="background-image: url({project.thumbnail_link_png})" alt="project"></div>
+					{#if project.thumbnail_link}
+						<div class="div-img" style="background-image: url({project.thumbnail_link})" alt="project"></div>
 					{:else}
 						<div class="div-img" style="background-image: url(/project-placeholder.webp)" alt="project placeholder"></div>
 					{/if}

@@ -4,31 +4,32 @@
 </svelte:head>
 
 <script>
-	import { onMount, onDestroy } from "svelte";
-	import { getProject, setProjectInfo } from "./../../../lib/database.js";
+	import { onMount } from "svelte";
+	import { getProject, setProjectInfo } from "$lib/database.js";
+	import { getProjectLink } from "$lib/util.js";
 
 	import { page } from "$app/stores";
 	$: projectId = $page.params.id;
+
+	import TagList from "../../../TagList.svelte";
 
 	let project = {}
 
 	async function loadProject() {
 		let projectData = await getProject(projectId);
 		project = projectData.project;
+		project.selectedTags = project.tags?.split(",") ?? [];
 	}
 
 	async function saveProject() {
-		await setProjectInfo(project);
-	}
-
-	function getLink(project) {
-		let encodedName = encodeURIComponent(project.name.replace(/[^a-zA-Z0-9]+/g," ").replaceAll(" ", "-").toLowerCase());
-		return `/projects/${project.category || "uncategorized"}/${project.id}/${encodedName}`;
+		let sendData = {...project};
+		sendData.tags = project.selectedTags.join(",");
+		console.log(sendData);
+		await setProjectInfo(sendData);
 	}
 
 	async function viewProjectPage() {
-		// window.location.href = getLink(project);
-		window.open(getLink(project), "_blank");
+		window.open(getProjectLink(project.id, project.name), "_blank");
 	}
 
 	onMount(loadProject);
@@ -67,8 +68,9 @@
 				<label for="targetInput">Target file (to run after installation)</label>
 				<input id="targetInput" type="text" bind:value={project.target_file} maxlength="30">
 
-				<label for="categoryInput">Category</label>
-				<input id="categoryInput" type="text" bind:value={project.category} maxlength="25">
+				<label for="tagsInput">Tags</label>
+				<!-- <input id="categoryInput" type="text" bind:value={project.category} maxlength="25"> -->
+				<TagList bind:selectedTags={project.selectedTags} />
 
 				<label for="repoInput">Repository</label>
 				<input id="repoInput" type="text" bind:value={project.repository} maxlength="150">
@@ -93,8 +95,8 @@
 				<span>media</span>
 			</div>
 
-				<label for="screenshotsInput">Thumbnail link (png recommended)</label>
-				<input id="screenshotsInput" type="text" bind:value={project.thumbnail_link} maxlength="150">
+				<label for="thumbnailInput">Thumbnail link (png recommended)</label>
+				<input id="thumbnailInput" type="text" bind:value={project.thumbnail_link} maxlength="150">
 
 				<label for="screenshotsInput">Screenshot links (comma separated)</label>
 				<input id="screenshotsInput" type="text" bind:value={project.screenshot_links} maxlength="1000">

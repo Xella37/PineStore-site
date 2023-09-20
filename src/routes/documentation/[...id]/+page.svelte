@@ -65,7 +65,7 @@
 		<div id="docs">
 			<div id="sidebar">
 				{#each pages as page}
-					<a href="/documentation/{page.id}" class="no-link" class:current-page={page.id == pageId} class:title={page.title}>
+					<a data-sveltekit-noscroll href="/documentation/{page.id}" class="no-link" class:current-page={page.id == pageId} class:title={page.title}>
 						{#if page.title}
 							<span class="path">{page.title}</span>
 						{:else}

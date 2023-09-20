@@ -1,7 +1,7 @@
 
 <script>
 	import { fade } from "svelte/transition";
-	import { isLoggedIn } from "./lib/database.js";
+	import { isLoggedIn } from "$lib/database.js";
     import { onMount } from "svelte";
 
 	const loginURL = `https://discord.com/api/oauth2/authorize?client_id=1073728324142116948&redirect_uri=https%3A%2F%2Fpinestore.cc%2Fdiscordauth&response_type=code&scope=identify`;

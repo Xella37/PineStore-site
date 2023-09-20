@@ -19,13 +19,8 @@ export async function getProject(id) {
 	return data;
 }
 
-export async function getProjects(category) {
-	let raw;
-	if (category?.length > 0) // checking length as well for robustness
-		raw = await fetch(`https://pinestore.cc/api/category/${category}`);
-	else
-		raw = await fetch(`https://pinestore.cc/api/projects`);
-
+export async function getProjects() {
+	let raw = await fetch(`https://pinestore.cc/api/projects`);
 	let data = await raw.json();
 
 	if (!data.success)
@@ -154,6 +149,23 @@ export async function deleteProject(id) {
 		}),
 	});
 	let data = await raw.json();
+	return data;
+}
+
+export async function getMyProjects() {
+	let session = getCookie("session");
+	let raw = await fetch(`https://pinestore.cc/api/auth/projects`, {
+		headers: {
+			authorization: session,
+			"Content-Type": "application/json",
+		},
+	});
+
+	let data = await raw.json();
+
+	if (!data.success)
+		throw error(404, data.error);
+
 	return data;
 }
 

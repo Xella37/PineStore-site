@@ -5,11 +5,10 @@
 
 <script>
 	import { onMount } from "svelte";
-	import { authDiscord } from "./../lib/database.js";
+	import { authDiscord } from "$lib/database.js";
 
 	const urlParams = new URLSearchParams(window.location.search);
     const authCode = urlParams.get("code");
-	console.log({authCode});
 
 	let success;
 	let error;

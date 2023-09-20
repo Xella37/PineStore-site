@@ -17,8 +17,9 @@
 
 	export let data;
 
+	// let recentProjects = data.projects.slice(-3).reverse();
+	let recentProjects = data.projects.sort((a, b) => {return b.date_added - a.date_added}).slice(0, 3);
 	let popularProjects = data.projects.sort((a, b) => {return b.downloads_recent - a.downloads_recent}).slice(0, 6);
-	let recentProjects = data.projects.slice(-3).reverse();
 
 	let rotateLogo = false;
 	function startRotation() {

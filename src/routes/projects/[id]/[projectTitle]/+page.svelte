@@ -7,7 +7,7 @@
 	<meta property="og:description" content="{project.description_short || project.description?.slice(0, 200) || "This project does not yet have a description."}" />
 	<meta name="description" content="{project.description_short || project.description?.slice(0, 200) || "This project does not yet have a description."}" />
 	<meta name="twitter:description" content="{project.description_short || project.description?.slice(0, 200) || "This project does not yet have a description."}" />
-	<meta property="og:url" content="https://pinestore.cc{getLink(project)}" />
+	<meta property="og:url" content="https://pinestore.cc{getProjectLink(project.id, project.name)}" />
 	<meta property="og:image" content="{project.thumbnail_link_png || "/project-placeholder.png"}" />
 	<meta name="keywords" content="{project.name}, {project.owner_name}, {project.keywords}, computercraft, computer, craft, lua, minecraft, mine, programming, library, games, programs, collection, store">
 </svelte:head>
@@ -15,6 +15,7 @@
 <script>
 	import { fade } from "svelte/transition";
 	import { onMount, onDestroy } from "svelte";
+	import { getProjectLink } from "$lib/util.js";
 	
 	import SvelteMarkdown from "svelte-markdown";
 	import MDImage from "./MDImage.svelte";
@@ -90,11 +91,6 @@
 		}
 	}
 
-	function getLink(project) {
-		let encodedName = encodeURIComponent(project.name.replace(/[^a-zA-Z0-9]+/g," ").replaceAll(" ", "-").toLowerCase());
-		return `/project/${project.id}/${encodedName}`;
-	}
-
 	let projectDate = new Date(Math.max(project.date_added, project.date_updated));
 	projectDate = projectDate.toLocaleDateString("en-US", {
 		day: "numeric",
@@ -103,7 +99,7 @@
 	});
 
 	let timerText = "TIME";
-	let showTimer = project.date_release > Date.now() && !(project.install_command?.length > 0);
+	let showTimer = project.date_release > Date.now();// && !(project.install_command?.length > 0);
 	if (showTimer) {
 		function updateTimerText() {
 			let dt = Math.floor((project.date_release - Date.now()) / 1000);
@@ -172,8 +168,8 @@
 		</h1>
 
 		<div id="description" class="markdown-container">
-			{#if project.thumbnail_link_png}
-				<img class="project-image shadow" src="{project.thumbnail_link_png}" alt="project thumbnail">
+			{#if project.thumbnail_link}
+				<img class="project-image shadow" src="{project.thumbnail_link}" alt="project thumbnail">
 			{:else}
 				<img class="project-image shadow" src="/project-placeholder.webp" alt="project thumbnail">
 			{/if}

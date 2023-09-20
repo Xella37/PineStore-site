@@ -13,7 +13,7 @@
 </svelte:head>
 
 <script>
-	import { searchProjects } from "./../lib/database.js";
+	import { searchProjects } from "$lib/database.js";
     import ProjectList from "./../ProjectList.svelte";
 	import { onMount } from "svelte";
 

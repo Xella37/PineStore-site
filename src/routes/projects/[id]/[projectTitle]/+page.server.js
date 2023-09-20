@@ -1,5 +1,5 @@
 
-import { getProject } from "./../../../../lib/database.js";
+import { getProject } from "$lib/database.js";
 
 export const prerender = false;
 export const ssr = true;
