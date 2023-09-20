@@ -94,7 +94,7 @@
 					<div class="param-list">
 						{#each thisPage.url_params as param}
 							<div class="param">
-								<h4>Param: <span class="param-name">{param.name}</span></h4>
+								<h4>Param: <span class="param-name">{param.name}</span> {#if param.optional}<span class="param-optional">optional</span>{/if}</h4>
 								<p>{param.description}</p>
 							</div>
 						{/each}
@@ -106,7 +106,7 @@
 					<div class="param-list">
 						{#each thisPage.get_params as param}
 							<div class="param">
-								<h4>Param: <span class="param-name">{param.name}</span></h4>
+								<h4>Param: <span class="param-name">{param.name}</span> {#if param.optional}<span class="param-optional">optional</span>{/if}</h4>
 								<p>{param.description}</p>
 							</div>
 						{/each}
@@ -118,7 +118,7 @@
 					<div class="param-list">
 						{#each thisPage.post_params as param}
 							<div class="param">
-								<h4>Param: <span class="param-name">{param.name}</span></h4>
+								<h4>Param: <span class="param-name">{param.name}</span> {#if param.optional}<span class="param-optional">optional</span>{/if}</h4>
 								<p>{param.description}</p>
 							</div>
 						{/each}
@@ -219,6 +219,11 @@
 	.param h4 span.param-name {
 		/* color: var(--text-color); */
 		color: #7FCC19;
+	}
+	.param h4 span.param-optional {
+		color: var(--cc-lightBlue);
+		font-weight: 300;
+		margin-left: 1rem;
 	}
 	.param p {
 		font-style: italic;
