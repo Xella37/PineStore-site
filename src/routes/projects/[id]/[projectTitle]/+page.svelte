@@ -8,7 +8,7 @@
 	<meta name="description" content="{project.description_short || project.description?.slice(0, 200) || "This project does not yet have a description."}" />
 	<meta name="twitter:description" content="{project.description_short || project.description?.slice(0, 200) || "This project does not yet have a description."}" />
 	<meta property="og:url" content="https://pinestore.cc{getProjectLink(project.id, project.name)}" />
-	<meta property="og:image" content="{project.thumbnail_link_png || "/project-placeholder.png"}" />
+	<meta property="og:image" content="{project.thumbnail_link || "/project-placeholder.png"}" />
 	<meta name="keywords" content="{project.name}, {project.owner_name}, {project.keywords}, computercraft, computer, craft, lua, minecraft, mine, programming, library, games, programs, collection, store">
 </svelte:head>
 
