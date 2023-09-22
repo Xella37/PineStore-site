@@ -2,10 +2,13 @@
 <div id="footer">
 	<div id="footerItems">
 		<div>
-			<div><i id="discord" class="fab fa-discord"></i> <a href="https://discord.gg/MjsNjK2psB">Discord</a></div>
+			<div><a href="https://discord.gg/MjsNjK2psB"><i id="discord" class="fab fa-discord"></i> Discord</a></div>
 		</div>
 		<div>
 			<div><a href="/uploading">Adding your project</a></div>
+		</div>
+		<div>
+			<div><a href="https://github.com/Xella37/PineStore-site"><i class="fa-brands fa-github"></i> Source code</a></div>
 		</div>
 		<div>
 			<div><a href="/documentation">Docs</a></div>
@@ -27,6 +30,7 @@
 	#footerItems {
 		display: flex;
 		flex-wrap: wrap;
+		gap: 2rem;
 		justify-content: space-evenly;
 		color: #AAA;
 		overflow: hidden;
@@ -39,5 +43,8 @@
 
 	#footerItems a {
 		color: #AAA;
+	}
+	#footerItems a > i {
+		margin-right: 0.5rem;
 	}
 </style>
