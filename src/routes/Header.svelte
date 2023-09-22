@@ -141,8 +141,8 @@
 	}
 	a:focus .header-item::after {
 		opacity: 1;
-		left: -1rem;
-		right: -1rem;
+		left: 0;
+		right: 0;
 	}
 
 	.call-to-action {
