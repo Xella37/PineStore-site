@@ -196,7 +196,20 @@
 	.corner-buttons {
 		float: right;
 		display: flex;
+		flex-wrap: wrap;
 		gap: 1rem;
+		margin-bottom: 1rem;
+	}
+	.corner-buttons > * {
+		flex-grow: 1;
+	}
+	@media screen and (max-width: 40rem) {
+		.corner-buttons {
+			width: 100%;
+		}
+		.corner-buttons > * {
+			width: 100%;
+		}
 	}
 
 	form > * {
