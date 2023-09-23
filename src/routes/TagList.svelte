@@ -61,4 +61,12 @@
 	.tag-link.selected {
 		background-color: var(--cc-blue);
 	}
+	@media screen and (max-width: 40rem) {
+		.tag-link {
+			padding-inline: 1rem;
+		}
+		.tag-link span {
+			font-size: 1.25em;
+		}
+	}
 </style>

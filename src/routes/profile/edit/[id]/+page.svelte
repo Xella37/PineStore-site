@@ -176,7 +176,9 @@
 					{#each imageLinks as url, i}
 						<div style="position:relative;" class="media-item">
 							<img src="{url}" alt="media">
-							<button class="button red delete-button" on:click|preventDefault={() => {deleteMedia(i);}}>Delete</button>
+							<button class="button red delete-button" on:click|preventDefault={() => {deleteMedia(i);}}>
+								<i class="fa-solid fa-trash-can"></i>
+							</button>
 						</div>
 					{/each}
 				</div>
@@ -230,7 +232,7 @@
 		border-radius: 1rem;
 		min-width: 10rem;
 		max-width: 100%;
-		height: 20rem;
+		max-height: 20rem;
 		object-fit: contain;
 		cursor: pointer;
 	}
