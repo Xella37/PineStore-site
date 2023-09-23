@@ -258,6 +258,7 @@ textarea {
 .lua-codeblock {
 	margin-top: 1rem;
 	border-radius: 0.5rem;
+	tab-size: 4ch;
 }
 
 code.hljs {

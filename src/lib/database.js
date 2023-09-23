@@ -119,6 +119,48 @@ export async function setProjectInfo(projectData) {
 	let data = await raw.json();
 	return data;
 }
+export async function setProjectThumbnail(projectId, imageData) {
+	let session = getCookie("session");
+	let raw = await fetch(`https://pinestore.cc/api/auth/thumbnail`, {
+		headers: {
+			authorization: session,
+			"Content-Type": "application/json",
+		},
+		method: "POST",
+		body: JSON.stringify({projectId: projectId, imageData: imageData}),
+	});
+	let data = await raw.json();
+	console.log(data);
+	return data;
+}
+export async function addProjectMedia(projectId, imageData) {
+	let session = getCookie("session");
+	let raw = await fetch(`https://pinestore.cc/api/auth/media`, {
+		headers: {
+			authorization: session,
+			"Content-Type": "application/json",
+		},
+		method: "POST",
+		body: JSON.stringify({projectId: projectId, imageData: imageData}),
+	});
+	let data = await raw.json();
+	console.log(data);
+	return data;
+}
+export async function removeProjectMedia(projectId, index) {
+	let session = getCookie("session");
+	let raw = await fetch(`https://pinestore.cc/api/auth/removemedia`, {
+		headers: {
+			authorization: session,
+			"Content-Type": "application/json",
+		},
+		method: "POST",
+		body: JSON.stringify({projectId: projectId, index: index}),
+	});
+	let data = await raw.json();
+	console.log(data);
+	return data;
+}
 
 export async function newProject(name) {
 	let session = getCookie("session");

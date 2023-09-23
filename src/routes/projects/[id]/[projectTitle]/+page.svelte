@@ -8,7 +8,7 @@
 	<meta name="description" content="{project.description_short || project.description?.slice(0, 200) || "This project does not yet have a description."}" />
 	<meta name="twitter:description" content="{project.description_short || project.description?.slice(0, 200) || "This project does not yet have a description."}" />
 	<meta property="og:url" content="https://pinestore.cc{getProjectLink(project.id, project.name)}" />
-	<meta property="og:image" content="{project.thumbnail_link || "/project-placeholder.png"}" />
+	<meta property="og:image" content="{project.has_thumbnail ? `https://pinestore.cc/project/${project.id}/thumbnail_full.webp` : "/project-placeholder.webp"}" />
 	<meta name="keywords" content="{project.name}, {project.owner_name}, {project.keywords}, computercraft, computer, craft, lua, minecraft, mine, programming, library, games, programs, collection, store">
 </svelte:head>
 
@@ -41,15 +41,18 @@
 	}
 
 	let imageLinks = [];
-	$: if (project.screenshot_links) {
-		try {
-			// let links = JSON.parse(project.screenshot_links);
-			let links = project.screenshot_links.split(",");
-			if (links.length > 0)
-				imageLinks = links;
-		} catch(e) {
-			console.log(e);
-		}
+	// $: if (project.screenshot_links) {
+	// 	try {
+	// 		// let links = JSON.parse(project.screenshot_links);
+	// 		let links = project.screenshot_links.split(",");
+	// 		if (links.length > 0)
+	// 			imageLinks = links;
+	// 	} catch(e) {
+	// 		console.log(e);
+	// 	}
+	// }
+	for (let i = 0; i < project.media_count; i++) {
+		imageLinks.push(`https://pinestore.cc/project/${project.id}/image_${i}.webp`);
 	}
 
 	let viewIndex = undefined;
@@ -168,8 +171,8 @@
 		</h1>
 
 		<div id="description" class="markdown-container">
-			{#if project.thumbnail_link}
-				<img class="project-image shadow" src="{project.thumbnail_link}" alt="project thumbnail">
+			{#if project.has_thumbnail}
+				<img class="project-image shadow" src="https://pinestore.cc/project/{project.id}/thumbnail_full.webp" alt="project thumbnail">
 			{:else}
 				<img class="project-image shadow" src="/project-placeholder.webp" alt="project thumbnail">
 			{/if}

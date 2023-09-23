@@ -14,8 +14,8 @@
 				<span class="author">by {project.owner_name}</span>
 				<div class="image-container">
 					<span class="downloads"><i class="fa-solid fa-download"></i> {project.downloads}</span>
-					{#if project.thumbnail_link}
-						<div class="div-img" style="background-image: url({project.thumbnail_link})" alt="project"></div>
+					{#if project.has_thumbnail}
+						<div class="div-img" style="background-image: url(https://pinestore.cc/project/{project.id}/thumbnail.webp)" alt="project"></div>
 					{:else}
 						<div class="div-img" style="background-image: url(/project-placeholder.webp)" alt="project placeholder"></div>
 					{/if}
