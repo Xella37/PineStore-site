@@ -29,6 +29,11 @@
 				PineStore
 			</div>
 		</a>
+		<a class="no-link" href="{loggedIn ? "/profile" : loginURL}" on:click={closeHeader}>
+			<div class="mobile-header-item profile">
+				<i class="fa-solid fa-user"></i>
+			</div>
+		</a>
 	</div>
 
 	<div id="headerItems" class="shadow" class:mobile-open={mobileHeaderOpen}>
@@ -63,20 +68,22 @@
 			</div>
 		</a>
 
-		{#if loggedIn}
-			<a class="no-link" href="/profile" on:click={closeHeader}>
-				<div class="header-item">
-					<i class="fa-solid fa-user"></i>
-					<span>Profile</span>
-				</div>
-			</a>
-		{:else}
-			<a class="no-link" href="{loginURL}" on:click={closeHeader}>
-				<div class="header-item call-to-action">
-					<i class="fa-brands fa-discord"></i>
-					<span>Login</span>
-				</div>
-			</a>
+		{#if !mobileHeaderOpen}
+			{#if loggedIn}
+				<a class="no-link" href="/profile" on:click={closeHeader}>
+					<div class="header-item">
+						<i class="fa-solid fa-user"></i>
+						<span>Profile</span>
+					</div>
+				</a>
+			{:else}
+				<a class="no-link" href="{loginURL}" on:click={closeHeader}>
+					<div class="header-item call-to-action">
+						<i class="fa-brands fa-discord"></i>
+						<span>Login</span>
+					</div>
+				</a>
+			{/if}
 		{/if}
 	</div>
 
@@ -110,8 +117,7 @@
 		color: white;
 		font-size: 1.5rem;
 		padding: 1.5rem;
-		padding-top: 1rem;
-		padding-bottom: 1rem;
+		padding-block: 0.5rem;
 	}
 	.header-item i {
 		margin-right: 1rem;
@@ -152,6 +158,7 @@
 		/* box-shadow: rgba(0, 0, 0, 0.5) 0rem 0.125rem 1rem 0rem inset; */
 		box-shadow: rgba(0, 0, 0, 0.25) 0rem 0.125rem 1rem 0rem inset;
 		transition: all ease 200ms;
+		padding-inline: 1rem;
 	}
 	a:focus .call-to-action, .call-to-action:hover {
 		/* transform: scale(1.04); */
@@ -171,6 +178,9 @@
 		font-size: 2rem;
 		padding: 1rem;
 	}
+	.mobile-header-item.profile {
+		padding-right: 2rem;
+	}
 	#menuButton {
 		background: none;
 		border: none;
@@ -178,7 +188,6 @@
 		font-size: 2rem;
 		padding: 1rem;
 		padding-left: 2rem;
-		padding-right: 2rem;
 	}
 	#closeBox {
 		position: absolute;
@@ -213,7 +222,8 @@
 
 		#mobileHeader {
 			position: relative;
-			display: block;
+			display: flex;
+			justify-content: space-between;
 			padding: 0;
 			background-color: #444;
 			z-index: 10;
