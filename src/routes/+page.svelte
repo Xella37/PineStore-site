@@ -39,10 +39,11 @@
 			<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
 			<img src="/pinestore_cropped.png" alt="store logo" on:click={startRotation} class:rotate={rotateLogo}>
 			<h1>Welcome to Xella's PineStore!</h1>
-			<p>Easily add your ComputerCraft projects, browse the categories to check out already uploaded projects and use the API to create your own applications with access to the database!</p>
-			<p>Use the simple CC app, or modify it, embed it into an OS or create your own frontend to easily install projects in Minecraft!</p>
-			<span>Try it out in CC</span>
-			<pre class="command">pastebin get yhYuX1fw pinestoreConsole</pre>
+			<p>Easily add your ComputerCraft projects, <a href="/projects">browse the tags</a> to check out already uploaded projects and use <a href="/documentation">the API</a> to create your own applications with access to the database!</p>
+			<p>Create a CC app to easily install these projects, for e.g. embedding in an OS!</p>
+			<!-- <p>Use the simple CC app, or modify it, embed it into an OS or create your own frontend to easily install projects in Minecraft!</p> -->
+			<!-- <span>Try it out in CC</span>
+			<pre class="command">pastebin get yhYuX1fw pinestoreConsole</pre> -->
 		</div>
 
 		<a href="/projects?sort=recent_added" class="no-link">
