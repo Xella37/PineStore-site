@@ -71,7 +71,7 @@
 	<div class="page shadow">
 		<TagList bind:selectedTag={selectedTag} />
 
-		<div class="category-header">
+		<div class="list-header">
 			<h2>Projects {selectedTag == null ? "(All)" : `(${tags.filter(t => t.id == selectedTag)[0].display})`}</h2>
 
 			<select bind:value={sortingMethod}>
@@ -91,18 +91,18 @@
 </div>
 
 <style>
-	.category-header {
-		margin-top: 4rem;
+	.list-header {
+		margin-top: 3rem;
 		position: relative;
 	}
-	.category-header select {
+	.list-header select {
 		position: absolute;
 		top: 0;
 		right: 0;
 	}
 
 	@media (max-width: 30rem) {
-		.category-header select {
+		.list-header select {
 			position: relative;
 			margin-bottom: 2rem;
 			width: 100%;

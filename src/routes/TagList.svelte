@@ -23,7 +23,7 @@
 	}
 </script>
 
-<div class="flex-list margin-medium">
+<div class="flex-list margin-small">
 	{#each tags as tag}
 		<button class="tag-link shadow" class:selected={selectedTag == tag.id || selectedTags?.includes(tag.id)} on:click|preventDefault={() => { selectTag(tag.id); }}>
 			<span>{tag.display}</span>
