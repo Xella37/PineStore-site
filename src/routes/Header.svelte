@@ -212,7 +212,7 @@
 			z-index: 9;
 			transform: translateX(-110%);
 			transition: transform ease 200ms;
-			height: calc(100vh - 9rem);
+			height: calc(100vh - 8rem);
 			top: 0;
 			padding-top: 7rem;
 		}
