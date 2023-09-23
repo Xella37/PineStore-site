@@ -129,7 +129,7 @@
 		background-color: var(--cc-lightGray);
 		border-radius: 1rem;
 		position: absolute;
-		bottom: 0.25rem;
+		bottom: 0rem;
 		height: 0.25rem;
 		left: 50%;
 		right: 50%;
