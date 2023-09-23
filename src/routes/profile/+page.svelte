@@ -9,7 +9,7 @@
 	import MDCode from "./MDCode.svelte";
 	import { onMount } from "svelte";
 	import { fade, fly } from "svelte/transition";
-	import { getMyProjects, myProfile, newProject, setProfileInfo, deleteProject } from "$lib/database.js";
+	import { logoutUser, getMyProjects, myProfile, newProject, setProfileInfo, deleteProject } from "$lib/database.js";
 
 	let profile = {
 		name: "loading...",
@@ -19,6 +19,10 @@
 	}
 	let projects = [];
 	let editingProfile = false;
+
+	function logout() {
+		logoutUser();
+	}
 
 	async function loadProjects() {
 		let projectsData = await getMyProjects();
@@ -86,6 +90,10 @@
 					Discard changes
 				</button>
 			{/if}
+			<button on:click={logout} class="button">
+				<i class="fa-solid fa-right-from-bracket"></i>
+				Logout
+			</button>
 		</div>
 
 		{#if !editingProfile}

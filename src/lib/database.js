@@ -214,3 +214,8 @@ export async function getMyProjects() {
 export function isLoggedIn() {
 	return getCookie("session");
 }
+
+export function logoutUser() {
+	document.cookie = "session=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+	window.location.href = "/";
+}
