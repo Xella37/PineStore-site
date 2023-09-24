@@ -261,6 +261,7 @@
 		transform: translateX(-50%);
 		font-size: 1rem;
 		border-radius: 10rem;
+		z-index: 10;
 	}
 	#editProjectButton i {
 		margin-right: 0.5rem;
