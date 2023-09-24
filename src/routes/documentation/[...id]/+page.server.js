@@ -47,6 +47,7 @@ The returned JSON object always has a "success" value with an "error" value as a
 		"date_added": 1692013883788,
 		"date_updated": 0,
 		"date_release": 0,
+		"date_publish": 1692013883788,
 		"owner_discord": "302427405023313920",
 		"owner_name": "Xella",
 		"name": "CCDoom",
@@ -81,6 +82,7 @@ The returned JSON object always has a "success" value with an "error" value as a
 			"date_added": 1692013883788,
 			"date_updated": 0,
 			"date_release": 0,
+			"date_publish": 1692013883788,
 			"owner_discord": "302427405023313920",
 			"owner_name": "Xella",
 			"name": "CCDoom",
@@ -123,6 +125,7 @@ The returned JSON object always has a "success" value with an "error" value as a
 			"date_added": 1692013883788,
 			"date_updated": 0,
 			"date_release": 0,
+			"date_publish": 1692013883788,
 			"owner_discord": "302427405023313920",
 			"owner_name": "Xella",
 			"name": "CCDoom",
@@ -157,11 +160,14 @@ The returned JSON object always has a "success" value with an "error" value as a
 			],
 			body: `Get all info for a specific user.`,
 			example_return: `{
-	"discord_id": "302427405023313920",
-	"joined_on": 1694204887165,
-	"name": "Xella",
-	"about": "Hey, I'm Xella! I've created this site to more easily have people share and distribute their CC projects! I'm also the creator of Pine3D and a few of the games with 3d graphics made using it :3",
-	"about_markdown": null
+	"success": true,
+	"user": {
+		"discord_id": "302427405023313920",
+		"joined_on": 1694204887165,
+		"name": "Xella",
+		"about": "Hey, I'm Xella! I've created this site to more easily have people share and distribute their CC projects! I'm also the creator of Pine3D and a few of the games with 3d graphics made using it :3",
+		"about_markdown": null
+	}
 }`,
 		},
 		{
@@ -184,6 +190,7 @@ The returned JSON object always has a "success" value with an "error" value as a
 			"date_added": 1692013883788,
 			"date_updated": 0,
 			"date_release": 0,
+			"date_publish": 1692013883788,
 			"owner_discord": "302427405023313920",
 			"owner_name": "Xella",
 			"name": "CCDoom",
@@ -232,11 +239,14 @@ The returned JSON object always has a "success" value with an "error" value as a
 			type: "GET",
 			body: `Get all user info corresponding to the authentication token.`,
 			example_return: `{
-	"discord_id": "302427405023313920",
-	"joined_on": 1694204887165,
-	"name": "Xella",
-	"about": "Hey, I'm Xella! I've created this site to more easily have people share and distribute their CC projects! I'm also the creator of Pine3D and a few of the games with 3d graphics made using it :3",
-	"about_markdown": null
+	"success": true,
+	"user": {
+		"discord_id": "302427405023313920",
+		"joined_on": 1694204887165,
+		"name": "Xella",
+		"about": "Hey, I'm Xella! I've created this site to more easily have people share and distribute their CC projects! I'm also the creator of Pine3D and a few of the games with 3d graphics made using it :3",
+		"about_markdown": null
+	}
 }`,
 		},
 		{
