@@ -23,7 +23,7 @@
 
 <div id="headerContainer">
 	<div id="mobileHeader" class="shadow">
-		<button id="menuButton" on:click={toggleHeader}><i class="fa-solid fa-bars"></i></button>
+		<button id="menuButton" on:click={toggleHeader}><i class="fa-solid fa-bars" name="navigation button"></i></button>
 		<a class="no-link" href="/">
 			<div class="mobile-header-item">
 				PineStore
