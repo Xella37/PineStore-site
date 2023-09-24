@@ -215,7 +215,7 @@ export async function getMyProjects() {
 export async function isLoggedIn() {
 	console.log("Checking login");
 	let profileData = await myProfile();
-	return profileData.user?.discord_id != null;
+	return profileData?.user?.discord_id != null;
 }
 
 export function logoutUser() {
