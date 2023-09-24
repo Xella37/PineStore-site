@@ -36,10 +36,10 @@
 				return b.downloads_recent - a.downloads_recent;
 			else if (sortingMethod == "total_downloads")
 				return b.downloads - a.downloads;
-			else if (sortingMethod == "recent_added")
-				return b.date_added - a.date_added;
+			else if (sortingMethod == "recent_published")
+				return b.date_publish - a.date_publish;
 			else if (sortingMethod == "recent_update")
-				return (b.date_updated || b.date_added) - (a.date_updated || a.date_added); // using || since date_updated is 0 by default
+				return (b.date_updated || b.date_publish) - (a.date_updated || a.date_publish); // using || since date_updated is 0 by default
 		});
 	}
 
@@ -78,7 +78,7 @@
 				<option value="recent_downloads">Recent downloads</option>
 				<option value="total_downloads">Total downloads</option>
 				<option value="recent_update">Recently updated</option>
-				<option value="recent_added">Recently added</option>
+				<option value="recent_published">Recently published</option>
 			</select>
 		</div>
 

@@ -18,7 +18,7 @@
 	export let data;
 
 	// let recentProjects = data.projects.slice(-3).reverse();
-	let recentProjects = data.projects.sort((a, b) => {return b.date_added - a.date_added}).slice(0, 3);
+	let recentProjects = data.projects.sort((a, b) => {return b.date_publish - a.date_publish}).slice(0, 3);
 	let popularProjects = data.projects.sort((a, b) => {return b.downloads_recent - a.downloads_recent}).slice(0, 6);
 
 	let rotateLogo = false;
@@ -46,8 +46,8 @@
 			<pre class="command">pastebin get yhYuX1fw pinestoreConsole</pre> -->
 		</div>
 
-		<a href="/projects?sort=recent_added" class="no-link">
-			<h2>Recently Added <i class="fa-solid fa-caret-right"></i></h2>
+		<a href="/projects?sort=recent_published" class="no-link">
+			<h2>Recently Published <i class="fa-solid fa-caret-right"></i></h2>
 		</a>
 		<ProjectList projects={recentProjects} blocks={false} />
 
