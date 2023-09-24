@@ -29,7 +29,7 @@
 				PineStore
 			</div>
 		</a>
-		<a class="no-link" href="{loggedIn ? "/profile" : loginURL}" on:click={closeHeader}>
+		<a class="no-link" href="{loggedIn ? "/profile" : loginURL}" on:click={closeHeader} name="profile">
 			<div class="mobile-header-item profile">
 				<i class="fa-solid fa-user"></i>
 			</div>
