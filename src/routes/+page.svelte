@@ -37,7 +37,7 @@
 		<div class="splash">
 			<!-- svelte-ignore a11y-click-events-have-key-events -->
 			<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
-			<img src="/pinestore_cropped.png" alt="store logo" on:click={startRotation} class:rotate={rotateLogo}>
+			<img src="/pinestore_cropped.webp" alt="store logo" on:click={startRotation} class:rotate={rotateLogo}>
 			<h1>Welcome to Xella's PineStore!</h1>
 			<p>Easily add your ComputerCraft projects, <a href="/projects">browse the tags</a> to check out already uploaded projects and use <a href="/documentation">the API</a> to create your own applications with access to the database!</p>
 			<p>Create a CC app to easily install these projects, for e.g. embedding in an OS!</p>
