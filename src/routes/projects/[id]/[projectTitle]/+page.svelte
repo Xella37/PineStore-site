@@ -104,7 +104,7 @@
 	});
 
 	let timerText = "TIME";
-	let showTimer = project.date_release > Date.now();// && !(project.install_command?.length > 0);
+	let showTimer = project.date_release > Date.now() && !(project.install_command?.length > 0);
 	if (showTimer) {
 		function updateTimerText() {
 			let dt = Math.floor((project.date_release - Date.now()) / 1000);
