@@ -16,7 +16,7 @@
 	import { fade } from "svelte/transition";
 	import { onMount, onDestroy } from "svelte";
 	import { getProjectLink } from "$lib/util.js";
-	import { isLoggedIn } from "$lib/database.js";
+	import { myProfile } from "$lib/database.js";
 	
 	import SvelteMarkdown from "svelte-markdown";
 	import MDImage from "./MDImage.svelte";
@@ -24,7 +24,7 @@
 
 	export let data;
 	let project = data.project;
-	let loggedIn = false;
+	let myId;
 
 	const DESCRIPTION_PLACEHOLDER = `*This project does not have any description set.*\n\nUse the Discord bot to edit your poject with the /editproject command to configure a description.`;
 
@@ -144,7 +144,8 @@
 	}
 
 	onMount(async () => {
-		loggedIn = await isLoggedIn();
+		let profileData = await myProfile();
+		myId = profileData?.user?.discord_id;
 	});
 </script>
 
@@ -166,7 +167,7 @@
 			</div>
 		{/if}
 
-		{#if loggedIn}
+		{#if myId != null && project.owner_discord == myId}
 			<a id="editProjectButton" class="button" href="/profile/edit/{project.id}"><i class="fa-solid fa-pencil"></i> Edit project</a>
 		{/if}
 
