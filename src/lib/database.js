@@ -68,6 +68,7 @@ export async function authDiscord(code) {
 
 export async function myProfile() {
 	let session = getCookie("session");
+	if (session == null) return;
 	let raw = await fetch(`https://pinestore.cc/api/auth/profile`, {
 		headers: {
 			authorization: session,
@@ -211,8 +212,10 @@ export async function getMyProjects() {
 	return data;
 }
 
-export function isLoggedIn() {
-	return getCookie("session");
+export async function isLoggedIn() {
+	console.log("Checking login");
+	let profileData = await myProfile();
+	return profileData.user?.discord_id != null;
 }
 
 export function logoutUser() {

@@ -16,8 +16,8 @@
 	}
 
 	let loggedIn = false;
-	onMount(() => {
-		loggedIn = isLoggedIn();
+	onMount(async () => {
+		loggedIn = await isLoggedIn();
 	});
 </script>
 

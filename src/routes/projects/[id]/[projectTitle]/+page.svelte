@@ -16,6 +16,7 @@
 	import { fade } from "svelte/transition";
 	import { onMount, onDestroy } from "svelte";
 	import { getProjectLink } from "$lib/util.js";
+	import { isLoggedIn } from "$lib/database.js";
 	
 	import SvelteMarkdown from "svelte-markdown";
 	import MDImage from "./MDImage.svelte";
@@ -23,6 +24,7 @@
 
 	export let data;
 	let project = data.project;
+	let loggedIn = false;
 
 	const DESCRIPTION_PLACEHOLDER = `*This project does not have any description set.*\n\nUse the Discord bot to edit your poject with the /editproject command to configure a description.`;
 
@@ -129,17 +131,21 @@
 
 		let interval;
 
-		function resetInterval(){
+		function resetInterval() {
 			clearInterval(interval);
 			interval = setInterval(updateTimerText, 1000);
 		}
-		onMount(()=>{
+		onMount(() => {
 			resetInterval();
 		});
-		onDestroy(()=>{
+		onDestroy(() => {
 			clearInterval(interval);
 		});
 	}
+
+	onMount(async () => {
+		loggedIn = await isLoggedIn();
+	});
 </script>
 
 <div id="backgroundContainer"></div>
@@ -160,10 +166,16 @@
 			</div>
 		{/if}
 
-		<a href="/user/{project.owner_discord}"><img class="pfp" src="https://pinestore.cc/pfp/{project.owner_discord}.png" alt="profile"></a>
+		{#if loggedIn}
+			<a id="editProjectButton" class="button" href="/profile/edit/{project.id}"><i class="fa-solid fa-pencil"></i> Edit project</a>
+		{/if}
 
-		<span class="total-downloads">{project.downloads} {project.downloads == 1 ? "download" : "downloads"}</span>
-		<span class="project-date">{projectDate}</span>
+		<div class="top-info">
+			<span class="total-downloads">{project.downloads} {project.downloads == 1 ? "download" : "downloads"}</span>
+			<span class="project-date">{projectDate}</span>
+		</div>
+
+		<a href="/user/{project.owner_discord}"><img class="pfp" src="https://pinestore.cc/pfp/{project.owner_discord}.png" alt="profile"></a>
 
 		<h1>
 			{project.name}
@@ -215,6 +227,7 @@
 <style>
 	h1 {
 		font-size: 4rem;
+		/* margin-top: 4rem; */
 	}
 
 	.pfp {
@@ -225,15 +238,42 @@
 		width: 6rem;
 	}
 
+	.top-info {
+		position: relative;
+		display: block;
+		padding-block: 1rem;
+	}
 	.total-downloads {
 		position: absolute;
+		top: 0;
 		color: var(--text-color-dark);
 		padding-left: 0.25rem;
 	}
 	.project-date {
 		position: absolute;
-		right: 2rem;
+		top: 0;
+		right: 0;
 		color: var(--text-color-dark);
+	}
+	#editProjectButton {
+		position: absolute;
+		left: 50%;
+		transform: translateX(-50%);
+		font-size: 1rem;
+		border-radius: 10rem;
+	}
+	#editProjectButton i {
+		margin-right: 0.5rem;
+	}
+	@media screen and (max-width: 30rem) {
+		#editProjectButton {
+			position: relative;
+			display: block;
+			width: 100%;
+			margin-bottom: 1rem;
+			box-sizing: border-box;
+			text-align: center;
+		}
 	}
 
 	.project-image {
