@@ -160,7 +160,7 @@
 
 		<form class="form-list">
 			<label for="titleInput">Name</label>
-			<input id="titleInput" type="text" bind:value={project.name} maxlength="40">
+			<input id="titleInput" type="text" bind:value={project.name} maxlength="40" placeholder="My Cool Project">
 
 			<div class="ruler-text">
 				<span>basic info</span>
@@ -169,20 +169,20 @@
 				<div class="flex-list">
 					<div class="form-list">
 						<label for="installInput">Install command</label>
-						<input id="installInput" type="text" bind:value={project.install_command} maxlength="150">
+						<input id="installInput" type="text" bind:value={project.install_command} maxlength="150" placeholder="pastebin run ABC123">
 					</div>
 					
 					<div class="form-list">
 						<label for="targetInput">Target file (to run after installation)</label>
-						<input id="targetInput" type="text" bind:value={project.target_file} maxlength="30">
+						<input id="targetInput" type="text" bind:value={project.target_file} maxlength="30" placeholder="program.lua">
 					</div>
 				</div>
 
 				<label for="repoInput">Git repository</label>
-				<input id="repoInput" type="text" bind:value={project.repository} maxlength="150">
+				<input id="repoInput" type="text" bind:value={project.repository} maxlength="150" placeholder="https://github.com/username/repository">
 
 				<label for="keywordsInput">Keywords used for search (comma separated)</label>
-				<input id="keywordsInput" type="text" bind:value={project.keywords} maxlength="300">
+				<input id="keywordsInput" type="text" bind:value={project.keywords} maxlength="300" placeholder="example,keywords,go,here">
 
 				<label for="tagsInput">Tags (preferrably 2-3)</label>
 				<TagList bind:selectedTags={project.selectedTags} />
@@ -279,6 +279,10 @@
 		.corner-buttons > * {
 			width: 100%;
 		}
+	}
+
+	.form-list > label:first-child {
+		margin-top: 0;
 	}
 
 	.form-list > * {

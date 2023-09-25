@@ -203,6 +203,9 @@ input:focus {
 	outline: none;
 	background-color: #555;
 }
+input::placeholder {
+	color: #BBB;
+}
 
 textarea {
 	background-color: #444;
