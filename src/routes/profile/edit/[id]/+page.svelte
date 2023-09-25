@@ -13,12 +13,33 @@
 
 	import TagList from "../../../TagList.svelte";
 
-	let project = {}
+	let savedProject = {};
+	let project = {};
+	let unsavedChanges = false;
+	let selectedDescription = "main";
+
+	$: if (project) {
+		let changes = false;
+		for (const key of Object.keys(project)) {
+			if (project[key] != savedProject[key]) {
+				console.log({
+					key: key,
+					project: project[key],
+					savedProject: savedProject[key],
+				});
+				unsavedChanges = true;
+				changes = true;
+			}
+		}
+		if (!changes)
+			unsavedChanges = false;
+	}
 
 	async function loadProject() {
 		let projectData = await getProject(projectId);
-		project = projectData.project;
-		project.selectedTags = project.tags?.split(",") ?? [];
+		savedProject = projectData.project;
+		savedProject.selectedTags = savedProject.tags?.split(",") ?? [];
+		project = {...savedProject};
 	}
 
 	async function saveProject() {
@@ -26,6 +47,8 @@
 		sendData.tags = project.selectedTags.join(",");
 		console.log(sendData);
 		await setProjectInfo(sendData);
+		unsavedChanges = false;
+		savedProject = {...project};
 	}
 
 	async function viewProjectPage() {
@@ -107,53 +130,87 @@
 			<button on:click={() => { viewProjectPage(); }} id="viewProjectPage" class="button">
 				<i class="fa-solid fa-arrow-up-right-from-square"></i>
 				View page
-			</button><button on:click={() => { saveProject(); }} id="saveProject" class="button">
+			</button>
+			<button on:click={() => { saveProject(); }} id="saveProject" class="button">
 				<i class="fa-solid fa-floppy-disk"></i>
 				Save project
 			</button>
+			{#if project.visible}
+				<button id="visibleInput" class="button orange" on:click={() => { project.visible = false; }}>Hide project</button>
+			{:else}
+				<button id="visibleInput" class="button" on:click={() => { project.visible = true; }}>Publish project</button>
+			{/if}
 			<button on:click={() => { loadProject(); }} id="discardChanges" class="button red">
 				<i class="fa-solid fa-rotate-left"></i>
 				Revert
 			</button>
 		</div>
-		<form>
+
+		{#if unsavedChanges}
+			<div class="info-block warning">
+				<i class="fa-solid fa-triangle-exclamation"></i>
+				You have unsaved changes!
+			</div>
+		{:else}
+			<div class="info-block no-icon">
+				Be sure to save after making changes.
+			</div>
+		{/if}
+
+		<form class="form-list">
 			<label for="titleInput">Name</label>
 			<input id="titleInput" type="text" bind:value={project.name} maxlength="40">
 
 			<div class="ruler-text">
 				<span>basic info</span>
 			</div>
-				<label for="visibleInput">Project visible</label>
-				<input id="visibleInput" type="checkbox" bind:checked={project.visible}>
 
-				<label for="installInput">Install command</label>
-				<input id="installInput" type="text" bind:value={project.install_command} maxlength="150">
+				<div class="flex-list">
+					<div class="form-list">
+						<label for="installInput">Install command</label>
+						<input id="installInput" type="text" bind:value={project.install_command} maxlength="150">
+					</div>
+					
+					<div class="form-list">
+						<label for="targetInput">Target file (to run after installation)</label>
+						<input id="targetInput" type="text" bind:value={project.target_file} maxlength="30">
+					</div>
+				</div>
 
-				<label for="targetInput">Target file (to run after installation)</label>
-				<input id="targetInput" type="text" bind:value={project.target_file} maxlength="30">
-
-				<label for="tagsInput">Tags</label>
+				<label for="tagsInput">Tags (preferrably 2-3)</label>
 				<!-- <input id="categoryInput" type="text" bind:value={project.category} maxlength="25"> -->
 				<TagList bind:selectedTags={project.selectedTags} />
 
-				<label for="repoInput">Repository</label>
+				<label for="repoInput">Git repository</label>
 				<input id="repoInput" type="text" bind:value={project.repository} maxlength="150">
 
-				<label for="keywordsInput">Keywords (comma separated)</label>
+				<label for="keywordsInput">Keywords used for search (comma separated)</label>
 				<input id="keywordsInput" type="text" bind:value={project.keywords} maxlength="300">
 
 			<div class="ruler-text">
 				<span>description</span>
 			</div>
 
-				<label for="descriptionShortInput">Description (short)</label>
-				<textarea id="descriptionShortInput" type="text" bind:value={project.description_short} maxlength="200"></textarea>
+				<div class="flex-list">
+					<button class="button tab" class:selected={selectedDescription == "short"} on:click|preventDefault={() => { selectedDescription = "short" }}>Short</button>
+					<button class="button tab" class:selected={selectedDescription == "main"} on:click|preventDefault={() => { selectedDescription = "main" }}>Main</button>
+					<button class="button tab" class:selected={selectedDescription == "markdown"} on:click|preventDefault={() => { selectedDescription = "markdown" }}>Markdown</button>
+				</div>
 
-				<label for="descriptionInput">Description</label>
-				<textarea id="descriptionInput" type="text" bind:value={project.description} maxlength="3000"></textarea>
+				<div class="tab-container form-list" class:selected={selectedDescription == "short"}>
+					<label for="descriptionShortInput">Description (short)</label>
+					<textarea id="descriptionShortInput" type="text" bind:value={project.description_short} maxlength="200"></textarea>
+				</div>
 
-				<label for="descriptionMDInput">Description (markdown)</label>
-				<textarea id="descriptionMDInput" type="text" bind:value={project.description_markdown} maxlength="3500"></textarea>
+				<div class="tab-container form-list" class:selected={selectedDescription == "main"}>
+					<label for="descriptionInput">Description</label>
+					<textarea id="descriptionInput" type="text" bind:value={project.description} maxlength="3000"></textarea>
+				</div>
+
+				<div class="tab-container form-list" class:selected={selectedDescription == "markdown"}>
+					<label for="descriptionMDInput">Description (markdown)</label>
+					<textarea id="descriptionMDInput" type="text" bind:value={project.description_markdown} maxlength="3500"></textarea>
+				</div>
 
 			<div class="ruler-text">
 				<span>media</span>
@@ -196,7 +253,6 @@
 
 <style>
 	.corner-buttons {
-		float: right;
 		display: flex;
 		flex-wrap: wrap;
 		gap: 1rem;
@@ -214,15 +270,16 @@
 		}
 	}
 
-	form > * {
+	.form-list > * {
 		display: block;
 		margin-block: 1rem;
 	}
-
-	input[type="checkbox"] {
-		width: 1.5rem;
-		height: 1.5rem;
-		border: none;
+	.form-list > label {
+		margin-top: 2rem;
+	}
+	.form-list input[type="text"] {
+		width: 100%;
+		box-sizing: border-box;
 	}
 
 	#thumbnailPreview {
@@ -282,5 +339,22 @@
 		position: absolute;
 		top: 1rem;
 		right: 1rem;
+	}
+
+	.tab {
+		background-color: var(--cc-gray);
+		color: white;
+	}
+	.tab.selected {
+		background-color: var(--cc-blue);
+	}
+	.tab-container {
+		display: none;
+	}
+	.tab-container.selected {
+		display: block;
+	}
+	.tab-container textarea {
+		min-height: 20rem;
 	}
 </style>

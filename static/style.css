@@ -17,6 +17,7 @@ body {
 	--cc-gray: #4C4C4C;
 	--cc-cyan: #4C99B2;
 	--cc-orange: #F2B233;
+	--cc-yellow: #DEDE6C;
 	--cc-red: #CC4C4C;
 
 	font-family: "Lato", sans-serif;
@@ -167,7 +168,7 @@ h3 {
 }
 
 .flex-list {
-	display: flex;
+	display: flex!important;
 	flex-direction: row;
 	gap: 2rem;
 	flex-wrap: wrap;
@@ -251,6 +252,13 @@ textarea {
 }
 .button.red:hover {
 	background-color: var(--cc-orange);
+}
+.button.orange {
+	background-color: var(--cc-orange);
+	color: black;
+}
+.button.orange:hover {
+	background-color: var(--cc-yellow);
 }
 
 .lua-codeblock {
@@ -337,6 +345,9 @@ pre {
 	font-size: 1.25rem;
 	padding-left: 4rem;
 	background-color: var(--cc-gray);
+}
+.info-block.no-icon {
+	padding-left: 1rem;
 }
 .info-block i {
 	position: absolute;
