@@ -16,7 +16,7 @@
 	import { fade } from "svelte/transition";
 	import { onMount, onDestroy } from "svelte";
 	import { getProjectLink } from "$lib/util.js";
-	import { myProfile } from "$lib/database.js";
+	import { myProfile, reportProjectView } from "$lib/database.js";
 	
 	import SvelteMarkdown from "svelte-markdown";
 	import MDImage from "./MDImage.svelte";
@@ -144,6 +144,7 @@
 	}
 
 	onMount(async () => {
+		setTimeout(reportProjectView, 3000, project.id); // report a view if the page is open for at least 3 seconds
 		let profileData = await myProfile();
 		myId = profileData?.user?.discord_id;
 	});
@@ -173,6 +174,7 @@
 
 		<div class="top-info">
 			<span class="total-downloads">{project.downloads} {project.downloads == 1 ? "download" : "downloads"}</span>
+			<span class="total-views">{project.views} {project.views == 1 ? "view" : "views"}</span>
 			<span class="project-date">{projectDate}</span>
 		</div>
 
@@ -243,6 +245,12 @@
 		position: relative;
 		display: block;
 		padding-block: 1rem;
+	}
+	.total-views {
+		position: absolute;
+		top: 1.5rem;
+		color: var(--text-color-dark);
+		padding-left: 0.25rem;
 	}
 	.total-downloads {
 		position: absolute;

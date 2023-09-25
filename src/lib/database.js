@@ -212,6 +212,20 @@ export async function getMyProjects() {
 	return data;
 }
 
+export async function reportProjectView(id) {
+	let raw = await fetch(`https://pinestore.cc/api/newview`, {
+		headers: {
+			"Content-Type": "application/json",
+		},
+		method: "POST",
+		body: JSON.stringify({
+			projectId: id,
+		}),
+	});
+	let data = await raw.json();
+	return data;
+}
+
 export async function isLoggedIn() {
 	console.log("Checking login");
 	let profileData = await myProfile();
