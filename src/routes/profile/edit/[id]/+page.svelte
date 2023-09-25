@@ -8,12 +8,18 @@
 	import { getProject, setProjectInfo, setProjectThumbnail, addProjectMedia, removeProjectMedia } from "$lib/database.js";
 	import { getProjectLink } from "$lib/util.js";
 
+	import SvelteMarkdown from "svelte-markdown";
+	import MDImage from "$lib/MDImage.svelte";
+	import MDCode from "$lib/MDCode.svelte";
+
 	import { page } from "$app/stores";
 	$: projectId = $page.params.id;
 
 	import TagList from "../../../TagList.svelte";
 
-	let savedProject = {};
+	let savedProject = {
+		description_markdown: "no markdown description",
+	};
 	let project = {};
 	let unsavedChanges = false;
 	let selectedDescription = "main";
@@ -22,11 +28,6 @@
 		let changes = false;
 		for (const key of Object.keys(project)) {
 			if (project[key] != savedProject[key]) {
-				console.log({
-					key: key,
-					project: project[key],
-					savedProject: savedProject[key],
-				});
 				unsavedChanges = true;
 				changes = true;
 			}
@@ -208,8 +209,19 @@
 				</div>
 
 				<div class="tab-container form-list" class:selected={selectedDescription == "markdown"}>
-					<label for="descriptionMDInput">Description (markdown)</label>
-					<textarea id="descriptionMDInput" type="text" bind:value={project.description_markdown} maxlength="3500"></textarea>
+					<div class="flex-list">
+						<div class="form-list markdown-input-section">
+							<label for="descriptionMDInput">Description (markdown)</label>
+							<textarea id="descriptionMDInput" bind:value={project.description_markdown} maxlength="3500"></textarea>
+						</div>
+						
+						<div class="form-list">
+							<label for="descriptionPreview">Preview</label>
+							<div id="descriptionPreview" class="markdown-container">
+								<SvelteMarkdown source={project.description_markdown ?? ""} renderers={{ image: MDImage, code: MDCode }} />
+							</div>
+						</div>
+					</div>
 				</div>
 
 			<div class="ruler-text">
@@ -356,5 +368,20 @@
 	}
 	.tab-container textarea {
 		min-height: 20rem;
+	}
+
+	.markdown-container {
+		border: 1px solid var(--cc-lightGray);
+		padding: 1rem;
+	}
+
+	.markdown-input-section {
+		display: flex;
+		flex-direction: column;
+	}
+	.markdown-input-section textarea {
+		flex-grow: 1;
+		margin-top: 0;
+		font-size: 1rem;
 	}
 </style>
