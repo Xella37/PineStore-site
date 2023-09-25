@@ -139,7 +139,7 @@
 			{#if project.visible}
 				<button id="visibleInput" class="button orange" on:click={() => { project.visible = false; }}>Hide project</button>
 			{:else}
-				<button id="visibleInput" class="button" on:click={() => { project.visible = true; }}>Publish project</button>
+				<button id="visibleInput" class="button green" on:click={() => { project.visible = true; }}>Publish project</button>
 			{/if}
 			<button on:click={() => { loadProject(); }} id="discardChanges" class="button red">
 				<i class="fa-solid fa-rotate-left"></i>

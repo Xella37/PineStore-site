@@ -19,6 +19,8 @@ body {
 	--cc-orange: #F2B233;
 	--cc-yellow: #DEDE6C;
 	--cc-red: #CC4C4C;
+	--cc-lime: #7FCC19;
+	--cc-green: #57A64E;
 
 	font-family: "Lato", sans-serif;
 	margin: 0;
@@ -262,6 +264,12 @@ textarea {
 }
 .button.orange:hover {
 	background-color: var(--cc-yellow);
+}
+.button.green {
+	background-color: var(--cc-green);
+}
+.button.green:hover {
+	background-color: var(--cc-lime);
 }
 
 .lua-codeblock {
