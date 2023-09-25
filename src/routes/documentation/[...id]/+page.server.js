@@ -64,6 +64,7 @@ The returned JSON object always has a "success" value with an "error" value as a
 		"keywords": null,
 		"downloads": 3,
 		"downloads_recent": 0,
+		"views": 5,
 		"visible": 1
 	}
 }`,
@@ -99,6 +100,7 @@ The returned JSON object always has a "success" value with an "error" value as a
 			"keywords": null,
 			"downloads": 3,
 			"downloads_recent": 0,
+			"views": 5,
 			"visible": 1
 		},
 		...
@@ -142,6 +144,7 @@ The returned JSON object always has a "success" value with an "error" value as a
 			"keywords": null,
 			"downloads": 3,
 			"downloads_recent": 0,
+			"views": 5,
 			"visible": 1
 		},
 		...
@@ -207,6 +210,7 @@ The returned JSON object always has a "success" value with an "error" value as a
 			"keywords": null,
 			"downloads": 3,
 			"downloads_recent": 0,
+			"views": 5,
 			"visible": 1
 		},
 		...
@@ -223,7 +227,7 @@ The returned JSON object always has a "success" value with an "error" value as a
 					description: "id of the project for which to register a new download",
 				},
 			],
-			body: `If you are building a CC front-end application, you must use this endpoint to report to the server when a project has been installed using the install command. This increases the download and recent_download count for the given project.`,
+			body: `If you are building a CC front-end application, you must use this endpoint to report to the server when a project has been installed using the install command. This increases the download and downloads_recent count for the given project.`,
 			example_return: `{
 	"success": true
 }`,
