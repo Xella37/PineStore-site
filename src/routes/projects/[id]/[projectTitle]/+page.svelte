@@ -19,8 +19,8 @@
 	import { myProfile, reportProjectView } from "$lib/database.js";
 	
 	import SvelteMarkdown from "svelte-markdown";
-	import MDImage from "./MDImage.svelte";
-	import MDCode from "./MDCode.svelte";
+	import MDImage from "$lib/MDImage.svelte";
+	import MDCode from "$lib/MDCode.svelte";
 
 	export let data;
 	let project = data.project;

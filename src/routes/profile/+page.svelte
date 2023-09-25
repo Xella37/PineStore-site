@@ -5,8 +5,8 @@
 
 <script>
 	import SvelteMarkdown from "svelte-markdown";
-	import MDImage from "./MDImage.svelte";
-	import MDCode from "./MDCode.svelte";
+	import MDImage from "$lib/MDImage.svelte";
+	import MDCode from "$lib/MDCode.svelte";
 	import { onMount } from "svelte";
 	import { fade, fly } from "svelte/transition";
 	import { logoutUser, getMyProjects, myProfile, newProject, setProfileInfo, deleteProject } from "$lib/database.js";
