@@ -388,4 +388,12 @@
 		margin-top: 0;
 		font-size: 1rem;
 	}
+
+	#visibleInput {
+		min-width: 13rem;
+	}
+
+	.flex-list > * {
+		min-width: 14rem!important;
+	}
 </style>
