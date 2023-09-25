@@ -178,15 +178,14 @@
 					</div>
 				</div>
 
-				<label for="tagsInput">Tags (preferrably 2-3)</label>
-				<!-- <input id="categoryInput" type="text" bind:value={project.category} maxlength="25"> -->
-				<TagList bind:selectedTags={project.selectedTags} />
-
 				<label for="repoInput">Git repository</label>
 				<input id="repoInput" type="text" bind:value={project.repository} maxlength="150">
 
 				<label for="keywordsInput">Keywords used for search (comma separated)</label>
 				<input id="keywordsInput" type="text" bind:value={project.keywords} maxlength="300">
+
+				<label for="tagsInput">Tags (preferrably 2-3)</label>
+				<TagList bind:selectedTags={project.selectedTags} />
 
 			<div class="ruler-text">
 				<span>description</span>
