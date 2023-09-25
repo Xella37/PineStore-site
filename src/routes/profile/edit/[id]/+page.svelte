@@ -291,6 +291,7 @@
 	}
 	.form-list > label {
 		margin-top: 2rem;
+		color: var(--text-color-medium);
 	}
 	.form-list input[type="text"] {
 		width: 100%;
