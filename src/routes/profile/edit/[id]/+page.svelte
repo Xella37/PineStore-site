@@ -53,7 +53,7 @@
 	}
 
 	async function viewProjectPage() {
-		window.open(getProjectLink(project.id, project.name), "_blank");
+		window.open(getProjectLink(project.id, savedProject.name), "_blank");
 	}
 
 	$: thumbnail_link = project.has_thumbnail ? `https://pinestore.cc/project/${project.id}/thumbnail_full.webp?t=${Date.now()}` : "/project-placeholder.webp";
