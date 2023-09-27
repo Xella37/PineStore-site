@@ -272,6 +272,12 @@ textarea {
 .button.green:hover {
 	background-color: var(--cc-lime);
 }
+.button.gray {
+	background-color: var(--cc-gray);
+}
+.button.gray:hover {
+	background-color: var(--cc-lightGray);
+}
 
 .lua-codeblock {
 	margin-top: 1rem;

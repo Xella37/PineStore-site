@@ -212,6 +212,34 @@ export async function getMyProjects() {
 	return data;
 }
 
+export async function getComments(projectId) {
+	let raw = await fetch(`https://pinestore.cc/api/auth/comments/${projectId}`, {
+		headers: {
+			"Content-Type": "application/json",
+		},
+	});
+	let data = await raw.json();
+	return data;
+}
+
+export async function newComment(projectId, replyId, text) {
+	let session = getCookie("session");
+	let raw = await fetch(`https://pinestore.cc/api/auth/comment`, {
+		headers: {
+			authorization: session,
+			"Content-Type": "application/json",
+		},
+		method: "POST",
+		body: JSON.stringify({
+			projectId: projectId,
+			replyId: replyId,
+			text: text,
+		}),
+	});
+	let data = await raw.json();
+	return data;
+}
+
 export async function reportProjectView(id) {
 	let raw = await fetch(`https://pinestore.cc/api/newview`, {
 		headers: {

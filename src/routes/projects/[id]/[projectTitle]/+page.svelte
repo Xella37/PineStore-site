@@ -21,10 +21,12 @@
 	import SvelteMarkdown from "svelte-markdown";
 	import MDImage from "$lib/MDImage.svelte";
 	import MDCode from "$lib/MDCode.svelte";
+    import CommentSection from "./CommentSection.svelte";
 
 	export let data;
 	let project = data.project;
-	let myId;
+	let comments = data.comments;
+	let myId = null;
 
 	const DESCRIPTION_PLACEHOLDER = `*This project does not have any description set.*\n\nUse the Discord bot to edit your poject with the /editproject command to configure a description.`;
 
@@ -217,6 +219,12 @@
 				{/each}
 			</div>
 		{/if}
+
+		<div class="ruler-text">
+			<span>comments</span>
+		</div>
+
+		<CommentSection projectId={project.id} {comments} {myId} />
 	</div>
 </div>
 
