@@ -88,6 +88,7 @@ body {
 	image-rendering: pixelated;
 
 	mask-image: -webkit-gradient(linear, left top, left bottom, from(rgba(0,0,0,0.7)), to(rgba(0,0,0,0)));
+	-webkit-mask-image: -webkit-gradient(linear, left top, left bottom, from(rgba(0,0,0,0.7)), to(rgba(0,0,0,0)));
 }
 
 /* OTHER ITEMS */
