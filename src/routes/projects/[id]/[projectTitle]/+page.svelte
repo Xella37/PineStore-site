@@ -28,6 +28,11 @@
 	let comments = data.comments;
 	let myId = null;
 
+	$: if (data) {
+		project = data.project;
+		comments = data.comments;
+	}
+
 	const DESCRIPTION_PLACEHOLDER = `*This project does not have any description set.*\n\nUse the Discord bot to edit your poject with the /editproject command to configure a description.`;
 
 	let copied = false;
@@ -45,18 +50,11 @@
 	}
 
 	let imageLinks = [];
-	// $: if (project.screenshot_links) {
-	// 	try {
-	// 		// let links = JSON.parse(project.screenshot_links);
-	// 		let links = project.screenshot_links.split(",");
-	// 		if (links.length > 0)
-	// 			imageLinks = links;
-	// 	} catch(e) {
-	// 		console.log(e);
-	// 	}
-	// }
-	for (let i = 0; i < project.media_count; i++) {
-		imageLinks.push(`https://pinestore.cc/project/${project.id}/image_${i}.webp`);
+	$: if (project.media_count) {
+		imageLinks = [];
+		for (let i = 0; i < project.media_count; i++) {
+			imageLinks.push(`https://pinestore.cc/project/${project.id}/image_${i}.webp`);
+		}
 	}
 
 	let viewIndex = undefined;

@@ -9,7 +9,7 @@
 	import MDCode from "$lib/MDCode.svelte";
 	import { onMount } from "svelte";
 	import { fade, fly } from "svelte/transition";
-	import { logoutUser, getMyProjects, myProfile, newProject, setProfileInfo, deleteProject } from "$lib/database.js";
+	import { logoutUser, getMyProjects, myProfile, newProject, setProfileInfo, deleteProject, getUserOptions, setUserOptions } from "$lib/database.js";
 
 	let profile = {
 		name: "loading...",
@@ -64,9 +64,20 @@
 		await loadProjects();
 	}
 
+	let options = {};
+	async function sendUserOptions(e) {
+		setUserOptions(options);
+	}
+
+	async function loadOptions() {
+		let optionsData = await getUserOptions();
+		options = optionsData.options;
+	}
+
 	onMount(() => {
 		loadProfile();
 		loadProjects();
+		loadOptions();
 	});
 </script>
 
@@ -120,6 +131,20 @@
 				<textarea id="aboutMDInput" type="text" bind:value={profile.about_markdown}></textarea>
 			</form>
 		{/if}
+
+		<div class="ruler-text">
+			<span>user options</span>
+		</div>
+
+		<form>
+			<label for="discordNotificationsButton">Discord notifications (bot DMs)</label>
+
+			{#if options.discord_notifications}
+				<button id="discordNotificationsButton" class="button red" on:click={() => { options.discord_notifications = false; sendUserOptions(); }}>Disable</button>
+			{:else}
+				<button id="discordNotificationsButton" class="button green" on:click={() => { options.discord_notifications = true; sendUserOptions(); }}>Enable</button>
+			{/if}
+		</form>
 
 		<div class="ruler-text">
 			<span>manage projects</span>

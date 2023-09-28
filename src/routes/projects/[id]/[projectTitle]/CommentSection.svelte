@@ -33,7 +33,9 @@
 			return a.timestamp < b.timestamp;
 		});
 	}
-	processComments();
+	$: if (comments) {
+		processComments();
+	}
 
 	async function refreshComments() {
 		let commentData = await getComments(projectId);
@@ -94,6 +96,11 @@
 				<img src="https://pinestore.cc/pfp/{comment.user_discord}.png" alt="pfp">
 			</a>
 			<a href="/user/{comment.user_discord}" class="comment-user">{comment.user_name ?? "Unnamed"}</a><span class="comment-timestamp">{formatCommentTimestamp(comment.timestamp)}</span>
+			<button class="reply-button" on:click={() => { replyId = comment.id; }}>
+				<i class="fa-solid fa-reply"></i>
+				Reply
+			</button>
+
 			<p class="comment-body">{comment.body}</p>
 
 			{#if myId != null}
@@ -108,11 +115,6 @@
 							<button on:click|preventDefault={() => { replyId = null; }} class="button gray close">Close</button>
 						</form>
 					</div>
-				{:else}
-					<button class="reply-button" on:click={() => { replyId = comment.id; }}>
-						<i class="fa-solid fa-reply"></i>
-						Reply
-					</button>
 				{/if}
 			{/if}
 
@@ -204,14 +206,17 @@
 		margin-bottom: 0.5rem;
 	}
 	.reply-button {
+		display: none;
 		border: none;
 		background: none;
 		color: var(--cc-lightBlue);
 		font-size: 0.75rem;
 		padding: 0;
-		padding-block: 0.5rem;
-		padding-right: 1rem;
 		margin: 0;
+		margin-left: 0.5rem;
+	}
+	.comment:hover .reply-button {
+		display: unset;
 	}
 	.writing-container.reply {
 		margin-block: 2rem;
@@ -223,6 +228,6 @@
 		display: flex;
 		flex-direction: column;
 		gap: 2rem;
-		margin-top: 1rem;
+		margin-top: 2rem;
 	}
 </style>

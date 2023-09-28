@@ -213,7 +213,7 @@ export async function getMyProjects() {
 }
 
 export async function getComments(projectId) {
-	let raw = await fetch(`https://pinestore.cc/api/auth/comments/${projectId}`, {
+	let raw = await fetch(`https://pinestore.cc/api/comments/${projectId}`, {
 		headers: {
 			"Content-Type": "application/json",
 		},
@@ -236,6 +236,62 @@ export async function newComment(projectId, replyId, text) {
 			text: text,
 		}),
 	});
+	let data = await raw.json();
+	return data;
+}
+
+export async function getNotifications() {
+	let session = getCookie("session");
+	let raw = await fetch(`https://pinestore.cc/api/auth/notifications`, {
+		headers: {
+			authorization: session,
+			"Content-Type": "application/json",
+		},
+	});
+
+	let data = await raw.json();
+	return data;
+}
+
+export async function hasUnreadNotifications() {
+	let session = getCookie("session");
+	let raw = await fetch(`https://pinestore.cc/api/auth/newnotifications`, {
+		headers: {
+			authorization: session,
+			"Content-Type": "application/json",
+		},
+	});
+
+	let data = await raw.json();
+	return data;
+}
+
+export async function getUserOptions() {
+	let session = getCookie("session");
+	let raw = await fetch(`https://pinestore.cc/api/auth/options`, {
+		headers: {
+			authorization: session,
+			"Content-Type": "application/json",
+		},
+	});
+
+	let data = await raw.json();
+	return data;
+}
+
+export async function setUserOptions(options) {
+	let session = getCookie("session");
+	let raw = await fetch(`https://pinestore.cc/api/auth/options`, {
+		headers: {
+			authorization: session,
+			"Content-Type": "application/json",
+		},
+		method: "POST",
+		body: JSON.stringify({
+			discord_notifications: options.discord_notifications,
+		}),
+	});
+
 	let data = await raw.json();
 	return data;
 }
