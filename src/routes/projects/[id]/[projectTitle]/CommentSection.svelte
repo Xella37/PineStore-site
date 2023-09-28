@@ -46,19 +46,27 @@
 	let commentText = "";
 	async function postComment(e) {
 		e.preventDefault();
-		await newComment(projectId, null, commentText);
-		commentText = "";
-		refreshComments();
+		let res = await newComment(projectId, null, commentText);
+		if (res.success) {
+			commentText = "";
+			refreshComments();
+		} else {
+			alert(res.error);
+		}
 	}
 
 	let replyId;
 	let replyText;
 	async function postReply(e) {
 		e.preventDefault();
-		await newComment(projectId, replyId, replyText);
-		replyId = null;
-		replyText = "";
-		refreshComments();
+		let res = await newComment(projectId, replyId, replyText);
+		if (res.success) {
+			replyId = null;
+			replyText = "";
+			refreshComments();
+		} else {
+			alert(res.error);
+		}
 	}
 
 	function formatCommentTimestamp(timestamp) {
