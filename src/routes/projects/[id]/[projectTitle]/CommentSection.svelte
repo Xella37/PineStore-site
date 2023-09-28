@@ -87,7 +87,7 @@
 			<a href="/user/{myId}">
 				<img src="https://pinestore.cc/pfp/{myId}.png" alt="pfp">
 			</a>
-			<textarea on:focus={() => { selectedMainTextarea = true; }} bind:value={commentText} placeholder="Write a new comment!"></textarea>
+			<textarea on:focus={() => { selectedMainTextarea = true; }} bind:value={commentText} placeholder="Write a new comment!" maxlength="500"></textarea>
 			<button type="submit" class="button post">Post</button>
 		</form>
 	</div>
@@ -123,7 +123,7 @@
 							<a href="/user/{myId}">
 								<img src="https://pinestore.cc/pfp/{myId}.png" alt="pfp">
 							</a>
-							<textarea bind:value={replyText} placeholder="Write a reply!"></textarea>
+							<textarea bind:value={replyText} placeholder="Write a reply!" maxlength="500"></textarea>
 							<button type="submit" class="button post">Post</button>
 							<button on:click|preventDefault={() => { replyId = null; }} class="button gray close">Close</button>
 						</form>
