@@ -101,7 +101,12 @@
 				Reply
 			</button>
 
-			<p class="comment-body">{comment.body}</p>
+			<p class="comment-body">
+				{#each comment.body.split("\n") as line}
+					{line}
+					<br>
+				{/each}
+			</p>
 
 			{#if myId != null}
 				{#if replyId == comment.id}
@@ -126,7 +131,12 @@
 								<img src="https://pinestore.cc/pfp/{reply.user_discord}.png" alt="pfp">
 							</a>
 							<a href="/user/{reply.user_discord}" class="comment-user">{reply.user_name ?? "Unnamed"}</a><span class="comment-timestamp">{formatCommentTimestamp(reply.timestamp)}</span>
-							<p class="comment-body">{reply.body}</p>
+							<p class="comment-body">
+								{#each reply.body.split("\n") as line}
+									{line}
+									<br>
+								{/each}
+							</p>
 						</div>
 					{/each}
 				</div>
