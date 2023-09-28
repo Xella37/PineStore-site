@@ -5,6 +5,7 @@
 
 <script>
 	import { onMount } from "svelte";
+	import { error } from "@sveltejs/kit";
 	import { getProject, setProjectInfo, setProjectThumbnail, addProjectMedia, removeProjectMedia } from "$lib/database.js";
 	import { getProjectLink } from "$lib/util.js";
 
@@ -38,6 +39,9 @@
 
 	async function loadProject() {
 		let projectData = await getProject(projectId);
+		if (!projectData.success)
+			throw error(404, projectData.error);
+
 		savedProject = projectData.project;
 		savedProject.selectedTags = savedProject.tags?.split(",") ?? [];
 		project = {...savedProject};

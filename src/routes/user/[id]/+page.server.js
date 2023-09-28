@@ -1,4 +1,4 @@
-
+import { error } from "@sveltejs/kit";
 import { getUser, getUserProjects } from "$lib/database.js";
 
 export const prerender = false;
@@ -12,6 +12,15 @@ export async function load({ params }) {
 
 	userData = await userData;
 	projectsData = await projectsData;
+
+	if (!userData.success)
+		throw error(404, userData.error);
+	if (!projectsData.success)
+		throw error(404, projectsData.error);
+
+	projectsData.projects = projectsData.projects.sort((a, b) => {
+		return Math.max(b.date_publish, b.date_updated) - Math.max(a.date_publish, a.date_updated);
+	});
 
 	return {
 		user: userData.user,

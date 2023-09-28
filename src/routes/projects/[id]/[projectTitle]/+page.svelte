@@ -16,7 +16,7 @@
 	import { fade } from "svelte/transition";
 	import { onMount, onDestroy } from "svelte";
 	import { getProjectLink } from "$lib/util.js";
-	import { myProfile, reportProjectView } from "$lib/database.js";
+	import { getMyProfile, reportProjectView } from "$lib/database.js";
 	
 	import SvelteMarkdown from "svelte-markdown";
 	import MDImage from "$lib/MDImage.svelte";
@@ -145,7 +145,7 @@
 
 	onMount(async () => {
 		setTimeout(reportProjectView, 3000, project.id); // report a view if the page is open for at least 3 seconds
-		let profileData = await myProfile();
+		let profileData = await getMyProfile();
 		myId = profileData?.user?.discord_id;
 	});
 </script>

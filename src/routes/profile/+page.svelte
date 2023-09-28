@@ -4,12 +4,13 @@
 </svelte:head>
 
 <script>
+	import { error } from "@sveltejs/kit";
 	import SvelteMarkdown from "svelte-markdown";
 	import MDImage from "$lib/MDImage.svelte";
 	import MDCode from "$lib/MDCode.svelte";
 	import { onMount } from "svelte";
 	import { fade, fly } from "svelte/transition";
-	import { logoutUser, getMyProjects, myProfile, newProject, setProfileInfo, deleteProject, getUserOptions, setUserOptions } from "$lib/database.js";
+	import { logoutUser, getMyProjects, getMyProfile, newProject, setProfileInfo, deleteProject, getUserOptions, setUserOptions } from "$lib/database.js";
 
 	let profile = {
 		name: "loading...",
@@ -26,11 +27,15 @@
 
 	async function loadProjects() {
 		let projectsData = await getMyProjects();
+		if (!projectsData.success)
+			throw error(404, projectsData.error);
 		projects = projectsData.projects;
 	}
 
 	async function loadProfile() {
-		let profileData = await myProfile();
+		let profileData = await getMyProfile();
+		if (!profileData.success)
+			throw error(404, profileData.error);
 		profile = profileData.user;
 	}
 

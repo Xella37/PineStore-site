@@ -1,5 +1,30 @@
+/**
+ * Interact with the PineStore API
+ * @param {"GET" | "POST"} method 
+ * @param {string} path 
+ * @param {object?} body for POST request
+ * @returns 
+ */
+async function api(method, path, body) {
+	let requestInit = {
+		"headers": {}
+	}
+	if (path.startsWith("auth/")) {
+		let session = getCookie("session");
+		if (session == null) return;
+		requestInit["headers"]["authorization"] = session;
+	}
+	if (method == "POST") {
+		requestInit["method"] = "POST";
+		requestInit["body"] = JSON.stringify(body);
+		requestInit["headers"]["Content-Type"] = "application/json";
+	}
 
-import { error } from "@sveltejs/kit";
+	const raw = await fetch("https://pinestore.cc/api/" + path, requestInit);
+	const data = await raw.json();
+
+	return data;
+}
 
 function getCookie(cookieId) {
 	const cookieValue = document.cookie
@@ -9,310 +34,61 @@ function getCookie(cookieId) {
 	return cookieValue;
 }
 
-export async function getProject(id) {
-	let raw = await fetch(`https://pinestore.cc/api/project/${id}`);
-	let data = await raw.json();
-
-	if (!data.success)
-		throw error(404, data.error);
-
+function removeEmptyStrings(data) {
+	for (const key in data)
+		if (typeof data[key] == "string" && !(data[key]?.length > 0))
+			data[key] = null;
 	return data;
 }
 
-export async function getProjects() {
-	let raw = await fetch(`https://pinestore.cc/api/projects`);
-	let data = await raw.json();
+export const getProject = (id) => api("GET", "project/" + id);
+export const getProjects = () => api("GET", "projects");
+export const searchProjects = (query) => api("GET", "https://pinestore.cc/api/search?q=" + encodeURIComponent(query));
 
-	if (!data.success)
-		throw error(404, data.error);
+export const getComments = (projectId) => api("GET", "comments/" + projectId);
 
-	return data;
-}
+export const getUser = (id) => api("GET", "user/" + id);
+export const getUserProjects = (id) => api("GET", "userprojects/" + id);
+export const authDiscord = (code) => api("GET", "discordauth/" + code);
 
-export async function searchProjects(query) {
-	let raw = await fetch(`https://pinestore.cc/api/search?q=${encodeURIComponent(query)}`);
-	let data = await raw.json();
+export const getMyProfile = () => api("GET", "auth/profile");
+export const setProfileInfo = (profileData) => api("POST", "auth/update-acc", removeEmptyStrings({
+	"allow_null": true,
+	"name": profileData.name,
+	"about": profileData.about,
+	"about_markdown": profileData.about_markdown,
+}));
 
-	return data;
-}
+export const setProjectInfo = (projectData) => api("POST", "auth/update-p", removeEmptyStrings({
+	allow_null: true,
+	projectId: projectData.id,
+	...projectData,
+}));
 
-export async function getUser(id) {
-	let raw = await fetch(`https://pinestore.cc/api/user/${id}`);
-	let data = await raw.json();
+export const setProjectThumbnail = (projectId, imageData) => api("POST", "auth/thumbnail", { projectId, imageData });
+export const addProjectMedia = (projectId, imageData) => api("POST", "auth/media", { projectId, imageData });
+export const removeProjectMedia = (projectId, index) => api("POST", "auth/removemedia", { projectId, index });
 
-	if (!data.success)
-		throw error(404, data.error);
+export const newProject = (name) => api("POST", "auth/newproject", { name });
+export const deleteProject = (id) => api("POST", "auth/delete", { projectId: id });
 
-	return data;
-}
+export const getMyProjects = () => api("GET", "auth/projects");
 
-export async function getUserProjects(id) {
-	let raw = await fetch(`https://pinestore.cc/api/userprojects/${id}`);
-	let data = await raw.json();
+export const newComment = (projectId, replyId, text) => api("POST", "auth/comment", { projectId, replyId, text });
 
-	if (!data.success)
-		throw error(404, data.error);
+export const getNotifications = () => api("GET", "auth/notifications");
+export const hasUnreadNotifications = () => api("GET", "auth/newnotifications");
 
-	data.projects = data.projects.sort((a, b) => {
-		return Math.max(b.date_added, b.date_updated) - Math.max(a.date_added, a.date_updated);
-	});
+export const getUserOptions = () => api("GET", "auth/options");
+export const setUserOptions = (options) => api("POST", "auth/options", {
+	discord_notifications: options.discord_notifications,
+});
 
-	return data;
-}
-
-export async function authDiscord(code) {
-	let raw = await fetch(`https://pinestore.cc/api/discordauth/${code}`);
-	let data = await raw.json();
-	return data;
-}
-
-export async function myProfile() {
-	let session = getCookie("session");
-	if (session == null) return;
-	let raw = await fetch(`https://pinestore.cc/api/auth/profile`, {
-		headers: {
-			authorization: session,
-		},
-	});
-	let data = await raw.json();
-	return data;
-}
-
-export async function setProfileInfo(profileData) {
-	for (const key in profileData) {
-		if (typeof profileData[key] == "string" && !profileData[key]?.length > 0)
-			profileData[key] = null;
-	}
-
-	let session = getCookie("session");
-	let raw = await fetch(`https://pinestore.cc/api/auth/update-acc`, {
-		headers: {
-			authorization: session,
-			"Content-Type": "application/json",
-		},
-		method: "POST",
-		body: JSON.stringify({
-			allow_null: true,
-			name: profileData.name,
-			about: profileData.about,
-			about_markdown: profileData.about_markdown,
-		}),
-	});
-	let data = await raw.json();
-	return data;
-}
-
-export async function setProjectInfo(projectData) {
-	for (const key in projectData) {
-		if (typeof projectData[key] == "string" && !projectData[key]?.length > 0)
-			projectData[key] = null;
-	}
-
-	let session = getCookie("session");
-	let raw = await fetch(`https://pinestore.cc/api/auth/update-p`, {
-		headers: {
-			authorization: session,
-			"Content-Type": "application/json",
-		},
-		method: "POST",
-		body: JSON.stringify({allow_null: true, projectId: projectData.id, ...projectData}),
-	});
-	let data = await raw.json();
-	return data;
-}
-export async function setProjectThumbnail(projectId, imageData) {
-	let session = getCookie("session");
-	let raw = await fetch(`https://pinestore.cc/api/auth/thumbnail`, {
-		headers: {
-			authorization: session,
-			"Content-Type": "application/json",
-		},
-		method: "POST",
-		body: JSON.stringify({projectId: projectId, imageData: imageData}),
-	});
-	let data = await raw.json();
-	console.log(data);
-	return data;
-}
-export async function addProjectMedia(projectId, imageData) {
-	let session = getCookie("session");
-	let raw = await fetch(`https://pinestore.cc/api/auth/media`, {
-		headers: {
-			authorization: session,
-			"Content-Type": "application/json",
-		},
-		method: "POST",
-		body: JSON.stringify({projectId: projectId, imageData: imageData}),
-	});
-	let data = await raw.json();
-	console.log(data);
-	return data;
-}
-export async function removeProjectMedia(projectId, index) {
-	let session = getCookie("session");
-	let raw = await fetch(`https://pinestore.cc/api/auth/removemedia`, {
-		headers: {
-			authorization: session,
-			"Content-Type": "application/json",
-		},
-		method: "POST",
-		body: JSON.stringify({projectId: projectId, index: index}),
-	});
-	let data = await raw.json();
-	console.log(data);
-	return data;
-}
-
-export async function newProject(name) {
-	let session = getCookie("session");
-	let raw = await fetch(`https://pinestore.cc/api/auth/newproject`, {
-		headers: {
-			authorization: session,
-			"Content-Type": "application/json",
-		},
-		method: "POST",
-		body: JSON.stringify({
-			name: name,
-		}),
-	});
-	let data = await raw.json();
-	return data;
-}
-
-export async function deleteProject(id) {
-	let session = getCookie("session");
-	let raw = await fetch(`https://pinestore.cc/api/auth/delete`, {
-		headers: {
-			authorization: session,
-			"Content-Type": "application/json",
-		},
-		method: "POST",
-		body: JSON.stringify({
-			projectId: id,
-		}),
-	});
-	let data = await raw.json();
-	return data;
-}
-
-export async function getMyProjects() {
-	let session = getCookie("session");
-	let raw = await fetch(`https://pinestore.cc/api/auth/projects`, {
-		headers: {
-			authorization: session,
-			"Content-Type": "application/json",
-		},
-	});
-
-	let data = await raw.json();
-
-	if (!data.success)
-		throw error(404, data.error);
-
-	return data;
-}
-
-export async function getComments(projectId) {
-	let raw = await fetch(`https://pinestore.cc/api/comments/${projectId}`, {
-		headers: {
-			"Content-Type": "application/json",
-		},
-	});
-	let data = await raw.json();
-	return data;
-}
-
-export async function newComment(projectId, replyId, text) {
-	let session = getCookie("session");
-	let raw = await fetch(`https://pinestore.cc/api/auth/comment`, {
-		headers: {
-			authorization: session,
-			"Content-Type": "application/json",
-		},
-		method: "POST",
-		body: JSON.stringify({
-			projectId: projectId,
-			replyId: replyId,
-			text: text,
-		}),
-	});
-	let data = await raw.json();
-	return data;
-}
-
-export async function getNotifications() {
-	let session = getCookie("session");
-	let raw = await fetch(`https://pinestore.cc/api/auth/notifications`, {
-		headers: {
-			authorization: session,
-			"Content-Type": "application/json",
-		},
-	});
-
-	let data = await raw.json();
-	return data;
-}
-
-export async function hasUnreadNotifications() {
-	let session = getCookie("session");
-	let raw = await fetch(`https://pinestore.cc/api/auth/newnotifications`, {
-		headers: {
-			authorization: session,
-			"Content-Type": "application/json",
-		},
-	});
-
-	let data = await raw.json();
-	return data;
-}
-
-export async function getUserOptions() {
-	let session = getCookie("session");
-	let raw = await fetch(`https://pinestore.cc/api/auth/options`, {
-		headers: {
-			authorization: session,
-			"Content-Type": "application/json",
-		},
-	});
-
-	let data = await raw.json();
-	return data;
-}
-
-export async function setUserOptions(options) {
-	let session = getCookie("session");
-	let raw = await fetch(`https://pinestore.cc/api/auth/options`, {
-		headers: {
-			authorization: session,
-			"Content-Type": "application/json",
-		},
-		method: "POST",
-		body: JSON.stringify({
-			discord_notifications: options.discord_notifications,
-		}),
-	});
-
-	let data = await raw.json();
-	return data;
-}
-
-export async function reportProjectView(id) {
-	let raw = await fetch(`https://pinestore.cc/api/newview`, {
-		headers: {
-			"Content-Type": "application/json",
-		},
-		method: "POST",
-		body: JSON.stringify({
-			projectId: id,
-		}),
-	});
-	let data = await raw.json();
-	return data;
-}
+export const reportProjectView = (id) => api("POST", "newview", { projectId: id });
 
 export async function isLoggedIn() {
 	console.log("Checking login");
-	let profileData = await myProfile();
+	let profileData = await getMyProfile();
 	return profileData?.user?.discord_id != null;
 }
 
