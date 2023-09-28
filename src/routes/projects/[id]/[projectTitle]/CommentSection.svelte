@@ -46,19 +46,27 @@
 	let commentText = "";
 	async function postComment(e) {
 		e.preventDefault();
-		await newComment(projectId, null, commentText);
-		commentText = "";
-		refreshComments();
+		let res = await newComment(projectId, null, commentText);
+		if (res.success) {
+			commentText = "";
+			refreshComments();
+		} else {
+			alert("Error: " + (res.error ?? "(no error)") + ", maybe you used illegal characters? 🤔");
+		}
 	}
 
 	let replyId;
 	let replyText;
 	async function postReply(e) {
 		e.preventDefault();
-		await newComment(projectId, replyId, replyText);
-		replyId = null;
-		replyText = "";
-		refreshComments();
+		let res = await newComment(projectId, replyId, replyText);
+		if (res.success) {
+			replyId = null;
+			replyText = "";
+			refreshComments();
+		} else {
+			alert("Error: " + (res.error ?? "(no error)") + ", maybe you used illegal characters? 🤔");
+		}
 	}
 
 	function formatCommentTimestamp(timestamp) {
@@ -79,7 +87,7 @@
 			<a href="/user/{myId}">
 				<img src="https://pinestore.cc/pfp/{myId}.png" alt="pfp">
 			</a>
-			<textarea on:focus={() => { selectedMainTextarea = true; }} bind:value={commentText} placeholder="Write a new comment!"></textarea>
+			<textarea on:focus={() => { selectedMainTextarea = true; }} bind:value={commentText} placeholder="Write a new comment!" maxlength="500"></textarea>
 			<button type="submit" class="button post">Post</button>
 		</form>
 	</div>
@@ -101,7 +109,12 @@
 				Reply
 			</button>
 
-			<p class="comment-body">{comment.body}</p>
+			<p class="comment-body">
+				{#each comment.body.split("\n") as line}
+					{line}
+					<br>
+				{/each}
+			</p>
 
 			{#if myId != null}
 				{#if replyId == comment.id}
@@ -110,7 +123,7 @@
 							<a href="/user/{myId}">
 								<img src="https://pinestore.cc/pfp/{myId}.png" alt="pfp">
 							</a>
-							<textarea bind:value={replyText} placeholder="Write a reply!"></textarea>
+							<textarea bind:value={replyText} placeholder="Write a reply!" maxlength="500"></textarea>
 							<button type="submit" class="button post">Post</button>
 							<button on:click|preventDefault={() => { replyId = null; }} class="button gray close">Close</button>
 						</form>
@@ -126,7 +139,12 @@
 								<img src="https://pinestore.cc/pfp/{reply.user_discord}.png" alt="pfp">
 							</a>
 							<a href="/user/{reply.user_discord}" class="comment-user">{reply.user_name ?? "Unnamed"}</a><span class="comment-timestamp">{formatCommentTimestamp(reply.timestamp)}</span>
-							<p class="comment-body">{reply.body}</p>
+							<p class="comment-body">
+								{#each reply.body.split("\n") as line}
+									{line}
+									<br>
+								{/each}
+							</p>
 						</div>
 					{/each}
 				</div>
