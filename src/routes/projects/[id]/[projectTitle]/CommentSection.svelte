@@ -51,7 +51,7 @@
 			commentText = "";
 			refreshComments();
 		} else {
-			alert(res.error);
+			alert("Error: " + (res.error ?? "(no error)") + ", maybe you used illegal characters? 🤔");
 		}
 	}
 
@@ -65,7 +65,7 @@
 			replyText = "";
 			refreshComments();
 		} else {
-			alert(res.error);
+			alert("Error: " + (res.error ?? "(no error)") + ", maybe you used illegal characters? 🤔");
 		}
 	}
 
