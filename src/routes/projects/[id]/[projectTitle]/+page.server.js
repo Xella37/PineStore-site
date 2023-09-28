@@ -1,4 +1,4 @@
-
+import { error } from "@sveltejs/kit";
 import { getProject, getComments } from "$lib/database.js";
 
 export const prerender = false;
@@ -10,6 +10,9 @@ export async function load({ params }) {
 
 	projectData = await projectData;
 	commentData = await commentData;
+
+	if (!projectData.success)
+		throw error(404, projectData.error);
 
 	return {
 		project: projectData.project,

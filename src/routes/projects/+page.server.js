@@ -1,4 +1,4 @@
-
+import { error } from "@sveltejs/kit";
 import { getProjects } from "$lib/database.js";
 
 export const prerender = false;
@@ -10,5 +10,8 @@ export async function load({ url, params }) {
 	let selectedTag = urlParams.get("tag");
 
 	let projectsData = await getProjects();
-	return {sort, selectedTag, ...projectsData};
+	if (!projectsData.success)
+		throw error(404, projectsData.error);
+
+	return { sort, selectedTag, ...projectsData };
 };
