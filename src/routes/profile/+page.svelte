@@ -143,6 +143,7 @@
 
 		<form>
 			<label for="discordNotificationsButton">Discord notifications (bot DMs)</label>
+			<p>You must have a Discord server in common with our bot. You can <a href="https://discord.com/oauth2/authorize?client_id=1073728324142116948&scope=bot&permissions=277025475584">add the bot</a> to your server, or alternatively join the <a href="https://discord.gg/MjsNjK2psB">Lua3D Discord</a>.</p>
 
 			{#if options.discord_notifications}
 				<button id="discordNotificationsButton" class="button red" on:click={() => { options.discord_notifications = false; sendUserOptions(); }}>Disable</button>
