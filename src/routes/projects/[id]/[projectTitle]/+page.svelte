@@ -186,10 +186,12 @@
 		</h1>
 
 		<div id="description" class="markdown-container">
-			{#if project.has_thumbnail}
-				<img class="project-image shadow" src="https://pinestore.cc/project/{project.id}/thumbnail_full.webp" alt="project thumbnail">
-			{:else}
-				<img class="project-image shadow" src="/project-placeholder.webp" alt="project thumbnail">
+			{#if !project.hide_thumbnail}
+				{#if project.has_thumbnail}
+					<img class="project-image shadow" src="https://pinestore.cc/project/{project.id}/thumbnail_full.webp" alt="project thumbnail">
+				{:else}
+					<img class="project-image shadow" src="/project-placeholder.webp" alt="project thumbnail">
+				{/if}
 			{/if}
 			
 			{#if project.description_markdown}

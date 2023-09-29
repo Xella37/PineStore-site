@@ -230,6 +230,8 @@
 			<div class="ruler-text">
 				<span>media</span>
 			</div>
+				<label for="hideThumbnail">Hide thumbnail on project page</label>
+				<input id="hideThumbnail" type="checkbox" bind:checked={project.hide_thumbnail} />
 
 				<label for="thumbnailInput">Thumbnail (instantly saved)</label>
 				<!-- svelte-ignore a11y-click-events-have-key-events -->
@@ -300,6 +302,11 @@
 	.form-list input[type="text"] {
 		width: 100%;
 		box-sizing: border-box;
+	}
+
+	.form-list input[type="checkbox"] {
+		width: 1.5rem;
+		height: 1.5rem;
 	}
 
 	#thumbnailPreview {
