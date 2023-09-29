@@ -13,6 +13,8 @@
 </svelte:head>
 
 <script>
+	import { goto } from "$app/navigation";
+	import { browser } from "$app/environment";
 	import { tags } from "$lib/util.js";
     import TagList from "./../TagList.svelte";
 	import ProjectList from "./../ProjectList.svelte";
@@ -49,7 +51,7 @@
 		sortProjects();
 
 		// update query param, but quick check to make sure it doesn't run server side
-		if (typeof window != "undefined") {
+		if (browser) {
 			let queryParams = [];
 			if (sortingMethod != "recent_downloads")
 				queryParams.push(`sort=${sortingMethod}`);
@@ -59,7 +61,7 @@
 			let q = "";
 			if (queryParams.length > 0)
 				q = "?" + queryParams.join("&");
-			window.history.pushState("changed sorting", "changed sorting", `/projects${q}`);
+			goto(`/projects${q}`);
 		}
 	}
 
