@@ -1,6 +1,6 @@
 
 <svelte:head>
-	<title>Discord Auth</title>
+	<title>Profile</title>
 </svelte:head>
 
 <script>
