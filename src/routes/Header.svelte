@@ -2,7 +2,7 @@
 <script>
 	import { fade } from "svelte/transition";
 	import { isLoggedIn, getNotifications, hasUnreadNotifications } from "$lib/database.js";
-	import { getProjectLink } from "$lib/util.js";
+	import { getProjectLink, calcTimeAgo } from "$lib/util.js";
     import { onMount } from "svelte";
 
 	const loginURL = `https://discord.com/api/oauth2/authorize?client_id=1073728324142116948&redirect_uri=https%3A%2F%2Fpinestore.cc%2Fdiscordauth&response_type=code&scope=identify`;
@@ -33,17 +33,6 @@
 		unreadNotifications = false;
 		if (notificationsOpened)
 			loadNotifications();
-	}
-
-	function calcTimeAgo(timestamp) {
-		let s = Math.floor((Date.now() - timestamp) / 1000);
-		if (s < 60)
-			return `${s}s`;
-		if (s < 60 * 60)
-			return `${Math.floor(s/60)}m`;
-		if (s < 60 * 60 * 24)
-			return `${Math.floor(s/60/60)}h`;
-		return `${Math.floor(s/60/60/24)}d`;
 	}
 
 	let loggedIn = false;

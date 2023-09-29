@@ -8,6 +8,36 @@ export function getProjectLink(id, name) {
 	return `/projects/${id}/${encodedName}`;
 }
 
+export function calcTimeAgo(timestamp, fullLength=false) {
+	let s = Math.floor((Date.now() - timestamp) / 1000);
+	if (s < 60) {
+		if (fullLength)
+			return `${s} ${s == 1 ? "second" : "seconds"}`;
+		else
+			return `${s}s`;
+	}
+	if (s < 60 * 60) {
+		let m = Math.floor(s/60);
+		if (fullLength)
+			return `${m} ${m == 1 ? "minute" : "minutes"}`;
+		else
+			return `${m}m`;
+	}
+	if (s < 60 * 60 * 24) {
+		let h = Math.floor(s/60/60);
+		if (fullLength)
+			return `${h} ${h == 1 ? "hour" : "hours"}`;
+		else
+			return `${h}h`;
+	}
+
+	let d = Math.floor(s/60/60/24);
+	if (fullLength)
+		return `${d} ${d == 1 ? "day" : "days"}`;
+	else
+		return `${d}d`;
+}
+
 export const tags = [
 	{
 		id: "fun",

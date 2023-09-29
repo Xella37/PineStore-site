@@ -1,6 +1,7 @@
 
 <script>
 	import { newComment, getComments } from "$lib/database.js";
+	import { calcTimeAgo } from "$lib/util.js";
     import { slide } from "svelte/transition";
 
 	export let projectId;
@@ -70,14 +71,7 @@
 	}
 
 	function formatCommentTimestamp(timestamp) {
-		let d = new Date(timestamp);
-		return d.toLocaleDateString("en-US", {
-			day: "numeric",
-			month: "short",
-			year: "numeric",
-			hour: "numeric",
-			minute: "numeric",
-		});
+		return `${calcTimeAgo(timestamp, true)} ago`;
 	}
 </script>
 
