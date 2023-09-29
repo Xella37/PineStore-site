@@ -8,7 +8,7 @@
 			<div><a href="https://github.com/Xella37/PineStore-site"><i class="fa-brands fa-github"/> Source code</a></div>
 		</div>
 		<div>
-			<div><a href="/uploading"><i id="discord" class="fab fa-question"/>Adding your project</a></div>
+			<div><a href="/faq"><i id="discord" class="fab fa-question"/>FAQ</a></div>
 		</div>
 		<div>
 			<div><a href="/documentation"><i id="discord" class="fas fa-book"/>Docs</a></div>
