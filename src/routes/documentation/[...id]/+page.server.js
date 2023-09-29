@@ -233,6 +233,32 @@ The returned JSON object always has a "success" value with an "error" value as a
 }`,
 		},
 		{
+			id: "comments",
+			path: "/api/comments/:id",
+			type: "GET",
+			url_params: [
+				{
+					name: "id",
+					description: "id of the project",
+				},
+			],
+			body: `Get a list of comments corresponding to a project. Only the reply_id can be null. If this is not null, it is the id of the comment to which it is a reply.`,
+			example_return: `{
+	"success": true,
+	"comments": [
+		{
+			"id": 3,
+			"project_id": 12,
+			"reply_id": null,
+			"user_discord": "302427405023313920",
+			"user_name": "Xella",
+			"timestamp": 1695985904069,
+			"body": "Absolutely love it! Honestly the most polished game for CC I've ever seen :)"
+		}
+	]
+}`
+		},
+		{
 			id: "authorization",
 			title: "Authorization",
 			body: `Using your personal token, which you can get using the /newtoken command with the Discord bot, you can manage your projects with a few API endpoints. Each of these endpoints require authentication using this token using the "Authentication" HTTP header with the value set to your personal token.`,
@@ -251,6 +277,75 @@ The returned JSON object always has a "success" value with an "error" value as a
 		"about": "Hey, I'm Xella! I've created this site to more easily have people share and distribute their CC projects! I'm also the creator of Pine3D and a few of the games with 3d graphics made using it :3",
 		"about_markdown": null
 	}
+}`,
+		},
+		{
+			id: "myprojects",
+			path: "/api/auth/projects",
+			type: "GET",
+			body: `Get all your own projects (including unpublished ones).`,
+			example_return: `{
+	"success": true,
+	"projects:": [
+		...,
+		{
+			"id": 4,
+			"date_added": 1692013883788,
+			"date_updated": 0,
+			"date_release": 0,
+			"date_publish": 1692013883788,
+			"owner_discord": "302427405023313920",
+			"owner_name": "Xella",
+			"name": "CCDoom",
+			"install_command": "pastebin run xLC8mABU",
+			"target_file": "Doom.lua",
+			"tags": "fun,action",
+			"repository": null,
+			"version": 0,
+			"description_short": null,
+			"description": "CCDoom is a 3d first-person shooter ... truncated for example",
+			"description_markdown": "CCDoom is a 3d first-person shooter ... truncated for example",
+			"has_thumbnail": 1,
+			"media_count": 4,
+			"keywords": null,
+			"downloads": 3,
+			"downloads_recent": 0,
+			"views": 5,
+			"visible": 1
+		},
+		...
+	]
+}`,
+		},
+		{
+			id: "auth-update-acc",
+			path: "/api/auth/update-acc",
+			type: "POST",
+			post_params: [
+				{
+					name: "allow_null",
+					description: "if true, overwrites all values even if some are set to null (each parameter is no longer optional, useful when having to remove data)",
+					optional: true,
+				},
+				{
+					name: "name (max 40)",
+					description: "your name as it should be displayed",
+					optional: true,
+				},
+				{
+					name: "about",
+					description: "profile about in plaintext (max 1500)",
+					optional: true,
+				},
+				{
+					name: "about_markdown",
+					description: "markdown version of the about info (max 1500)",
+					optional: true,
+				},
+			],
+			body: `Using your personal token, you can update your account info. All parameters are optional. Any unspecified property is left unchanged.`,
+			example_return: `{
+	"success": true
 }`,
 		},
 		{
@@ -381,37 +476,6 @@ The returned JSON object always has a "success" value with an "error" value as a
 					description: "the index of the media to remove",
 				},
 			],
-			example_return: `{
-	"success": true
-}`,
-		},
-		{
-			id: "auth-update-acc",
-			path: "/api/auth/update-acc",
-			type: "POST",
-			post_params: [
-				{
-					name: "allow_null",
-					description: "if true, overwrites all values even if some are set to null (each parameter is no longer optional, useful when having to remove data)",
-					optional: true,
-				},
-				{
-					name: "name (max 40)",
-					description: "your name as it should be displayed",
-					optional: true,
-				},
-				{
-					name: "about",
-					description: "profile about in plaintext (max 1500)",
-					optional: true,
-				},
-				{
-					name: "about_markdown",
-					description: "markdown version of the about info (max 1500)",
-					optional: true,
-				},
-			],
-			body: `Using your personal token, you can update your account info. All parameters are optional. Any unspecified property is left unchanged.`,
 			example_return: `{
 	"success": true
 }`,
