@@ -9,5 +9,7 @@
 	img {
 		border-radius: 1rem;
 		max-width: 100%;
+		display: block;
+		margin: auto;
 	}
 </style>
