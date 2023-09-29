@@ -2,7 +2,6 @@
 <script>
 	import { newComment, getComments } from "$lib/database.js";
 	import { calcTimeAgo } from "$lib/util.js";
-    import { slide } from "svelte/transition";
 
 	export let projectId;
 	export let comments;
