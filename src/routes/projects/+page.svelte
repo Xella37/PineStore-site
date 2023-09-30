@@ -87,7 +87,13 @@
 		{#if displayProjects.length > 0}
 			<ProjectList projects={displayProjects} blocks={true} />
 		{:else}
-			<i>There are currently no projects available in this category.</i>
+			<i class="no-projects-placeholder">
+				There are currently no projects available with this tag.
+			</i>
+			<p class="no-projects-placeholder">
+				Do you want to add your own project?<br>
+				Simply login with Discord to create and manage your projects to share them with others!
+			</p>
 		{/if}
 	</div>
 </div>
@@ -103,11 +109,25 @@
 		right: 0;
 	}
 
-	@media (max-width: 30rem) {
+	@media (max-width: 37rem) {
 		.list-header select {
 			position: relative;
 			margin-bottom: 2rem;
 			width: 100%;
 		}
+	}
+
+	i.no-projects-placeholder {
+		color: var(--text-color-medium);
+	}
+	p.no-projects-placeholder {
+		margin-top: 1rem;
+		margin-bottom: 0;
+		padding: 0.5rem 1rem;
+		border-radius: 1rem;
+		background-color: var(--cc-gray);
+		color: var(--text-color);
+		font-size: 1.125rem;
+		line-height: 1.75rem;
 	}
 </style>
