@@ -16,7 +16,7 @@
 	import { fade } from "svelte/transition";
 	import { onMount, onDestroy } from "svelte";
 	import { getProjectLink } from "$lib/util.js";
-	import { getMyProfile, reportProjectView } from "$lib/database.js";
+	import { getMyProfile, reportProjectView, reportProjectDownload } from "$lib/database.js";
 	
 	import SvelteMarkdown from "svelte-markdown";
 	import MDImage from "$lib/MDImage.svelte";
@@ -143,6 +143,10 @@
 		});
 	}
 
+	function downloadLinkOpened() {
+		reportProjectDownload(project.id);
+	}
+
 	onMount(async () => {
 		setTimeout(reportProjectView, 3000, project.id); // report a view if the page is open for at least 3 seconds
 		let profileData = await getMyProfile();
@@ -206,7 +210,12 @@
 		<div id="sources">
 			<!-- svelte-ignore a11y-click-events-have-key-events -->
 			<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
-			<pre type="text" class="command" class:copied={copied} on:click={copyInstall}>{#if copied}<i id="copiedText" in:fade="{{ duration: 100 }}">Copied!</i>{/if}{project.install_command && `wget run https://pinestore.cc/d/${project.id}` || "no install command"}<i id="copyInstallButton" class="fas fa-copy"></i></pre>
+			{#if project.install_command || !project.download_url}
+				<pre type="text" class="command" class:copied={copied} on:click={copyInstall}>{#if copied}<i id="copiedText" in:fade="{{ duration: 100 }}">Copied!</i>{/if}{project.install_command ? `wget run https://pinestore.cc/d/${project.id}` : "no install command"}<i id="copyInstallButton" class="fas fa-copy"></i></pre>
+			{/if}
+			{#if project.download_url}
+				<a on:click={downloadLinkOpened} target="_blank" rel="noreferrer" class="button green" href="{project.download_url}">Download <i style="margin-left:0.5rem;" class="fa-solid fa-download"></i></a>
+			{/if}
 			<a target="_blank" rel="noreferrer" class="button" class:disabled="{!project.repository}" href="{project.repository}">Git Repository <i style="margin-left:0.5rem;" class="fa-solid fa-up-right-from-square"></i></a>
 		</div>
 

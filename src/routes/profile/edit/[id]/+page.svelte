@@ -172,14 +172,19 @@
 
 				<div class="flex-list">
 					<div class="form-list">
-						<label for="installInput">Install command</label>
+						<label for="installInput">Install command (for any program to install e.g. games, utility, operating systems)</label>
 						<input id="installInput" type="text" bind:value={project.install_command} maxlength="150" placeholder="pastebin run ABC123">
 					</div>
 					
 					<div class="form-list">
-						<label for="targetInput">Target file (to run after installation)</label>
+						<label for="targetInput">Target file (to run after installation, leave empty to hide from in-game stores)</label>
 						<input id="targetInput" type="text" bind:value={project.target_file} maxlength="30" placeholder="program.lua">
 					</div>
+				</div>
+
+				<div class="form-list">
+					<label for="downloadInput">Download url (for e.g. mods, addons or resource packs, etc. ; Does not have to be a direct link)</label>
+					<input id="downloadInput" type="text" bind:value={project.download_url} maxlength="150" placeholder="https://linktosite.cc/download.zip">
 				</div>
 
 				<label for="repoInput">Git repository</label>

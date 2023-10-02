@@ -85,6 +85,7 @@ export const setUserOptions = (options) => api("POST", "auth/options", {
 });
 
 export const reportProjectView = (id) => api("POST", "newview", { projectId: id });
+export const reportProjectDownload = (id) => api("POST", "newdownload", { projectId: id });
 
 export async function isLoggedIn() {
 	console.log("Checking login");
