@@ -11,22 +11,7 @@ export function getProjectLink(id, name) {
 }
 
 let nextToastId = 0;
-export let toasts = writable([
-	// {
-	// 	id: 0,
-	// 	title: "Hey this is a notification!",
-	// 	body: "You have just been notified uwu.",
-	// 	icon: "error",
-	// 	timestamp: Date.now() - 1000 * 60 * 2,
-	// },
-	// {
-	// 	id: 1,
-	// 	title: "Notification 2",
-	// 	body: "This is going to be a rather long notification body to see if it looks alright when rendered.",
-	// 	icon: "warning",
-	// 	timestamp: Date.now() - 1000 * 60 * 2,
-	// },
-]);
+export let toasts = writable([]);
 /**
  * Add a new toast notification
  * @param {string} title
