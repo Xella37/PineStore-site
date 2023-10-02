@@ -1,4 +1,6 @@
 
+import { writable, get } from "svelte/store";
+
 export function capitalizeFirstLetter(string) {
 	return string.charAt(0).toUpperCase() + string.slice(1);
 }
@@ -6,6 +8,44 @@ export function capitalizeFirstLetter(string) {
 export function getProjectLink(id, name) {
 	let encodedName = encodeURIComponent(name.replace(/[^a-zA-Z0-9]+/g," ").replaceAll(" ", "-").toLowerCase());
 	return `/projects/${id}/${encodedName}`;
+}
+
+let nextToastId = 0;
+export let toasts = writable([
+	// {
+	// 	id: 0,
+	// 	title: "Hey this is a notification!",
+	// 	body: "You have just been notified uwu.",
+	// 	icon: "error",
+	// 	timestamp: Date.now() - 1000 * 60 * 2,
+	// },
+	// {
+	// 	id: 1,
+	// 	title: "Notification 2",
+	// 	body: "This is going to be a rather long notification body to see if it looks alright when rendered.",
+	// 	icon: "warning",
+	// 	timestamp: Date.now() - 1000 * 60 * 2,
+	// },
+]);
+/**
+ * Add a new toast notification
+ * @param {string} title
+ * @param {string} body
+ * @param {"success" | "info" | "error" | "warning"} icon
+ * @param {number?} duration in seconds
+ */
+export function addToast(title, body, icon, duration) {
+	toasts.set([
+		...get(toasts),
+		{
+			id: nextToastId++,
+			title: title ?? "Untitled",
+			body: body ?? "Empty",
+			timestamp: Date.now(),
+			icon: icon,
+			duration: duration * 1000,
+		}
+	]);
 }
 
 export function calcTimeAgo(timestamp, fullLength=false) {

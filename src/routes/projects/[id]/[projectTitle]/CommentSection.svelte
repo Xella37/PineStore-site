@@ -1,7 +1,7 @@
 
 <script>
 	import { newComment, getComments } from "$lib/database.js";
-	import { calcTimeAgo } from "$lib/util.js";
+	import { calcTimeAgo, addToast } from "$lib/util.js";
 
 	export let projectId;
 	export let comments;
@@ -49,9 +49,10 @@
 		let res = await newComment(projectId, null, commentText);
 		if (res.success) {
 			commentText = "";
-			refreshComments();
+			await refreshComments();
+			addToast("Sent!", "Your comment has been posted.", "success", 3);
 		} else {
-			alert("Error: " + (res.error ?? "(no error)") + ", maybe you used illegal characters? 🤔");
+			addToast("Failed!", "Error: " + (res.error ?? "no error") + ", maybe you used illegal characters? 🤔", "error");
 		}
 	}
 
@@ -63,9 +64,10 @@
 		if (res.success) {
 			replyId = null;
 			replyText = "";
-			refreshComments();
+			await refreshComments();
+			addToast("Sent!", "Your comment has been posted.", "success", 3);
 		} else {
-			alert("Error: " + (res.error ?? "(no error)") + ", maybe you used illegal characters? 🤔");
+			addToast("Failed!", "Error: " + (res.error ?? "no error") + ", maybe you used illegal characters? 🤔", "error");
 		}
 	}
 

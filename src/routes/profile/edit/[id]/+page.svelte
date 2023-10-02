@@ -7,7 +7,7 @@
 	import { onMount } from "svelte";
 	import { error } from "@sveltejs/kit";
 	import { getProject, setProjectInfo, setProjectThumbnail, addProjectMedia, removeProjectMedia } from "$lib/database.js";
-	import { getProjectLink } from "$lib/util.js";
+	import { getProjectLink, addToast } from "$lib/util.js";
 
 	import SvelteMarkdown from "svelte-markdown";
 	import MDImage from "$lib/MDImage.svelte";
@@ -40,7 +40,7 @@
 	async function loadProject() {
 		let projectData = await getProject(projectId);
 		if (!projectData.success)
-			throw error(404, projectData.error);
+			return addToast("Failed!", "Failed to load project. Error: " + (projectData.error ?? "no error"), "error");
 
 		savedProject = projectData.project;
 		savedProject.selectedTags = savedProject.tags?.split(",") ?? [];
@@ -54,6 +54,8 @@
 		await setProjectInfo(sendData);
 		unsavedChanges = false;
 		savedProject = {...project};
+
+		addToast("Saved!", "Your project has successfully been saved.", "success", 3);
 	}
 
 	async function viewProjectPage() {
@@ -75,8 +77,9 @@
 			try {
 				await setProjectThumbnail(project.id, imageData);
 				thumbnail_link = `https://pinestore.cc/project/${project.id}/thumbnail_full.webp?t=${Date.now()}`;
+				addToast("Saved!", "Thumbnail successfully uploaded.", "success", 3);
 			} catch(e) {
-				alert("Error during thumbnail upload! File might be too large. If you think you should be able to upload this file, please contact Xella on Discord.");
+				addToast("Failed!", "Error during thumbnail upload! File might be too large. If you think you should be able to upload this file, please contact Xella on Discord.", "error");
 			}
 			uploadingThumbnail = false;
 		};
@@ -93,9 +96,10 @@
 
 				try {
 					await addProjectMedia(project.id, imageData);
+					addToast("Added!", "Media added to project.", "success", 3);
 					project.media_count++;
 				} catch(e) {
-					alert("Error during thumbnail upload! File might be too large. If you think you should be able to upload this file, please contact Xella on Discord.");
+					addToast("Failed!", "Error during media upload! File might be too large. If you think you should be able to upload this file, please contact Xella on Discord.", "error");
 				}
 				resolve();
 			};
@@ -114,6 +118,7 @@
 	async function deleteMedia(index) {
 		await removeProjectMedia(project.id, index);
 		project.media_count--;
+		addToast("Deleted!", "Media removed from project.", "success", 3);
 	}
 
 	let imageLinks = [];

@@ -15,7 +15,7 @@
 <script>
 	import { fade } from "svelte/transition";
 	import { onMount, onDestroy } from "svelte";
-	import { getProjectLink } from "$lib/util.js";
+	import { getProjectLink, addToast } from "$lib/util.js";
 	import { getMyProfile, reportProjectView, reportProjectDownload } from "$lib/database.js";
 	
 	import SvelteMarkdown from "svelte-markdown";
@@ -47,6 +47,7 @@
 		document.body.removeChild(temp);
 
 		copied = true;
+		addToast("Copied!", "Copied install link.", "info", 3);
 	}
 
 	let imageLinks = [];

@@ -16,6 +16,7 @@
 	import { searchProjects } from "$lib/database.js";
     import ProjectList from "./../ProjectList.svelte";
 	import { onMount } from "svelte";
+	import { addToast } from "$lib/util.js";
 
 	let searchQuery = "";
 	let projects = null;
@@ -23,7 +24,13 @@
 	async function search(e) {
 		e.preventDefault();
 		let data = await searchProjects(searchQuery);
-		projects = data.projects;
+		if (data.success) {
+			projects = data.projects;
+			if (projects.length <= 0)
+				addToast("No results!", "No results found for your search.", "info", 3);
+		} else {
+			addToast("Failed!", "Error: " + (data.error ?? "no error"), "error");
+		}
 	}
 
 	let searchInput;

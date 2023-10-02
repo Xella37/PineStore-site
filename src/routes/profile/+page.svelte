@@ -11,6 +11,7 @@
 	import { onMount } from "svelte";
 	import { fade, fly } from "svelte/transition";
 	import { logoutUser, getMyProjects, getMyProfile, newProject, setProfileInfo, deleteProject, getUserOptions, setUserOptions } from "$lib/database.js";
+	import { addToast } from "$lib/util.js";
 
 	let profile = {
 		name: "loading...",
@@ -28,19 +29,20 @@
 	async function loadProjects() {
 		let projectsData = await getMyProjects();
 		if (!projectsData.success)
-			throw error(404, projectsData.error);
+			return addToast("Failed!", "Error: " + (projectsData.error ?? "no error"), "error");
 		projects = projectsData.projects;
 	}
 
 	async function loadProfile() {
 		let profileData = await getMyProfile();
 		if (!profileData.success)
-			throw error(404, profileData.error);
+			return addToast("Failed!", "Error: " + (profileData.error ?? "no error"), "error");
 		profile = profileData.user;
 	}
 
 	async function saveProfile() {
 		await setProfileInfo(profile);
+		addToast("Saved!", "Your account info has successfully been saved.", "success", 3);
 	}
 
 	let newProjectModal = false;
@@ -54,8 +56,9 @@
 			let newProjectId = data.projectId;
 			window.open(`/profile/edit/${newProjectId}`);
 			await loadProfile();
+			addToast("Created!", "Your new project has been created.", "success", 3);
 		} else {
-			alert(data.error);
+			addToast("Failed!", "Error: " + (data.error ?? "no error"), "error");
 		}
 	}
 
@@ -67,16 +70,18 @@
 		deleteProjectModal = false;
 		await deleteProject(projectToDelete);
 		await loadProjects();
+		addToast("Deleted!", "Your project has been deleted.", "success", 3);
 	}
 
 	let options = {};
 	async function sendUserOptions(e) {
-		setUserOptions(options);
+		await setUserOptions(options);
+		addToast("Updated!", "Updated user options!", "success", 3);
 	}
 
 	async function loadOptions() {
 		let optionsData = await getUserOptions();
-		options = optionsData.options;
+		options = optionsData.options ?? {};
 	}
 
 	onMount(() => {
@@ -145,7 +150,7 @@
 			<label for="discordNotificationsButton">Discord notifications (bot DMs)</label>
 			<p>You must have a Discord server in common with our bot. You can <a href="https://discord.com/oauth2/authorize?client_id=1073728324142116948&scope=bot&permissions=277025475584">add the bot</a> to your server, or alternatively join the <a href="https://discord.gg/MjsNjK2psB">Lua3D Discord</a>.</p>
 
-			{#if options.discord_notifications}
+			{#if options?.discord_notifications}
 				<button id="discordNotificationsButton" class="button red" on:click={() => { options.discord_notifications = false; sendUserOptions(); }}>Disable</button>
 			{:else}
 				<button id="discordNotificationsButton" class="button green" on:click={() => { options.discord_notifications = true; sendUserOptions(); }}>Enable</button>

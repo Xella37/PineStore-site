@@ -11,7 +11,10 @@ async function api(method, path, body) {
 	}
 	if (path.startsWith("auth/")) {
 		let session = getCookie("session");
-		if (session == null) return;
+		if (session == null) return {
+			success: false,
+			error: "You are not logged in!",
+		};
 		requestInit["headers"]["authorization"] = session;
 	}
 	if (method == "POST") {
@@ -43,7 +46,7 @@ function removeEmptyStrings(data) {
 
 export const getProject = (id) => api("GET", "project/" + id);
 export const getProjects = () => api("GET", "projects");
-export const searchProjects = (query) => api("GET", "https://pinestore.cc/api/search?q=" + encodeURIComponent(query));
+export const searchProjects = (query) => api("GET", "search?q=" + encodeURIComponent(query));
 
 export const getComments = (projectId) => api("GET", "comments/" + projectId);
 
