@@ -52,7 +52,7 @@
 					hljs.highlightAll();
 					codeblockRendered = true;
 				}, 0);
-			}, 100);	
+			}, 100);
 		}
 	}
 </script>
@@ -65,12 +65,20 @@
 		<div id="docs">
 			<div id="sidebar">
 				{#each pages as page}
-					<a data-sveltekit-noscroll href="/documentation/{page.id}" class="no-link" class:current-page={page.id == pageId} class:title={page.title}>
+					<a data-sveltekit-noscroll href="/documentation/{page.id}" class="no-link" class:current-page={page.id == pageId} class:title={page.title} class:first-of-group={page.first_of_group}>
 						{#if page.title}
 							<span class="path">{page.title}</span>
 						{:else}
 							<span class="type type-{page.type}">{page.type}</span>
-							<span class="path">{page.path}</span>
+							<span class="path">
+								{#if page.path.startsWith("/api/auth")}
+									<i class="path-start">/api/auth</i>{page.path.slice(9)}
+								{:else if page.path.startsWith("/api")}
+									<i class="path-start">/api</i>{page.path.slice(4)}
+								{:else}
+									{page.path}
+								{/if}
+							</span>
 						{/if}
 					</a>
 				{/each}
@@ -151,12 +159,12 @@
 	#sidebar {
 		display: flex;
 		flex-direction: column;
-		gap: 1rem;
+		gap: 0.37rem;
 	}
 	#sidebar a {
 		background-color: #444;
-		padding: 0.5rem 1rem;
-		padding-right: 1.5rem;
+		padding: 0.5rem 0.75rem;
+		padding-right: 1rem;
 		border-radius: 1rem;
 		font-size: 1.25rem;
 		white-space: nowrap;
@@ -170,6 +178,9 @@
 		font-weight: 600;
 	}
 	#sidebar a.title:not(:first-of-type) {
+		margin-top: 1.5rem;
+	}
+	#sidebar a.first-of-group {
 		margin-top: 1rem;
 	}
 	/* #sidebar a.title:hover {
@@ -184,7 +195,7 @@
 		min-width: 5rem;
 		border-radius: 1rem;
 		text-align: center;
-		margin-right: 1rem;
+		margin-right: 0.5rem;
 	}
 	#sidebar a span.type-GET {
 		background-color: #7FCC19;
@@ -194,6 +205,11 @@
 	}
 	#sidebar a span.path {
 		color: white;
+	}
+	#sidebar a .path-start {
+		color: var(--text-color-dark);
+		font-style: normal;
+		margin-right: 0.125rem;
 	}
 
 	#content {

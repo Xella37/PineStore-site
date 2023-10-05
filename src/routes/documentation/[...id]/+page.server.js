@@ -24,7 +24,7 @@ export async function load({ params }) {
 </ul>
 
 <h3>A little more info</h3>
-Each endpoint returns a JSON object and POST endpoints also require the body to be formatted as JSON. If you are building a CC front-end application, you must use the <a href="/documentation/newdownload">POST /api/newdownload</a> endpoint to report to the server when a project has been installed using the install command.
+Each endpoint returns a JSON object and POST endpoints also require the body to be formatted as JSON. If you are building a CC front-end application, you must use the <a href="/documentation/logdownload">POST /api/log/download</a> endpoint to report to the server when a project has been installed using the install command.
 
 </p><p>
 The returned JSON object always has a "success" value with an "error" value as a string as well if an error occured.`,
@@ -33,6 +33,7 @@ The returned JSON object always has a "success" value with an "error" value as a
 			id: "project",
 			path: "/api/project/:id",
 			type: "GET",
+			first_of_group: true,
 			url_params: [
 				{
 					name: "id",
@@ -70,9 +71,36 @@ The returned JSON object always has a "success" value with an "error" value as a
 }`,
 		},
 		{
+			id: "comments",
+			path: "/api/project/:id/comments",
+			type: "GET",
+			url_params: [
+				{
+					name: "id",
+					description: "id of the project",
+				},
+			],
+			body: `Get a list of comments corresponding to a project. Only the reply_id can be null. If this is not null, it is the id of the comment to which it is a reply.`,
+			example_return: `{
+	"success": true,
+	"comments": [
+		{
+			"id": 3,
+			"project_id": 12,
+			"reply_id": null,
+			"user_discord": "302427405023313920",
+			"user_name": "Xella",
+			"timestamp": 1695985904069,
+			"body": "Absolutely love it! Honestly the most polished game for CC I've ever seen :)"
+		}
+	]
+}`
+		},
+		{
 			id: "projects",
 			path: "/api/projects",
 			type: "GET",
+			first_of_group: true,
 			body: `For information on the structure of a project, see <a href="/documentation/project">GET /api/project/:id</a>. Returns a full list of all projects.`,
 			example_return: `{
 	"success": true,
@@ -109,7 +137,7 @@ The returned JSON object always has a "success" value with an "error" value as a
 		},
 		{
 			id: "search",
-			path: "/api/search",
+			path: "/api/projects/search",
 			type: "GET",
 			get_params: [
 				{
@@ -155,6 +183,7 @@ The returned JSON object always has a "success" value with an "error" value as a
 			id: "user",
 			path: "/api/user/:id",
 			type: "GET",
+			first_of_group: true,
 			url_params: [
 				{
 					name: "id",
@@ -175,7 +204,7 @@ The returned JSON object always has a "success" value with an "error" value as a
 		},
 		{
 			id: "userprojects",
-			path: "/api/userprojects/:id",
+			path: "/api/user/:id/projects",
 			type: "GET",
 			url_params: [
 				{
@@ -218,8 +247,24 @@ The returned JSON object always has a "success" value with an "error" value as a
 }`,
 		},
 		{
-			id: "newdownload",
-			path: "/api/newdownload",
+			id: "logview",
+			path: "/api/log/view",
+			type: "POST",
+			first_of_group: true,
+			post_params: [
+				{
+					name: "projectId",
+					description: "id of the project for which to register a new view",
+				},
+			],
+			body: `This endpoint is used in the front-end of this site and should probably not be used elsewhere.`,
+			example_return: `{
+	"success": true
+}`,
+		},
+		{
+			id: "logdownload",
+			path: "/api/log/download",
 			type: "POST",
 			post_params: [
 				{
@@ -233,32 +278,6 @@ The returned JSON object always has a "success" value with an "error" value as a
 }`,
 		},
 		{
-			id: "comments",
-			path: "/api/comments/:id",
-			type: "GET",
-			url_params: [
-				{
-					name: "id",
-					description: "id of the project",
-				},
-			],
-			body: `Get a list of comments corresponding to a project. Only the reply_id can be null. If this is not null, it is the id of the comment to which it is a reply.`,
-			example_return: `{
-	"success": true,
-	"comments": [
-		{
-			"id": 3,
-			"project_id": 12,
-			"reply_id": null,
-			"user_discord": "302427405023313920",
-			"user_name": "Xella",
-			"timestamp": 1695985904069,
-			"body": "Absolutely love it! Honestly the most polished game for CC I've ever seen :)"
-		}
-	]
-}`
-		},
-		{
 			id: "authorization",
 			title: "Authorization",
 			body: `Using your personal token, which you can get using the /newtoken command with the Discord bot, you can manage your projects with a few API endpoints. Each of these endpoints require authentication using this token using the "Authentication" HTTP header with the value set to your personal token.`,
@@ -267,6 +286,7 @@ The returned JSON object always has a "success" value with an "error" value as a
 			id: "auth-profile",
 			path: "/api/auth/profile",
 			type: "GET",
+			first_of_group: true,
 			body: `Get all user info corresponding to the authentication token.`,
 			example_return: `{
 	"success": true,
@@ -281,7 +301,7 @@ The returned JSON object always has a "success" value with an "error" value as a
 		},
 		{
 			id: "myprojects",
-			path: "/api/auth/projects",
+			path: "/api/auth/profile/projects",
 			type: "GET",
 			body: `Get all your own projects (including unpublished ones).`,
 			example_return: `{
@@ -319,7 +339,7 @@ The returned JSON object always has a "success" value with an "error" value as a
 		},
 		{
 			id: "auth-update-acc",
-			path: "/api/auth/update-acc",
+			path: "/api/auth/profile/update",
 			type: "POST",
 			post_params: [
 				{
@@ -350,8 +370,9 @@ The returned JSON object always has a "success" value with an "error" value as a
 		},
 		{
 			id: "auth-update-p",
-			path: "/api/auth/update-p",
+			path: "/api/auth/project/update",
 			type: "POST",
+			first_of_group: true,
 			post_params: [
 				{
 					name: "projectId",
@@ -424,18 +445,28 @@ The returned JSON object always has a "success" value with an "error" value as a
 }`,
 		},
 		{
-			id: "auth-thumbnail",
-			path: "/api/auth/thumbnail",
+			id: "auth-newproject",
+			path: "/api/auth/project/new",
 			type: "POST",
-			body: `Set the project thumbnail.`,
+			post_params: [
+				{
+					name: "name",
+					description: "the name of the new project",
+				},
+			],
+			example_return: `{
+	"success": true,
+	"projectId": 10
+}`,
+		},
+		{
+			id: "auth-delete",
+			path: "/api/auth/project/delete",
+			type: "POST",
 			post_params: [
 				{
 					name: "projectId",
-					description: "id of the project for which to update the thumbnail",
-				},
-				{
-					name: "imageData",
-					description: "the image data of the image (either raw, or base64 encoded)",
+					description: "the id of the project to delete",
 				},
 			],
 			example_return: `{
@@ -446,6 +477,7 @@ The returned JSON object always has a "success" value with an "error" value as a
 			id: "auth-media",
 			path: "/api/auth/media",
 			type: "POST",
+			first_of_group: true,
 			body: `Add an image to the project media.`,
 			post_params: [
 				{
@@ -463,7 +495,7 @@ The returned JSON object always has a "success" value with an "error" value as a
 		},
 		{
 			id: "auth-removemedia",
-			path: "/api/auth/removemedia",
+			path: "/api/auth/media/remove",
 			type: "POST",
 			body: `Remove an image from the project media by index. Each image index larger than the given index is then decreased by one.`,
 			post_params: [
@@ -481,28 +513,18 @@ The returned JSON object always has a "success" value with an "error" value as a
 }`,
 		},
 		{
-			id: "auth-newproject",
-			path: "/api/auth/newproject",
+			id: "auth-thumbnail",
+			path: "/api/auth/media/thumbnail",
 			type: "POST",
-			post_params: [
-				{
-					name: "name",
-					description: "the name of the new project",
-				},
-			],
-			example_return: `{
-	"success": true,
-	"projectId": 10
-}`,
-		},
-		{
-			id: "auth-delete",
-			path: "/api/auth/delete",
-			type: "POST",
+			body: `Set the project thumbnail.`,
 			post_params: [
 				{
 					name: "projectId",
-					description: "the id of the project to delete",
+					description: "id of the project for which to update the thumbnail",
+				},
+				{
+					name: "imageData",
+					description: "the image data of the image (either raw, or base64 encoded)",
 				},
 			],
 			example_return: `{
