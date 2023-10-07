@@ -125,7 +125,7 @@
 							<i class="loading-icon fa-solid fa-arrow-rotate-right"></i>
 						{:else}
 							{#if notifications.length <= 0}
-								<i>No notifications</i>
+								<i class="no-notifications">No notifications</i>
 							{/if}
 							{#each notifications as noti}
 								{#if noti.kind == "comment"}
@@ -416,6 +416,11 @@
 		font-size: 2rem;
 		transform: translate(-50%, -50%);
 		animation: spinning linear 1000ms infinite;
+	}
+
+	.no-notifications {
+		text-align: center;
+		margin: auto;
 	}
 
 	@media (max-width: 65rem) {
