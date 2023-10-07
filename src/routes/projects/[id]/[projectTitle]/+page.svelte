@@ -7,8 +7,8 @@
 	<meta property="og:description" content="{project.description_short || project.description?.slice(0, 200) || "This project does not yet have a description."}" />
 	<meta name="description" content="{project.description_short || project.description?.slice(0, 200) || "This project does not yet have a description."}" />
 	<meta name="twitter:description" content="{project.description_short || project.description?.slice(0, 200) || "This project does not yet have a description."}" />
-	<meta property="og:url" content="https://pinestore.cc{getProjectLink(project.id, project.name)}" />
-	<meta property="og:image" content="{project.has_thumbnail ? `https://pinestore.cc/project/${project.id}/thumbnail_full.webp` : "/project-placeholder.webp"}" />
+	<meta property="og:url" content="{{BASE_URL}}{getProjectLink(project.id, project.name)}" />
+	<meta property="og:image" content="{project.has_thumbnail ? `${BASE_URL}/project/${project.id}/thumbnail_full.webp` : "/project-placeholder.webp"}" />
 	<meta name="keywords" content="{project.name}, {project.owner_name}, {project.keywords}, computercraft, computer, craft, lua, minecraft, mine, programming, library, games, programs, collection, store">
 </svelte:head>
 
@@ -16,7 +16,7 @@
 	import { fade } from "svelte/transition";
 	import { onMount, onDestroy } from "svelte";
 	import { getProjectLink, addToast } from "$lib/util.js";
-	import { getMyProfile, reportProjectView, reportProjectDownload } from "$lib/database.js";
+	import { BASE_URL, getMyProfile, reportProjectView, reportProjectDownload } from "$lib/database.js";
 	
 	import SvelteMarkdown from "svelte-markdown";
 	import MDImage from "$lib/MDImage.svelte";
@@ -39,7 +39,7 @@
 	function copyInstall() {
 		let temp = document.createElement("input");
 		temp.setAttribute("type", "text");
-		temp.value = project.install_command && `wget run https://pinestore.cc/d/${project.id}` || "No command";
+		temp.value = project.install_command && `wget run ${BASE_URL}/d/${project.id}` || "No command";
 		document.body.appendChild(temp);
 
 		temp.select();
@@ -54,7 +54,7 @@
 	$: if (project.media_count) {
 		imageLinks = [];
 		for (let i = 0; i < project.media_count; i++) {
-			imageLinks.push(`https://pinestore.cc/project/${project.id}/image_${i}.webp`);
+			imageLinks.push(`${BASE_URL}/project/${project.id}/image_${i}.webp`);
 		}
 	}
 
@@ -183,7 +183,7 @@
 			<span class="project-date">{projectDate}</span>
 		</div>
 
-		<a href="/user/{project.owner_discord}"><img class="pfp" src="https://pinestore.cc/pfp/{project.owner_discord}.png" alt="profile"></a>
+		<a href="/user/{project.owner_discord}"><img class="pfp" src="{BASE_URL}/pfp/{project.owner_discord}.png" alt="profile"></a>
 
 		<h1>
 			{project.name}
@@ -193,7 +193,7 @@
 		<div id="description" class="markdown-container">
 			{#if !project.hide_thumbnail}
 				{#if project.has_thumbnail}
-					<img class="project-image shadow" src="https://pinestore.cc/project/{project.id}/thumbnail_full.webp" alt="project thumbnail">
+					<img class="project-image shadow" src="{BASE_URL}/project/{project.id}/thumbnail_full.webp" alt="project thumbnail">
 				{:else}
 					<img class="project-image shadow" src="/project-placeholder.webp" alt="project thumbnail">
 				{/if}
@@ -212,7 +212,7 @@
 			<!-- svelte-ignore a11y-click-events-have-key-events -->
 			<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
 			{#if project.install_command || !project.download_url}
-				<pre type="text" class="command" class:copied={copied} on:click={copyInstall}>{#if copied}<i id="copiedText" in:fade="{{ duration: 100 }}">Copied!</i>{/if}{project.install_command ? `wget run https://pinestore.cc/d/${project.id}` : "no install command"}<i id="copyInstallButton" class="fas fa-copy"></i></pre>
+				<pre type="text" class="command" class:copied={copied} on:click={copyInstall}>{#if copied}<i id="copiedText" in:fade="{{ duration: 100 }}">Copied!</i>{/if}{project.install_command ? `wget run ${{BASE_URL}}/d/${project.id}` : "no install command"}<i id="copyInstallButton" class="fas fa-copy"></i></pre>
 			{/if}
 			{#if project.download_url}
 				<a on:click={downloadLinkOpened} target="_blank" rel="noreferrer" class="button green" href="{project.download_url}">Download <i style="margin-left:0.5rem;" class="fa-solid fa-download"></i></a>

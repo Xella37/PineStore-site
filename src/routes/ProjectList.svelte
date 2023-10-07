@@ -1,6 +1,7 @@
 
 <script>
 	import { getProjectLink } from "$lib/util.js";
+	import { BASE_URL } from "$lib/database.js";
 
 	export let projects;
 	export let blocks = false;
@@ -15,7 +16,7 @@
 				<div class="image-container">
 					<span class="downloads"><i class="fa-solid fa-download"></i> {project.downloads}</span>
 					{#if project.has_thumbnail}
-						<div class="div-img" style="background-image: url(https://pinestore.cc/project/{project.id}/thumbnail.webp)" alt="project"></div>
+						<div class="div-img" style="background-image: url({BASE_URL}/project/{project.id}/thumbnail.webp)" alt="project"></div>
 					{:else}
 						<div class="div-img" style="background-image: url(/project-placeholder.webp)" alt="project placeholder"></div>
 					{/if}

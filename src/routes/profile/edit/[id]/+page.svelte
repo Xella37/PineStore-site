@@ -6,7 +6,7 @@
 <script>
 	import { onMount } from "svelte";
 	import { error } from "@sveltejs/kit";
-	import { getProject, setProjectInfo, setProjectThumbnail, addProjectMedia, removeProjectMedia } from "$lib/database.js";
+	import { BASE_URL, getProject, setProjectInfo, setProjectThumbnail, addProjectMedia, removeProjectMedia } from "$lib/database.js";
 	import { getProjectLink, addToast } from "$lib/util.js";
 
 	import SvelteMarkdown from "svelte-markdown";
@@ -51,18 +51,21 @@
 		let sendData = {...project};
 		sendData.tags = project.selectedTags.join(",");
 		console.log(sendData);
-		await setProjectInfo(sendData);
+		let saveData = await setProjectInfo(sendData);
 		unsavedChanges = false;
 		savedProject = {...project};
 
-		addToast("Saved!", "Your project has successfully been saved.", "success", 3);
+		if (saveData.success)
+			addToast("Saved!", "Your project has successfully been saved.", "success", 3);
+		else
+			addToast("Failed!", "Failed to save project. Error: " + (saveData.error ?? "no error"), "error");
 	}
 
 	async function viewProjectPage() {
 		window.open(getProjectLink(project.id, savedProject.name), "_blank");
 	}
 
-	$: thumbnail_link = project.has_thumbnail ? `https://pinestore.cc/project/${project.id}/thumbnail_full.webp?t=${Date.now()}` : "/project-placeholder.webp";
+	$: thumbnail_link = project.has_thumbnail ? `${BASE_URL}/project/${project.id}/thumbnail_full.webp?t=${Date.now()}` : "/project-placeholder.webp";
 	let thumbnailInput;
 	let uploadingThumbnail = false;
 	async function uploadThumbnail(e) {
@@ -76,7 +79,7 @@
 
 			try {
 				await setProjectThumbnail(project.id, imageData);
-				thumbnail_link = `https://pinestore.cc/project/${project.id}/thumbnail_full.webp?t=${Date.now()}`;
+				thumbnail_link = `${BASE_URL}/project/${project.id}/thumbnail_full.webp?t=${Date.now()}`;
 				addToast("Saved!", "Thumbnail successfully uploaded.", "success", 3);
 			} catch(e) {
 				addToast("Failed!", "Error during thumbnail upload! File might be too large. If you think you should be able to upload this file, please contact Xella on Discord.", "error");
@@ -125,7 +128,7 @@
 	$: if (project.media_count != null) {
 		imageLinks = [];
 		for (let i = 0; i < project.media_count; i++) {
-			imageLinks.push(`https://pinestore.cc/project/${project.id}/image_${i}.webp?t=${Date.now()}`);
+			imageLinks.push(`${BASE_URL}/project/${project.id}/image_${i}.webp?t=${Date.now()}`);
 		}
 	}
 
