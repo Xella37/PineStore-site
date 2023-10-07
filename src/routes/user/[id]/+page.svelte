@@ -7,8 +7,8 @@
 	<meta property="og:description" content="{user.about}" />
 	<meta name="description" content="{user.about}" />
 	<meta name="twitter:description" content="{user.about}" />
-	<meta property="og:url" content="https://pinestore.cc/user/{user.discord_id}" />
-	<meta property="og:image" content="https://pinestore.cc/pfp/{user.discord_id}.png" />
+	<meta property="og:url" content="{BASE_URL}/user/{user.discord_id}" />
+	<meta property="og:image" content="{BASE_URL}/pfp/{user.discord_id}.png" />
 	<meta name="keywords" content="{user.name}, user, profile, profile page, computercraft, computer, craft, lua, minecraft, mine, programming, library, games, programs, collection, store">
 </svelte:head>
 
@@ -17,6 +17,7 @@
 	import MDImage from "./MDImage.svelte";
 	import MDCode from "./MDCode.svelte";
     import ProjectList from "./../../ProjectList.svelte";
+	import { BASE_URL } from "$lib/database.js";
 
 	export let data;
 	let user = data.user;
@@ -36,7 +37,7 @@
 
 <div class="page-container">
 	<div class="page page-thin shadow">
-		<img class="pfp" src="https://pinestore.cc/pfp/{user.discord_id}.png" alt="profile">
+		<img class="pfp" src="{BASE_URL}/pfp/{user.discord_id}.png" alt="profile">
 		<span class="created-date"><div id="joinedOn">Joined on</div> {createdDate}</span>
 		<h1>
 			{user.name}

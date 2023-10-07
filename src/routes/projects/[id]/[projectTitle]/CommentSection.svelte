@@ -1,6 +1,6 @@
 
 <script>
-	import { newComment, getComments } from "$lib/database.js";
+	import { BASE_URL, newComment, getComments } from "$lib/database.js";
 	import { calcTimeAgo, addToast } from "$lib/util.js";
 
 	export let projectId;
@@ -80,7 +80,7 @@
 	<div class="writing-container" class:inactive={!selectedMainTextarea}>
 		<form on:submit={postComment}>
 			<a href="/user/{myId}">
-				<img src="https://pinestore.cc/pfp/{myId}.png" alt="pfp">
+				<img src="{BASE_URL}/pfp/{myId}.png" alt="pfp">
 			</a>
 			<textarea on:focus={() => { selectedMainTextarea = true; }} bind:value={commentText} placeholder="Write a new comment!" maxlength="500"></textarea>
 			<button type="submit" class="button post">Post</button>
@@ -96,7 +96,7 @@
 	{#each rootComments as comment}
 		<div class="comment">
 			<a href="/user/{comment.user_discord}">
-				<img src="https://pinestore.cc/pfp/{comment.user_discord}.png" alt="pfp">
+				<img src="{BASE_URL}/pfp/{comment.user_discord}.png" alt="pfp">
 			</a>
 			<a href="/user/{comment.user_discord}" class="comment-user">{comment.user_name ?? "Unnamed"}</a><span class="comment-timestamp">{formatCommentTimestamp(comment.timestamp)}</span>
 			<button class="reply-button" on:click={() => { replyId = comment.id; }}>
@@ -116,7 +116,7 @@
 					<div class="writing-container reply">
 						<form on:submit={postReply}>
 							<a href="/user/{myId}">
-								<img src="https://pinestore.cc/pfp/{myId}.png" alt="pfp">
+								<img src="{BASE_URL}/pfp/{myId}.png" alt="pfp">
 							</a>
 							<textarea bind:value={replyText} placeholder="Write a reply!" maxlength="500"></textarea>
 							<button type="submit" class="button post">Post</button>
@@ -131,7 +131,7 @@
 					{#each replies[comment.id] as reply}
 						<div class="comment">
 							<a href="/user/{reply.user_discord}">
-								<img src="https://pinestore.cc/pfp/{reply.user_discord}.png" alt="pfp">
+								<img src="{BASE_URL}/pfp/{reply.user_discord}.png" alt="pfp">
 							</a>
 							<a href="/user/{reply.user_discord}" class="comment-user">{reply.user_name ?? "Unnamed"}</a><span class="comment-timestamp">{formatCommentTimestamp(reply.timestamp)}</span>
 							<p class="comment-body">
