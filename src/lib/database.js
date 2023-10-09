@@ -34,6 +34,8 @@ async function api(method, path, body) {
 }
 
 function getCookie(cookieId) {
+	if (typeof document == "undefined")
+		return null;
 	const cookieValue = document.cookie
 		.split("; ")
 		.find((row) => row.startsWith(cookieId + "="))
@@ -77,9 +79,7 @@ export const getMyProjects = () =>
 export const getUserOptions = () =>
 	api("GET", "auth/profile/options");
 export const setUserOptions = (options) =>
-	api("POST", "auth/profile/options", {
-	discord_notifications: options.discord_notifications,
-});
+	api("POST", "auth/profile/options", options);
 export const setProfileInfo = (profileData) =>
 	api("POST", "auth/profile/update", removeEmptyStrings({
 		"allow_null": true,
@@ -98,6 +98,8 @@ export const newProject = (name) =>
 	api("POST", "auth/project/new", { name });
 export const deleteProject = (id) =>
 	api("POST", "auth/project/delete", { projectId: id });
+export const publishProjectUpdate = (id) =>
+	api("POST", "auth/project/publishupdate", { projectId: id });
 
 export const addProjectMedia = (projectId, imageData) =>
 	api("POST", "auth/media/add", { projectId, imageData });
@@ -113,6 +115,29 @@ export const getNotifications = () =>
 	api("GET", "auth/notifications");
 export const hasUnreadNotifications = () =>
 	api("GET", "auth/notifications/unread");
+
+export const followUser = (userId) =>
+	api("POST", "auth/follow/user/new", { following_id: userId });
+export const checkFollowingUser = (userId) =>
+	api("GET", "auth/follow/user/check/" + userId);
+export const unfollowUser = (userId) =>
+	api("POST", "auth/follow/user/remove", { following_id: userId });
+
+export const followProject = (id) =>
+	api("POST", "auth/follow/project/new", { project_id: id });
+export const checkFollowingProject = (id) =>
+	api("GET", "auth/follow/project/check/" + id);
+export const unfollowProject = (id) =>
+	api("POST", "auth/follow/project/remove", { project_id: id });
+
+export const saveProject = (id) =>
+	api("POST", "auth/saved/new", { project_id: id });
+export const checkSavedProject = (id) =>
+	api("GET", "auth/saved/check/" + id);
+export const unsaveProject = (id) =>
+	api("POST", "auth/saved/remove", { project_id: id });
+export const getMySavedProjects = (id) =>
+	api("GET", "auth/saved");
 
 export async function isLoggedIn() {
 	let profileData = await getMyProfile();

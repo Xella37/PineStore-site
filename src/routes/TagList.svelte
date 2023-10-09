@@ -5,6 +5,7 @@
 	// uses an array "selectedTags" if specified and bound, only selects one if this is null
 	export let selectedTags = null;
 	export let selectedTag = null;
+	export let hideSaved = false;
 
 	function selectTag(id) {
 		if (selectedTags != null) {
@@ -25,9 +26,16 @@
 
 <div class="flex-list margin-small">
 	{#each tags as tag}
-		<button class="tag-link shadow" class:selected={selectedTag == tag.id || selectedTags?.includes(tag.id)} on:click|preventDefault={() => { selectTag(tag.id); }}>
-			<span>{tag.display}</span>
-		</button>
+		{#if !hideSaved || tag.id != "saved"}
+			<button class="tag-link shadow" class:selected={selectedTag == tag.id || selectedTags?.includes(tag.id)} on:click|preventDefault={() => { selectTag(tag.id); }}>
+				<span>
+					{#if tag.id == "saved"}
+						<i class="tag-icon fa-solid fa-star"></i>
+					{/if}
+					{tag.display}
+				</span>
+			</button>
+		{/if}
 	{/each}
 </div>
 
@@ -42,11 +50,16 @@
 		flex-grow: unset;
 	}
 
+	.tag-icon {
+		margin-right: 0.25em;
+		margin-left: -0.25em;
+	}
+
 	.tag-link {
 		border-radius: 10rem;
 		overflow: hidden;
 		background-color: #444;
-		padding: 0.5rem 2rem;
+		padding: 0.5rem 1.75rem;
 		color: white;
 		transition: all ease 100ms;
 		border: none;

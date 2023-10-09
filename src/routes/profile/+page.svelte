@@ -4,14 +4,13 @@
 </svelte:head>
 
 <script>
-	import { error } from "@sveltejs/kit";
 	import SvelteMarkdown from "svelte-markdown";
 	import MDImage from "$lib/MDImage.svelte";
 	import MDCode from "$lib/MDCode.svelte";
 	import { onMount } from "svelte";
-	import { fade, fly } from "svelte/transition";
 	import { logoutUser, getMyProjects, getMyProfile, newProject, setProfileInfo, deleteProject, getUserOptions, setUserOptions } from "$lib/database.js";
 	import { addToast } from "$lib/util.js";
+    import Modal from "$lib/Modal.svelte";
 
 	let profile = {
 		name: "loading...",
@@ -84,6 +83,21 @@
 		options = optionsData.options ?? {};
 	}
 
+	let toggleOptions = [
+		{id: "discord_noti_comment", title: "New comments on your projects"},
+		{id: "discord_noti_reply", title: "New replies to your comments"},
+		{id: "discord_noti_newfollow_user", title: "New followers"},
+		{id: "discord_noti_newfollow_project", title: "New project followers"},
+		{id: "discord_noti_following_newproject", title: "Newly published project from following"},
+		{id: "discord_noti_following_projectupdate", title: "Updates for following projects"},
+	];
+	async function toggleOption(option) {
+		console.log("Toggle " + option);
+		options[option] = !options[option];
+		console.log(options);
+		await sendUserOptions();
+	}
+
 	onMount(() => {
 		loadProfile();
 		loadProjects();
@@ -130,7 +144,7 @@
 				{/if}
 			</p>
 		{:else}
-			<form>
+			<form class="form-blocks">
 				<label for="nameInput">Display name</label>
 				<input id="nameInput" type="text" bind:value={profile.name}>
 
@@ -147,14 +161,19 @@
 		</div>
 
 		<form>
-			<label for="discordNotificationsButton">Discord notifications (bot DMs)</label>
+			<h2>Discord notifications (bot DMs)</h2>
+			<p>All notifications will be visible in the top-right, but you can additionally enable to be notified on Discord with a DM from our bot.</p>
 			<p>You must have a Discord server in common with our bot. You can <a href="https://discord.com/oauth2/authorize?client_id=1073728324142116948&scope=bot&permissions=277025475584">add the bot</a> to your server, or alternatively join the <a href="https://discord.gg/MjsNjK2psB">Lua3D Discord</a>.</p>
 
-			{#if options?.discord_notifications}
-				<button id="discordNotificationsButton" class="button red" on:click={() => { options.discord_notifications = false; sendUserOptions(); }}>Disable</button>
-			{:else}
-				<button id="discordNotificationsButton" class="button green" on:click={() => { options.discord_notifications = true; sendUserOptions(); }}>Enable</button>
-			{/if}
+			<div class="options-list">
+				{#each toggleOptions as option}
+					<div class="option">
+						<!-- svelte-ignore a11y-click-events-have-key-events -->
+						<button id="toggleButton-{option.id}" style="font-size: 1.75rem;" class="toggle" class:enabled={options != null && options[option.id]} on:click|preventDefault={() => { toggleOption(option.id); }}></button>
+						<label for="toggleButton-{option.id}">{option.title}</label>
+					</div>
+				{/each}
+			</div>
 		</form>
 
 		<div class="ruler-text">
@@ -166,7 +185,7 @@
 				<div class="list-project">
 					<div class="button-group">
 						<a href="/profile/edit/{project.id}" class="button"><i class="fa-solid fa-pencil"></i></a>
-						<button class="button red" on:click={() => { projectToDelete = project.id; deleteProjectModal = true; }}><i class="fa-solid fa-trash-can"></i></button>
+						<button class="button red" on:click|preventDefault={() => { projectToDelete = project.id; deleteProjectModal = true; }}><i class="fa-solid fa-trash-can"></i></button>
 					</div>
 
 					<div>
@@ -181,44 +200,22 @@
 	</div>
 </div>
 
-{#if newProjectModal}
-	<div class="modal" transition:fly={{y: 20}}>
-		<button class="modal-close" on:click={() => { newProjectModal = false; }}>
-			<i class="fa-solid fa-xmark"></i>
-		</button>
+<Modal title="New project" bind:opened={newProjectModal}>
+	<form class="model-form" on:submit={createNewProject}>
+		<label for="newProjectName">Project name</label>
+		<input id="newProjectName" type="text" placeholder="Project name" bind:value={newProjectName}>
 
-		<span class="modal-title">New project</span>
+		<button type="submit" class="button">Create</button>
+	</form>
+</Modal>
 
-		<form on:submit={createNewProject}>
-			<label for="newProjectName">Project name</label>
-			<input id="newProjectName" type="text" placeholder="Project name" bind:value={newProjectName}>
+<Modal title="New project" bind:opened={deleteProjectModal}>
+	<p>Are you sure you want to delete this project?</p>
 
-			<button type="submit" class="button">Create</button>
-		</form>
-	</div>
-	<!-- svelte-ignore a11y-click-events-have-key-events -->
-	<!-- svelte-ignore a11y-no-static-element-interactions -->
-	<div transition:fade class="modal-darken" on:click={() => { newProjectModal = false; }}></div>
-{/if}
-
-{#if deleteProjectModal}
-	<div class="modal" transition:fly={{y: 20}}>
-		<button class="modal-close" on:click={() => { deleteProjectModal = false; }}>
-			<i class="fa-solid fa-xmark"></i>
-		</button>
-
-		<span class="modal-title">Delete project</span>
-
-		<p>Are you sure you want to delete this project?</p>
-
-		<form on:submit={deleteProjectSubmit}>
-			<button type="submit" class="button red">Delete</button>
-		</form>
-	</div>
-	<!-- svelte-ignore a11y-click-events-have-key-events -->
-	<!-- svelte-ignore a11y-no-static-element-interactions -->
-	<div transition:fade class="modal-darken" on:click={() => { deleteProjectModal = false; }}></div>
-{/if}
+	<form class="model-form" on:submit={deleteProjectSubmit}>
+		<button type="submit" class="button red">Delete</button>
+	</form>
+</Modal>
 
 <style>
 	.corner-buttons {
@@ -237,7 +234,7 @@
 		}
 	}
 
-	form > * {
+	.form-blocks > * {
 		display: block;
 		margin-block: 1rem;
 	}
@@ -274,56 +271,26 @@
 		margin-top: 2rem;
 	}
 
-	.modal {
-		position: fixed;
-		z-index: 100;
-		display: block;
-		width: calc(100% - 2rem);
-		max-width: 30rem;
-		left: 50%;
-		top: 40%;
-		transform: translate(-50%, -50%);
-		background-color: #333;
-		padding: 1rem;
-		border-radius: 1rem;
-	}
-	.modal-close {
-		background: none;
-		position: absolute;
-		top: 0;
-		right: 0;
-		border: none;
-		padding: 0.75rem 1.5rem;
-		font-size: 2rem;
-		color: var(--text-color-dark);
-		cursor: pointer;
-	}
-	.modal button[type="submit"] {
-		margin-top: 1rem;
-	}
-	.modal-title {
-		font-size: 2rem;
-		text-align: center;
-		display: inline-block;
-		width: 100%;
-		margin-bottom: 1rem;
-	}
-	.modal-darken {
-		position: fixed;
-		z-index: 50;
-		left: 0;
-		right: 0;
-		top: 0;
-		bottom: 0;
-		background-color: rgba(0, 0, 0, 0.4);
-	}
-
-	.modal form {
+	.model-form {
 		display: flex;
 		flex-direction: column;
 		gap: 1rem;
 	}
-	.modal form > * {
-		margin: 0;
+
+	.options-list {
+		display: flex;
+		flex-direction: column;
+		gap: 1rem;
+		margin-top: 2rem;
+	}
+	.option {
+		display: inline-flex;
+		justify-content: left;
+	}
+	.option label {
+		display: inline-block;
+		margin: auto;
+		margin-left: 1rem;
+		cursor: pointer;
 	}
 </style>

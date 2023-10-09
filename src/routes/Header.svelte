@@ -111,6 +111,7 @@
 		
 		{#if loggedIn}
 			<div class="notificication-button-container">
+				<!-- svelte-ignore a11y-click-events-have-key-events -->
 				<div class="header-item notifications" on:click={toggleNotifications} class:unread={unreadNotifications}>
 					<i class="fa-solid fa-bell"></i>
 					<span>Notifications</span>
@@ -118,6 +119,7 @@
 
 				{#if notificationsOpened}
 					<div class="notifications-container shadow">
+						<!-- svelte-ignore a11y-click-events-have-key-events -->
 						<div class="notifications-close-button" on:click={() => { notificationsOpened = false; }}>
 							<i class="fa-solid fa-xmark"></i>
 						</div>
@@ -132,22 +134,55 @@
 									<a class="no-link" href="{getProjectLink(noti.payload.project_id, noti.payload.project_name)}" on:click={toggleNotifications}>
 										<div class="notification-item" class:unread={!noti.was_read}>
 											<img src="https://pinestore.cc/pfp/{noti.payload.from_id ?? "???"}.png" alt="pfp">
-											{noti.payload.from_name ?? "???"} / {noti.payload.project_name} <span class="notification-time">{calcTimeAgo(noti.timestamp)}</span>
+											{noti.payload.from_name} / {noti.payload.project_name} <span class="notification-time">{calcTimeAgo(noti.timestamp)}</span>
 											<p>{noti.payload.short_text}</p>
 										</div>
 									</a>
 								{:else if noti.kind == "reply"}
 									<a class="no-link" href="{getProjectLink(noti.payload.project_id, noti.payload.project_name)}" on:click={toggleNotifications}>
 										<div class="notification-item" class:unread={!noti.was_read}>
-											<img src="https://pinestore.cc/pfp/{noti.payload.from_id ?? "???"}.png" alt="pfp">
-											{noti.payload.from_name ?? "???"} <span style="color:var(--text-color-medium);">replied to you</span> <span class="notification-time">{calcTimeAgo(noti.timestamp)}</span>
+											<img src="https://pinestore.cc/pfp/{noti.payload.from_id}.png" alt="pfp">
+											{noti.payload.from_name} <span style="color:var(--text-color-medium);">replied to you</span> <span class="notification-time">{calcTimeAgo(noti.timestamp)}</span>
 											<p>{noti.payload.short_text}</p>
+										</div>
+									</a>
+								{:else if noti.kind == "newfollow_user"}
+									<a class="no-link" href="https://pinestore.cc/user/{noti.payload.user_id}" on:click={toggleNotifications}>
+										<div class="notification-item" class:unread={!noti.was_read}>
+											<img src="https://pinestore.cc/pfp/{noti.payload.user_id}.png" alt="pfp">
+											New follower! <span class="notification-time">{calcTimeAgo(noti.timestamp)}</span>
+											<p>{noti.payload.user_name} is now following you!</p>
+										</div>
+									</a>
+								{:else if noti.kind == "newfollow_project"}
+									<a class="no-link" href="https://pinestore.cc/user/{noti.payload.user_id}" on:click={toggleNotifications}>
+										<div class="notification-item" class:unread={!noti.was_read}>
+											<img src="https://pinestore.cc/pfp/{noti.payload.user_id}.png" alt="pfp">
+											New follower / {noti.payload.project_name} <span class="notification-time">{calcTimeAgo(noti.timestamp)}</span>
+											<p>{noti.payload.user_name} is now following your project!</p>
+										</div>
+									</a>
+								{:else if noti.kind == "following_newproject"}
+									<a class="no-link" href="{getProjectLink(noti.payload.project_id, noti.payload.project_name)}" on:click={toggleNotifications}>
+										<div class="notification-item" class:unread={!noti.was_read}>
+											<img src="https://pinestore.cc/pfp/{noti.payload.user_id}.png" alt="pfp">
+											{noti.payload.user_name} published {noti.payload.project_name} <span class="notification-time">{calcTimeAgo(noti.timestamp)}</span>
+											<p>{noti.payload.user_name} published a new project!</p>
+										</div>
+									</a>
+								{:else if noti.kind == "following_projectupdate"}
+									<a class="no-link" href="{getProjectLink(noti.payload.project_id, noti.payload.project_name)}" on:click={toggleNotifications}>
+										<div class="notification-item" class:unread={!noti.was_read}>
+											<img src="https://pinestore.cc/pfp/{noti.payload.user_id}.png" alt="pfp">
+											{noti.payload.project_name} has been updated! <span class="notification-time">{calcTimeAgo(noti.timestamp)}</span>
+											<p>{noti.payload.user_name} updated the project.</p>
 										</div>
 									</a>
 								{/if}
 							{/each}
 						{/if}
 					</div>
+					<!-- svelte-ignore a11y-click-events-have-key-events -->
 					<div class="notifications-close-box" on:click={() => { notificationsOpened = false; }}>
 					</div>
 				{/if}
@@ -392,7 +427,7 @@
 		color: var(--text-color);
 		margin-bottom: 0.25rem;
 		text-overflow: ellipsis;
-		max-width: calc(20rem - 5rem - 1rem - 1rem);
+		max-width: calc(20rem - 5rem);
 		overflow: hidden;
 		white-space: nowrap;
 	}

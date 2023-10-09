@@ -65,6 +65,10 @@ export function calcTimeAgo(timestamp, fullLength=false) {
 
 export const tags = [
 	{
+		id: "saved",
+		display: "Saved",
+	},
+	{
 		id: "fun",
 		display: "Fun",
 	},
@@ -89,12 +93,12 @@ export const tags = [
 		display: "Mod",
 	},
 	{
-		id: "resourcep",
-		display: "Resource Pack",
-	},
-	{
 		id: "audio",
 		display: "Audio",
+	},
+	{
+		id: "resourcep",
+		display: "Resource Pack",
 	},
 	{
 		id: "os",

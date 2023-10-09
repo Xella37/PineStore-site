@@ -5,13 +5,13 @@
 
 <script>
 	import { onMount } from "svelte";
-	import { error } from "@sveltejs/kit";
-	import { BASE_URL, getProject, setProjectInfo, setProjectThumbnail, addProjectMedia, removeProjectMedia } from "$lib/database.js";
+	import { BASE_URL, getProject, setProjectInfo, setProjectThumbnail, addProjectMedia, removeProjectMedia, publishProjectUpdate } from "$lib/database.js";
 	import { getProjectLink, addToast } from "$lib/util.js";
 
 	import SvelteMarkdown from "svelte-markdown";
 	import MDImage from "$lib/MDImage.svelte";
 	import MDCode from "$lib/MDCode.svelte";
+    import Modal from "$lib/Modal.svelte";
 
 	import { page } from "$app/stores";
 	$: projectId = $page.params.id;
@@ -124,6 +124,16 @@
 		addToast("Deleted!", "Media removed from project.", "success", 3);
 	}
 
+	let publishUpdateModal = false;
+	async function publishUpdateSubmit() {
+		publishUpdateModal = false;
+		let res = await publishProjectUpdate(project.id);
+		if (res.success)
+			addToast("Update published!", "Your project has been updated.", "success", 3);
+		else
+			addToast("Failed!", "Failed to publish update. Error: " + (res.error ?? "no error"), "error");
+	}
+
 	let imageLinks = [];
 	$: if (project.media_count != null) {
 		imageLinks = [];
@@ -174,6 +184,8 @@
 			<label for="titleInput">Name</label>
 			<input id="titleInput" type="text" bind:value={project.name} maxlength="40" placeholder="My Cool Project">
 
+			<button class="button green" on:click|preventDefault={() => { publishUpdateModal = true; }}>Publish update</button>
+
 			<div class="ruler-text">
 				<span>basic info</span>
 			</div>
@@ -202,7 +214,7 @@
 				<input id="keywordsInput" type="text" bind:value={project.keywords} maxlength="300" placeholder="example,keywords,go,here">
 
 				<label for="tagsInput">Tags (preferrably 2-3)</label>
-				<TagList bind:selectedTags={project.selectedTags} />
+				<TagList hideSaved bind:selectedTags={project.selectedTags} />
 
 			<div class="ruler-text">
 				<span>description</span>
@@ -244,7 +256,8 @@
 				<span>media</span>
 			</div>
 				<label for="hideThumbnail">Hide thumbnail on project page</label>
-				<input id="hideThumbnail" type="checkbox" bind:checked={project.hide_thumbnail} />
+				<!-- <input id="hideThumbnail" type="checkbox" bind:checked={project.hide_thumbnail} /> -->
+				<button id="hideThumbnail" class="toggle" style="font-size: 1.75rem;" class:enabled={project.hide_thumbnail} on:click|preventDefault={() => { project.hide_thumbnail = !project.hide_thumbnail; }} />
 
 				<label for="thumbnailInput">Thumbnail (instantly saved)</label>
 				<!-- svelte-ignore a11y-click-events-have-key-events -->
@@ -280,6 +293,15 @@
 		</form>
 	</div>
 </div>
+
+<Modal title="Publish update" bind:opened={publishUpdateModal}>
+	<p>Are you sure you publish an update? This will update the date_edited value to the current time, allowing other software to know it has been updated recently.</p>
+	<p>This will also send a notification to anyone who is following this project.</p>
+
+	<form class="model-form" on:submit|preventDefault={publishUpdateSubmit}>
+		<button type="submit" style="width:100%;" class="button green">Publish update</button>
+	</form>
+</Modal>
 
 <style>
 	.corner-buttons {

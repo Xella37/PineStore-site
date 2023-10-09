@@ -21,6 +21,7 @@ body {
 	--cc-red: #CC4C4C;
 	--cc-lime: #7FCC19;
 	--cc-green: #57A64E;
+	--cc-brown: #7F664C;
 
 	font-family: "Lato", sans-serif;
 	margin: 0;
@@ -282,6 +283,37 @@ textarea {
 	background-color: var(--cc-lightGray);
 }
 
+.toggle {
+	display: inline-block;
+	position: relative;
+	background-color: var(--cc-gray);
+	width: 2em;
+	height: 1em;
+	border: none;
+	border-radius: 10em;
+	cursor: pointer;
+	transition: all ease 100ms;
+}
+.toggle.enabled {
+	background-color: var(--cc-green);
+}
+.toggle::after {
+	position: absolute;
+	top: 50%;
+	left: 0.125em;
+	width: 0.75em;
+	height: 0.75em;
+	content: "";
+	border-radius: 10em;
+	background-color: white;
+	transform: translateY(-50%);
+	transition: all ease 100ms;
+}
+.toggle.enabled::after {
+	left: 1.125em;
+	transform: translateY(-50%);
+}
+
 .lua-codeblock {
 	margin-top: 1rem;
 	border-radius: 0.5rem;
@@ -386,4 +418,8 @@ pre {
 .info-block.info {
 	background-color: var(--cc-lightBlue);
 	color: black;
+}
+
+.table {
+	width: 100%;
 }

@@ -16,11 +16,14 @@
 	import { goto } from "$app/navigation";
 	import { browser } from "$app/environment";
 	import { tags } from "$lib/util.js";
+	import { getMySavedProjects } from "$lib/database.js";
     import TagList from "./../TagList.svelte";
 	import ProjectList from "./../ProjectList.svelte";
 
 	export let data;
 	let displayProjects = [];
+
+	let getSavedFailed = false;
 
 	let sortingMethod = "recent_downloads";	
 	if (data.sort) sortingMethod = data.sort;
@@ -45,9 +48,19 @@
 		});
 	}
 
-	$: if (data.projects || sortingMethod) { // sort at least once and every time sortingMethod updates
-		displayProjects = data.projects;
-		filterProjects();
+	async function updateDisplayProjects() {
+		if (selectedTag == "saved") {
+			let savedData = await getMySavedProjects();
+			if (savedData.success) {
+				displayProjects = savedData.projects;
+			} else {
+				getSavedFailed = true;
+				displayProjects = [];
+			}
+		} else {
+			displayProjects = data.projects;
+			filterProjects();
+		}
 		sortProjects();
 
 		// update query param, but quick check to make sure it doesn't run server side
@@ -63,6 +76,10 @@
 				q = "?" + queryParams.join("&");
 			goto(`/projects${q}`);
 		}
+	}
+
+	$: if (data.projects || selectedTag || sortingMethod) { // sort at least once and every time sortingMethod updates
+		updateDisplayProjects();
 	}
 
 </script>
@@ -86,6 +103,16 @@
 
 		{#if displayProjects.length > 0}
 			<ProjectList projects={displayProjects} blocks={true} />
+		{:else if selectedTag == "saved"}
+			{#if getSavedFailed}
+				<p class="no-projects-placeholder">
+					Login with Discord to save projects. Saved projects will show up here.
+				</p>
+			{:else}
+				<p class="no-projects-placeholder">
+					Saved projects will show up here. To save a project, open a projects page and click "Save" at the top.
+				</p>
+			{/if}
 		{:else}
 			<i class="no-projects-placeholder">
 				There are currently no projects available with this tag.

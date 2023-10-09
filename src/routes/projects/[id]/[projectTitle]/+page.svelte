@@ -7,7 +7,7 @@
 	<meta property="og:description" content="{project.description_short || project.description?.slice(0, 200) || "This project does not yet have a description."}" />
 	<meta name="description" content="{project.description_short || project.description?.slice(0, 200) || "This project does not yet have a description."}" />
 	<meta name="twitter:description" content="{project.description_short || project.description?.slice(0, 200) || "This project does not yet have a description."}" />
-	<meta property="og:url" content="{{BASE_URL}}{getProjectLink(project.id, project.name)}" />
+	<meta property="og:url" content="{BASE_URL}{getProjectLink(project.id, project.name)}" />
 	<meta property="og:image" content="{project.has_thumbnail ? `${BASE_URL}/project/${project.id}/thumbnail_full.webp` : "/project-placeholder.webp"}" />
 	<meta name="keywords" content="{project.name}, {project.owner_name}, {project.keywords}, computercraft, computer, craft, lua, minecraft, mine, programming, library, games, programs, collection, store">
 </svelte:head>
@@ -16,11 +16,12 @@
 	import { fade } from "svelte/transition";
 	import { onMount, onDestroy } from "svelte";
 	import { getProjectLink, addToast } from "$lib/util.js";
-	import { BASE_URL, getMyProfile, reportProjectView, reportProjectDownload } from "$lib/database.js";
+	import { BASE_URL, getMyProfile, reportProjectView, reportProjectDownload, saveProject, checkSavedProject, unsaveProject, followProject, checkFollowingProject, unfollowProject } from "$lib/database.js";
 	
 	import SvelteMarkdown from "svelte-markdown";
 	import MDImage from "$lib/MDImage.svelte";
 	import MDCode from "$lib/MDCode.svelte";
+	import Modal from "$lib/Modal.svelte";
     import CommentSection from "./CommentSection.svelte";
 
 	export let data;
@@ -148,10 +149,54 @@
 		reportProjectDownload(project.id);
 	}
 
+	let loginModalOpen = false;
+
+	let following = false;
+	async function followButton() {
+		following = !following;
+		if (following) {
+			let res = await followProject(project.id);
+			if (res.success)
+				addToast("Following!", "You are now following this project.", "success", 3);
+			else
+				addToast("Failed!", "Failed to follow project. Error: " + (res.error ?? "no error"), "error");
+		} else {
+			let res = await unfollowProject(project.id);
+			if (res.success)
+				addToast("Unfollowed!", "You are no longer following this project.", "success", 3);
+			else
+				addToast("Failed!", "Failed to unfollow project. Error: " + (res.error ?? "no error"), "error");
+		}
+	}
+
+	let saved = false;
+	async function saveButton() {
+		saved = !saved;
+		if (saved) {
+			let res = await saveProject(project.id);
+			if (res.success)
+				addToast("Saved!", "You have saved this project.", "success", 3);
+			else
+				addToast("Failed!", "Failed to follow project. Error: " + (res.error ?? "no error"), "error");
+		} else {
+			let res = await unsaveProject(project.id);
+			if (res.success)
+				addToast("Unsaved!", "You no longer have this project saved.", "success", 3);
+			else
+				addToast("Failed!", "Failed to unsave project. Error: " + (res.error ?? "no error"), "error");
+		}
+	}
+
 	onMount(async () => {
 		setTimeout(reportProjectView, 3000, project.id); // report a view if the page is open for at least 3 seconds
 		let profileData = await getMyProfile();
 		myId = profileData?.user?.discord_id;
+		if (myId != null) {
+			let followingData = await checkFollowingProject(project.id);
+			following = followingData.following;
+			let savedData = await checkSavedProject(project.id);
+			saved = savedData.saved;
+		}
 	});
 </script>
 
@@ -173,9 +218,47 @@
 			</div>
 		{/if}
 
-		{#if myId != null && project.owner_discord == myId}
-			<a id="editProjectButton" class="button" href="/profile/edit/{project.id}"><i class="fa-solid fa-pencil"></i> Edit project</a>
-		{/if}
+		<div class="top-buttons">
+			{#if myId == null}
+				<button class="button" on:click|preventDefault={() => { loginModalOpen = true; }}>
+					<i class="fa-regular fa-star"></i>
+					Save
+				</button>
+				<button class="button" on:click|preventDefault={() => { loginModalOpen = true; }}>
+					<i class="fa-solid fa-plus"></i>
+					Follow
+				</button>
+			{:else if project.owner_discord == myId}
+				<a class="button" href="/profile/edit/{project.id}">
+					<i class="fa-solid fa-pencil"></i>
+					Edit project
+				</a>
+			{:else}
+				{#if saved}
+					<button class="button gray" on:click|preventDefault={saveButton}>
+						<i class="fa-solid fa-star"></i>
+						Saved
+					</button>
+				{:else}
+					<button class="button" on:click|preventDefault={saveButton}>
+						<i class="fa-regular fa-star"></i>
+						Save
+					</button>
+				{/if}
+
+				{#if following}
+					<button class="button gray" on:click|preventDefault={followButton}>
+						<i class="fa-solid fa-check"></i>
+						Following
+					</button>
+				{:else}
+					<button class="button" on:click|preventDefault={followButton}>
+						<i class="fa-solid fa-plus"></i>
+						Follow
+					</button>
+				{/if}
+			{/if}
+		</div>
 
 		<div class="top-info">
 			<span class="total-downloads">{project.downloads} {project.downloads == 1 ? "download" : "downloads"}</span>
@@ -212,7 +295,7 @@
 			<!-- svelte-ignore a11y-click-events-have-key-events -->
 			<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
 			{#if project.install_command || !project.download_url}
-				<pre type="text" class="command" class:copied={copied} on:click={copyInstall}>{#if copied}<i id="copiedText" in:fade="{{ duration: 100 }}">Copied!</i>{/if}{project.install_command ? `wget run ${{BASE_URL}}/d/${project.id}` : "no install command"}<i id="copyInstallButton" class="fas fa-copy"></i></pre>
+				<pre type="text" class="command" class:copied={copied} on:click={copyInstall}>{#if copied}<i id="copiedText" in:fade="{{ duration: 100 }}">Copied!</i>{/if}{project.install_command ? `wget run ${BASE_URL}/d/${project.id}` : "no install command"}<i id="copyInstallButton" class="fas fa-copy"></i></pre>
 			{/if}
 			{#if project.download_url}
 				<a on:click={downloadLinkOpened} target="_blank" rel="noreferrer" class="button green" href="{project.download_url}">Download <i style="margin-left:0.5rem;" class="fa-solid fa-download"></i></a>
@@ -237,6 +320,14 @@
 		<CommentSection projectId={project.id} {comments} {myId} />
 	</div>
 </div>
+
+<Modal title="Login" bind:opened={loginModalOpen}>
+	<p>To save and follow projects, you need to be logged in on the site.</p>
+	<a href="https://discord.com/api/oauth2/authorize?client_id=1073728324142116948&redirect_uri=https%3A%2F%2Fpinestore.cc%2Fdiscordauth&response_type=code&scope=identify" class="modal-button button">
+		<i class="fa-brands fa-discord"></i>
+		Login with Discord
+	</a>
+</Modal>
 
 {#if viewImgSrc}
 	<div id="imageViewBg"></div>
@@ -282,25 +373,36 @@
 		right: 0;
 		color: var(--text-color-dark);
 	}
-	#editProjectButton {
+
+	.top-buttons {
+		display: flex;
+		justify-content: center;
+		flex-wrap: wrap;
+		gap: 1rem;
 		position: absolute;
+		z-index: 10;
 		left: 50%;
 		transform: translateX(-50%);
+	}
+	.top-buttons > * {
 		font-size: 1rem;
 		border-radius: 10rem;
-		z-index: 10;
+		text-align: center;
+		min-width: 9rem;
 	}
-	#editProjectButton i {
+	.top-buttons > * i {
 		margin-right: 0.5rem;
 	}
-	@media screen and (max-width: 30rem) {
-		#editProjectButton {
+	@media screen and (max-width: 32rem) {
+		.top-buttons {
 			position: relative;
-			display: block;
 			width: 100%;
 			margin-bottom: 1rem;
 			box-sizing: border-box;
-			text-align: center;
+		}
+		.top-buttons > * {
+			flex: 1;
+			min-width: 10rem;
 		}
 	}
 
@@ -435,5 +537,15 @@
 		left: 0;
 		width: 100%;
 		height: 100%;
+	}
+
+	.modal-button {
+		display: block;
+		box-sizing: border-box;
+		width: 100%;
+		text-align: center;
+	}
+	.modal-button > i {
+		margin-right: 0.5em;
 	}
 </style>
