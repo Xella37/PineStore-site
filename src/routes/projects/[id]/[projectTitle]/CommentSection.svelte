@@ -3,7 +3,7 @@
 	import { BASE_URL, newComment, getComments } from "$lib/database.js";
 	import { calcTimeAgo, addToast } from "$lib/util.js";
 
-	export let projectId;
+	export let project;
 	export let comments;
 	export let myId;
 
@@ -38,7 +38,7 @@
 	}
 
 	async function refreshComments() {
-		let commentData = await getComments(projectId);
+		let commentData = await getComments(project.id);
 		comments = commentData.comments;
 		processComments();
 	}
@@ -46,7 +46,7 @@
 	let commentText = "";
 	async function postComment(e) {
 		e.preventDefault();
-		let res = await newComment(projectId, null, commentText);
+		let res = await newComment(project.id, null, commentText);
 		if (res.success) {
 			commentText = "";
 			await refreshComments();
@@ -60,7 +60,7 @@
 	let replyText;
 	async function postReply(e) {
 		e.preventDefault();
-		let res = await newComment(projectId, replyId, replyText);
+		let res = await newComment(project.id, replyId, replyText);
 		if (res.success) {
 			replyId = null;
 			replyText = "";
@@ -98,7 +98,9 @@
 			<a href="/user/{comment.user_discord}">
 				<img src="{BASE_URL}/pfp/{comment.user_discord}.png" alt="pfp">
 			</a>
-			<a href="/user/{comment.user_discord}" class="comment-user">{comment.user_name ?? "Unnamed"}</a><span class="comment-timestamp">{formatCommentTimestamp(comment.timestamp)}</span>
+			<a href="/user/{comment.user_discord}" class="comment-user">{comment.user_name ?? "Unnamed"}</a>
+				{#if comment.user_discord == project.owner_discord}<span class="comment-creator">Creator</span>{/if}
+				<span class="comment-timestamp">{formatCommentTimestamp(comment.timestamp)}</span>
 			{#if replyId != comment.id}
 				<button class="reply-button" on:click={() => { replyId = comment.id; }}>
 					<i class="fa-solid fa-reply"></i>
@@ -135,7 +137,9 @@
 							<a href="/user/{reply.user_discord}">
 								<img src="{BASE_URL}/pfp/{reply.user_discord}.png" alt="pfp">
 							</a>
-							<a href="/user/{reply.user_discord}" class="comment-user">{reply.user_name ?? "Unnamed"}</a><span class="comment-timestamp">{formatCommentTimestamp(reply.timestamp)}</span>
+							<a href="/user/{reply.user_discord}" class="comment-user">{reply.user_name ?? "Unnamed"}</a>
+								{#if reply.user_discord == project.owner_discord}<span class="comment-creator">Creator</span>{/if}
+								<span class="comment-timestamp">{formatCommentTimestamp(reply.timestamp)}</span>
 							<p class="comment-body">
 								{#each reply.body.split("\n") as line}
 									{line}
@@ -213,8 +217,20 @@
 		font-size: 1.25rem;
 		color: white;
 	}
+	.comment-creator {
+		--color: var(--cc-lime);
+		color: var(--color);
+		/* font-size: 0.75rem; */
+		margin: 0;
+		margin-left: 0.75rem;
+		border: 0.125rem solid var(--color);
+		border-radius: 2rem;
+		padding: 0.0625rem 0.5rem;
+		padding-bottom: 0.125rem;
+		transform: translateY(-0.25rem);
+	}
 	.comment-timestamp {
-		margin-left: 1rem;
+		margin-left: 0.75rem;
 		color: var(--text-color-dark);
 	}
 	.comment-body {
@@ -228,7 +244,6 @@
 		position: absolute;
 		color: var(--color);
 		font-size: 0.75rem;
-		padding: 0;
 		margin: 0;
 		margin-left: 1rem;
 		border: 0.125rem solid var(--color);

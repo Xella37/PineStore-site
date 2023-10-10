@@ -316,7 +316,7 @@
 			<span>comments</span>
 		</div>
 
-		<CommentSection projectId={project.id} {comments} {myId} />
+		<CommentSection {project} {comments} {myId} />
 	</div>
 </div>
 
