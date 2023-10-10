@@ -314,12 +314,6 @@ textarea {
 	transform: translateY(-50%);
 }
 
-.lua-codeblock {
-	margin-top: 1rem;
-	border-radius: 0.5rem;
-	tab-size: 4ch;
-}
-
 code.hljs {
 	background: var(--sidebar-color);
 	color: #CED6E2;
@@ -344,12 +338,6 @@ code.hljs span.hljs-number {
 
 code.hljs span.hljs-title {
 	color: #61AFEF;
-}
-
-
-pre {
-	background-color: rgba(0, 0, 0, 0.25);
-	border-radius: 1rem;
 }
 
 .ruler-text {

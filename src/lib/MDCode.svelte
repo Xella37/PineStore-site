@@ -5,6 +5,7 @@
 
 <script>
 	import { onMount } from "svelte";
+	import { browser } from "$app/environment";
 
 	export let text;
 
@@ -14,7 +15,7 @@
 		hljs.highlightAll();
 	});
 
-	$: if (text) {
+	$: if (text && browser) {
 		displayCode = false;
 		setTimeout(() => {
 			displayCode = true;
@@ -30,8 +31,15 @@
 {/if}
 
 <style>
-	pre {
+	pre.lua-codeblock {
 		background-color: rgba(0, 0, 0, 0.25);
 		border-radius: 1rem;
+		margin-top: 1rem;
+		border-radius: 0.5rem;
+		tab-size: 4ch;
+	}
+	pre.lua-codeblock code {
+		width: 100%;
+		box-sizing: border-box;
 	}
 </style>
