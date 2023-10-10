@@ -18,9 +18,8 @@
 	import { getProjectLink, addToast } from "$lib/util.js";
 	import { BASE_URL, getMyProfile, reportProjectView, reportProjectDownload, saveProject, checkSavedProject, unsaveProject, followProject, checkFollowingProject, unfollowProject } from "$lib/database.js";
 	
-	import SvelteMarkdown from "svelte-markdown";
-	import MDImage from "$lib/MDImage.svelte";
-	import MDCode from "$lib/MDCode.svelte";
+	import Markdown from "$lib/Markdown.svelte";
+	
 	import Modal from "$lib/Modal.svelte";
     import CommentSection from "./CommentSection.svelte";
 
@@ -283,11 +282,11 @@
 			{/if}
 			
 			{#if project.description_markdown}
-				<SvelteMarkdown source={project.description_markdown} renderers={{ image: MDImage, code: MDCode }} />
+				<Markdown source={project.description_markdown} />
 			{:else if project.description}
-				<SvelteMarkdown source={project.description} renderers={{ image: MDImage, code: MDCode }} />
+				<Markdown source={project.description} />
 			{:else}
-				<SvelteMarkdown source={DESCRIPTION_PLACEHOLDER} renderers={{ image: MDImage, code: MDCode }} />
+				<Markdown source={DESCRIPTION_PLACEHOLDER} />
 			{/if}
 		</div>
 

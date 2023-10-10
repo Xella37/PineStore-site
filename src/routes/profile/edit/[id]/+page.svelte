@@ -8,9 +8,7 @@
 	import { BASE_URL, getProject, setProjectInfo, setProjectThumbnail, addProjectMedia, removeProjectMedia, publishProjectUpdate } from "$lib/database.js";
 	import { getProjectLink, addToast } from "$lib/util.js";
 
-	import SvelteMarkdown from "svelte-markdown";
-	import MDImage from "$lib/MDImage.svelte";
-	import MDCode from "$lib/MDCode.svelte";
+	import Markdown from "$lib/Markdown.svelte";
     import Modal from "$lib/Modal.svelte";
 
 	import { page } from "$app/stores";
@@ -246,7 +244,7 @@
 						<div class="form-list">
 							<label for="descriptionPreview">Preview</label>
 							<div id="descriptionPreview" class="markdown-container">
-								<SvelteMarkdown source={project.description_markdown ?? ""} renderers={{ image: MDImage, code: MDCode }} />
+								<Markdown source={project.description_markdown ?? ""} />
 							</div>
 						</div>
 					</div>

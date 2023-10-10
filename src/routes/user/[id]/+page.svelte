@@ -14,9 +14,7 @@
 
 <script>
 	import { onMount } from "svelte";
-	import SvelteMarkdown from "svelte-markdown";
-	import MDImage from "./MDImage.svelte";
-	import MDCode from "./MDCode.svelte";
+	import Markdown from "$lib/Markdown.svelte";
 	import Modal from "$lib/Modal.svelte";
     import ProjectList from "./../../ProjectList.svelte";
 	import { addToast } from "$lib/util.js";
@@ -100,11 +98,11 @@
 
 		<p id="about" class="markdown-container">
 			{#if user.about_markdown}
-				<SvelteMarkdown source={user.about_markdown} renderers={{ image: MDImage, code: MDCode }} />
+				<Markdown source={user.about_markdown} />
 			{:else if user.about}
-				<SvelteMarkdown source={user.about} renderers={{ image: MDImage, code: MDCode }} />
+				<Markdown source={user.about} />
 			{:else}
-				<SvelteMarkdown source={ABOUT_PLACEHOLDER} renderers={{ image: MDImage, code: MDCode }} />
+				<Markdown source={ABOUT_PLACEHOLDER} />
 			{/if}
 		</p>
 

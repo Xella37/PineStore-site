@@ -4,9 +4,7 @@
 </svelte:head>
 
 <script>
-	import SvelteMarkdown from "svelte-markdown";
-	import MDImage from "$lib/MDImage.svelte";
-	import MDCode from "$lib/MDCode.svelte";
+	import Markdown from "$lib/Markdown.svelte";
 	import { onMount } from "svelte";
 	import { logoutUser, getMyProjects, getMyProfile, newProject, setProfileInfo, deleteProject, getUserOptions, setUserOptions } from "$lib/database.js";
 	import { addToast } from "$lib/util.js";
@@ -136,11 +134,11 @@
 			
 			<p id="about" class="markdown-container">
 				{#if profile.about_markdown}
-					<SvelteMarkdown source={profile.about_markdown} renderers={{ image: MDImage, code: MDCode }} />
+					<Markdown source={profile.about_markdown} />
 				{:else if profile.about}
-					<SvelteMarkdown source={profile.about} renderers={{ image: MDImage, code: MDCode }} />
+					<Markdown source={profile.about} />
 				{:else}
-					<SvelteMarkdown source={"No about info..."} renderers={{ image: MDImage, code: MDCode }} />
+					<Markdown source={"No about info..."} />
 				{/if}
 			</p>
 		{:else}
