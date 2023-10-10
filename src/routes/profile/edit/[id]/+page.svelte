@@ -182,7 +182,9 @@
 			<label for="titleInput">Name</label>
 			<input id="titleInput" type="text" bind:value={project.name} maxlength="40" placeholder="My Cool Project">
 
-			<button class="button green" on:click|preventDefault={() => { publishUpdateModal = true; }}>Publish update</button>
+			{#if savedProject.visible}
+				<button class="button green" on:click|preventDefault={() => { publishUpdateModal = true; }}>Publish update</button>
+			{/if}
 
 			<div class="ruler-text">
 				<span>basic info</span>
