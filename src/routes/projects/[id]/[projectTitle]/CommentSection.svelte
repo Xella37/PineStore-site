@@ -99,10 +99,12 @@
 				<img src="{BASE_URL}/pfp/{comment.user_discord}.png" alt="pfp">
 			</a>
 			<a href="/user/{comment.user_discord}" class="comment-user">{comment.user_name ?? "Unnamed"}</a><span class="comment-timestamp">{formatCommentTimestamp(comment.timestamp)}</span>
-			<button class="reply-button" on:click={() => { replyId = comment.id; }}>
-				<i class="fa-solid fa-reply"></i>
-				Reply
-			</button>
+			{#if replyId != comment.id}
+				<button class="reply-button" on:click={() => { replyId = comment.id; }}>
+					<i class="fa-solid fa-reply"></i>
+					Reply
+				</button>
+			{/if}
 
 			<p class="comment-body">
 				{#each comment.body.split("\n") as line}
@@ -193,6 +195,7 @@
 		gap: 2rem;
 		margin-top: 2rem;
 		margin-bottom: 1rem;
+		width: 100%;
 	}
 	.comment {
 		position: relative;
@@ -219,14 +222,19 @@
 		margin-bottom: 0.5rem;
 	}
 	.reply-button {
+		--color: var(--cc-lightBlue);
 		display: none;
-		border: none;
 		background: none;
-		color: var(--cc-lightBlue);
+		position: absolute;
+		color: var(--color);
 		font-size: 0.75rem;
 		padding: 0;
 		margin: 0;
-		margin-left: 0.5rem;
+		margin-left: 1rem;
+		border: 0.125rem solid var(--color);
+		border-radius: 2rem;
+		padding: 0.125rem 0.5rem;
+		transform: translateY(0.25rem);
 	}
 	.comment:hover .reply-button {
 		display: unset;
@@ -235,7 +243,8 @@
 		margin-block: 2rem;
 	}
 	.reply-button:hover {
-		text-decoration: underline;
+		cursor: pointer;
+		--color: var(--cc-blue);
 	}
 	.comment-replies {
 		display: flex;
