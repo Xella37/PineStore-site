@@ -1,6 +1,7 @@
 
 <script>
-	import { BASE_URL, newComment, getComments } from "$lib/database.js";
+	import Modal from "$lib/Modal.svelte";
+	import { BASE_URL, newComment, getComments, deleteComment } from "$lib/database.js";
 	import { calcTimeAgo, addToast } from "$lib/util.js";
 
 	export let project;
@@ -71,6 +72,19 @@
 		}
 	}
 
+	let deleteId;
+	let deleteCommentModal = false;
+	async function deleteCommentSubmit() {
+		let res = await deleteComment(deleteId);
+		deleteCommentModal = false;
+		if (res.success) {
+			await refreshComments();
+			addToast("Deleted!", "Your comment has been deleted.", "success", 3);
+		} else {
+			addToast("Failed!", "Error: " + (res.error ?? "no error"), "error");
+		}
+	}
+
 	function formatCommentTimestamp(timestamp) {
 		return `${calcTimeAgo(timestamp, true)} ago`;
 	}
@@ -95,20 +109,33 @@
 
 	{#each rootComments as comment}
 		<div class="comment">
-			<a href="/user/{comment.user_discord}">
-				<img src="{BASE_URL}/pfp/{comment.user_discord}.png" alt="pfp">
-			</a>
-			<a href="/user/{comment.user_discord}" class="comment-user">{comment.user_name ?? "Unnamed"}</a>
+			{#if comment.user_discord == "deleted"}
+				<img src="/pfp-deleted.png" alt="pfp">
+				<span class="comment-user">{comment.user_name}</span>
+			{:else}
+				<a href="/user/{comment.user_discord}">
+					<img src="{BASE_URL}/pfp/{comment.user_discord}.png" alt="pfp">
+				</a>
+				<a href="/user/{comment.user_discord}" class="comment-user">{comment.user_name ?? "Unnamed"}</a>
+			{/if}
 				{#if comment.user_discord == project.owner_discord}<span class="comment-creator">Creator</span>{/if}
 				<span class="comment-timestamp">{formatCommentTimestamp(comment.timestamp)}</span>
-			{#if replyId != comment.id}
-				<button class="reply-button" on:click={() => { replyId = comment.id; }}>
-					<i class="fa-solid fa-reply"></i>
-					Reply
-				</button>
-			{/if}
+			<div class="action-buttons">
+				{#if myId == comment.user_discord}
+					<button class="delete-button" on:click={() => { deleteId = comment.id; deleteCommentModal = true; }}>
+						<i class="fa-solid fa-trash-can"></i>
+						Delete
+					</button>
+				{/if}
+				{#if replyId != comment.id}
+					<button class="reply-button" on:click={() => { replyId = comment.id; }}>
+						<i class="fa-solid fa-reply"></i>
+						Reply
+					</button>
+				{/if}
+			</div>
 
-			<p class="comment-body">
+			<p class="comment-body" class:deleted={comment.user_discord == "deleted"}>
 				{#each comment.body.split("\n") as line}
 					{line}
 					<br>
@@ -134,13 +161,26 @@
 				<div class="comment-replies">
 					{#each replies[comment.id] as reply}
 						<div class="comment">
-							<a href="/user/{reply.user_discord}">
-								<img src="{BASE_URL}/pfp/{reply.user_discord}.png" alt="pfp">
-							</a>
-							<a href="/user/{reply.user_discord}" class="comment-user">{reply.user_name ?? "Unnamed"}</a>
+							{#if reply.user_discord == "deleted"}
+								<img src="/pfp-deleted.png" alt="pfp">
+								<span class="comment-user">{reply.user_name}</span>
+							{:else}
+								<a href="/user/{reply.user_discord}">
+									<img src="{BASE_URL}/pfp/{reply.user_discord}.png" alt="pfp">
+								</a>
+								<a href="/user/{reply.user_discord}" class="comment-user">{reply.user_name ?? "Unnamed"}</a>
+							{/if}
 								{#if reply.user_discord == project.owner_discord}<span class="comment-creator">Creator</span>{/if}
 								<span class="comment-timestamp">{formatCommentTimestamp(reply.timestamp)}</span>
-							<p class="comment-body">
+							<div class="action-buttons">
+								{#if myId == reply.user_discord}
+									<button class="delete-button" on:click={() => { deleteId = reply.id; deleteCommentModal = true; }}>
+										<i class="fa-solid fa-trash-can"></i>
+										Delete
+									</button>
+								{/if}
+							</div>
+							<p class="comment-body" class:deleted={reply.user_discord == "deleted"}>
 								{#each reply.body.split("\n") as line}
 									{line}
 									<br>
@@ -153,6 +193,14 @@
 		</div>
 	{/each}
 </div>
+
+<Modal title="Delete comment" bind:opened={deleteCommentModal}>
+	<p>Are you sure you want to delete your comment?</p>
+
+	<form class="model-form" on:submit|preventDefault={deleteCommentSubmit}>
+		<button type="submit" class="button red">Delete</button>
+	</form>
+</Modal>
 
 <style>
 	.writing-container {
@@ -237,19 +285,45 @@
 		display: block;
 		margin-bottom: 0.5rem;
 	}
+	.comment-body.deleted {
+		font-style: italic;
+		color: var(--text-color-dark);
+	}
+	.action-buttons {
+		position: absolute;
+		margin-left: 1rem;
+		display: inline-flex;
+		gap: 0.5rem;
+		transform: translateY(0.25rem);
+	}
+	.delete-button {
+		--color: var(--cc-red);
+		display: none;
+		background: none;
+		color: var(--color);
+		font-size: 0.75rem;
+		margin: 0;
+		border: 0.125rem solid var(--color);
+		border-radius: 2rem;
+		padding: 0.125rem 0.5rem;
+	}
+	.comment:hover > .action-buttons > .delete-button {
+		display: unset;
+	}
+	.delete-button:hover {
+		cursor: pointer;
+		--color: var(--cc-orange);
+	}
 	.reply-button {
 		--color: var(--cc-lightBlue);
 		display: none;
 		background: none;
-		position: absolute;
 		color: var(--color);
 		font-size: 0.75rem;
 		margin: 0;
-		margin-left: 1rem;
 		border: 0.125rem solid var(--color);
 		border-radius: 2rem;
 		padding: 0.125rem 0.5rem;
-		transform: translateY(0.25rem);
 	}
 	.comment:hover .reply-button {
 		display: unset;
@@ -266,5 +340,9 @@
 		flex-direction: column;
 		gap: 2rem;
 		margin-top: 2rem;
+	}
+
+	.model-form button {
+		width: 100%;
 	}
 </style>

@@ -110,6 +110,8 @@ export const setProjectThumbnail = (projectId, imageData) =>
 
 export const newComment = (projectId, replyId, text) =>
 	api("POST", "auth/comment", { projectId, replyId, text });
+export const deleteComment = (id) =>
+	api("POST", "auth/comment/delete", { commentId: id });
 
 export const getNotifications = () =>
 	api("GET", "auth/notifications");
