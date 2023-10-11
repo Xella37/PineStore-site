@@ -127,7 +127,7 @@
 						Delete
 					</button>
 				{/if}
-				{#if replyId != comment.id}
+				{#if myId != null && replyId != comment.id}
 					<button class="reply-button" on:click={() => { replyId = comment.id; }}>
 						<i class="fa-solid fa-reply"></i>
 						Reply
