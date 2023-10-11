@@ -63,7 +63,7 @@ export function calcTimeAgo(timestamp, fullLength=false) {
 		return `${d}d`;
 }
 
-export const tags = [
+const allTags = [
 	{
 		id: "saved",
 		display: "Saved",
@@ -121,3 +121,10 @@ export const tags = [
 		display: "Quirky"
 	},
 ];
+export const tags = allTags;
+
+let tagDisplayMapping = {};
+for (const tag of allTags) {
+	tagDisplayMapping[tag.id] = tag.display;
+}
+export const tagToDisplay = tagDisplayMapping;

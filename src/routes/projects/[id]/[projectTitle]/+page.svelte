@@ -15,7 +15,7 @@
 <script>
 	import { fade } from "svelte/transition";
 	import { onMount, onDestroy } from "svelte";
-	import { getProjectLink, addToast } from "$lib/util.js";
+	import { getProjectLink, addToast, tagToDisplay } from "$lib/util.js";
 	import { BASE_URL, getMyProfile, reportProjectView, reportProjectDownload, saveProject, checkSavedProject, unsaveProject, followProject, checkFollowingProject, unfollowProject } from "$lib/database.js";
 	
 	import Markdown from "$lib/Markdown.svelte";
@@ -272,6 +272,12 @@
 			<span class="subheader">by <a href="/user/{project.owner_discord}">{project.owner_name}</a></span>
 		</h1>
 
+		<div class="tags-container">
+			{#each project.tags.split(",") as tag}
+				<a class="button tag gray" href="/projects?tag={encodeURIComponent(tag)}">{tagToDisplay[tag]}</a>
+			{/each}
+		</div>
+
 		<div id="description" class="markdown-container">
 			{#if !project.hide_thumbnail}
 				{#if project.has_thumbnail}
@@ -338,6 +344,7 @@
 <style>
 	h1 {
 		font-size: 4rem;
+		margin-bottom: 1rem;
 		/* margin-top: 4rem; */
 	}
 
@@ -437,10 +444,21 @@
 		}
 	}
 
+	.tags-container {
+		display: flex;
+		gap: 0.5rem;
+		flex-wrap: wrap;
+	}
+	.tag {
+		font-size: 1rem;
+		padding: 0.25rem 0.75rem;
+	}
+
 	#description {
 		overflow: hidden;
 		padding: 1.5rem;
 		margin: -1.5rem;
+		margin-top: 0;
 		padding-bottom: 0;
 	}
 
