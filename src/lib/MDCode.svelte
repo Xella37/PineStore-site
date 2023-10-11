@@ -37,6 +37,8 @@
 		margin-top: 1rem;
 		border-radius: 0.5rem;
 		tab-size: 4ch;
+		display: inline-block;
+		width: 100%;
 	}
 	pre.lua-codeblock code {
 		width: 100%;
