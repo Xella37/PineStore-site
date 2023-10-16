@@ -45,9 +45,7 @@
 
 	let newProjectModal = false;
 	let newProjectName = "";
-	async function createNewProject(e) {
-		e.preventDefault();
-
+	async function createNewProject() {
 		newProjectModal = false;
 		let data = await newProject(newProjectName);
 		if (data.success) {
@@ -62,9 +60,7 @@
 
 	let deleteProjectModal = false;
 	let projectToDelete = 0;
-	async function deleteProjectSubmit(e) {
-		e.preventDefault();
-
+	async function deleteProjectSubmit() {
 		deleteProjectModal = false;
 		await deleteProject(projectToDelete);
 		await loadProjects();
@@ -261,7 +257,7 @@
 </div>
 
 <Modal title="New project" bind:opened={newProjectModal}>
-	<form class="model-form" on:submit={createNewProject}>
+	<form class="model-form" on:submit|preventDefault={createNewProject}>
 		<label for="newProjectName">Project name</label>
 		<input id="newProjectName" type="text" placeholder="Project name" bind:value={newProjectName}>
 
@@ -272,7 +268,7 @@
 <Modal title="Delete project" bind:opened={deleteProjectModal}>
 	<p>Are you sure you want to delete this project?</p>
 
-	<form class="model-form" on:submit={deleteProjectSubmit}>
+	<form class="model-form" on:submit|preventDefault={deleteProjectSubmit}>
 		<button type="submit" class="button red">Delete</button>
 	</form>
 </Modal>
