@@ -273,7 +273,7 @@
 		</h1>
 
 		<div class="tags-container">
-			{#each project.tags.split(",") as tag}
+			{#each project.tags?.split(",") ?? [] as tag}
 				<a class="button tag gray" href="/projects?tag={encodeURIComponent(tag)}">{tagToDisplay[tag]}</a>
 			{/each}
 		</div>
