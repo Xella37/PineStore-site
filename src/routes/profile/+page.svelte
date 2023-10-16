@@ -269,7 +269,7 @@
 	</form>
 </Modal>
 
-<Modal title="New project" bind:opened={deleteProjectModal}>
+<Modal title="Delete project" bind:opened={deleteProjectModal}>
 	<p>Are you sure you want to delete this project?</p>
 
 	<form class="model-form" on:submit={deleteProjectSubmit}>
