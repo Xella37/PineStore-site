@@ -86,6 +86,7 @@ export const setProfileInfo = (profileData) =>
 		"name": profileData.name,
 		"about": profileData.about,
 		"about_markdown": profileData.about_markdown,
+		"connections": profileData.connections,
 	}));
 
 export const setProjectInfo = (projectData) =>

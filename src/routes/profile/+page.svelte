@@ -5,6 +5,7 @@
 
 <script>
 	import Markdown from "$lib/Markdown.svelte";
+	import ConnectionIcon from "$lib/ConnectionIcon.svelte";
 	import { onMount } from "svelte";
 	import { logoutUser, getMyProjects, getMyProfile, newProject, setProfileInfo, deleteProject, getUserOptions, setUserOptions } from "$lib/database.js";
 	import { addToast } from "$lib/util.js";
@@ -68,6 +69,24 @@
 		await deleteProject(projectToDelete);
 		await loadProjects();
 		addToast("Deleted!", "Your project has been deleted.", "success", 3);
+	}
+
+	let connectionId = "link";
+	let connectionDisplay = "";
+	let connectionLink = "";
+	let addConnectionModal = false;
+	async function addConnectionSubmit() {
+		profile.connections.push({
+			id: connectionId,
+			display: connectionDisplay,
+			link: connectionLink,
+		});
+		profile.connections = profile.connections;
+		addConnectionModal = false;
+	}
+	function removeConnection(index) {
+		profile.connections.splice(index, 1);
+		profile.connections = profile.connections;
 	}
 
 	let options = {};
@@ -141,6 +160,29 @@
 					<Markdown source={"No about info..."} />
 				{/if}
 			</p>
+
+			<h2>Connections</h2>
+			{#if profile.connections?.length > 0}
+				<div class="connections-container">
+					{#each profile.connections as con}
+						{#if con.link?.length > 0}
+							<a href="{con.link}" class="no-link">
+								<div class="connection">
+									<span class="connection-icon"><ConnectionIcon id={con.id} /></span>
+									{con.display}
+								</div>
+							</a>
+						{:else}
+							<div class="connection no-link">
+								<span class="connection-icon"><ConnectionIcon id={con.id} /></span>
+								{con.display}
+							</div>
+						{/if}
+					{/each}
+				</div>
+			{:else}
+				<p>None</p>
+			{/if}
 		{:else}
 			<form class="form-blocks">
 				<label for="nameInput">Display name</label>
@@ -152,6 +194,26 @@
 				<label for="aboutMDInput">About (markdown)</label>
 				<textarea id="aboutMDInput" type="text" bind:value={profile.about_markdown}></textarea>
 			</form>
+
+			<h2>Connections</h2>
+			{#if profile.connections?.length > 0}
+				<div class="connections-container">
+					{#each profile.connections as con, i}
+						<div class="connection no-link">
+							<button class="button red remove-connection" on:click|preventDefault={() => { removeConnection(i); }}>
+								<i class="fa-solid fa-trash-can"></i>
+							</button>
+							<span class="connection-icon"><ConnectionIcon id={con.id} /></span>
+							{con.display}
+							<span class="connection-link">{con.link}</span>
+						</div>
+					{/each}
+				</div>
+			{:else}
+				<p>None</p>
+			{/if}
+
+			<button id="addConnection" class="button" on:click={() => { addConnectionModal = true; }}><i class="fa-solid fa-plus"></i> Add connection</button>
 		{/if}
 
 		<div class="ruler-text">
@@ -212,6 +274,32 @@
 
 	<form class="model-form" on:submit={deleteProjectSubmit}>
 		<button type="submit" class="button red">Delete</button>
+	</form>
+</Modal>
+
+<Modal title="Add connection" bind:opened={addConnectionModal}>
+	<p>Add a new connection to your account</p>
+
+	<form class="model-form" on:submit|preventDefault={addConnectionSubmit}>
+		<label for="connectionType">Type</label>
+		<select id="connectionType" bind:value={connectionId}>
+			<option value="link">Direct Link</option>
+			<option value="github">GitHub</option>
+			<option value="discord">Discord</option>
+			<option value="twitterx">Twitter</option>
+			<option value="youtube">YouTube</option>
+			<option value="twitch">Twitch</option>
+			<option value="reddit">Reddit</option>
+			<option value="steam">Steam</option>
+		</select>
+
+		<label for="connectionDisplay">Display</label>
+		<input id="connectionDisplay" type="text" placeholder="Username" bind:value={connectionDisplay}>
+		
+		<label for="connectionLink">Link</label>
+		<input id="connectionLink" type="text" placeholder="https://example.com/myaccount" bind:value={connectionLink}>
+
+		<button type="submit" class="button green">Add</button>
 	</form>
 </Modal>
 
@@ -290,5 +378,31 @@
 		margin: auto;
 		margin-left: 1rem;
 		cursor: pointer;
+	}
+
+	.connections-container {
+		margin-bottom: 1rem;
+	}
+	.connections-container > * {
+		display: block;
+		margin-bottom: 0.5rem;
+		max-width: fit-content;
+	}
+	.connection.no-link {
+		color: var(--text-color-medium);
+	}
+	.connection-icon {
+		margin-right: 0.5em;
+		color: var(--text-color);
+	}
+	.connection-link {
+		color: var(--text-color-dark);
+		margin-left: 0.5em;
+	}
+	.remove-connection {
+		font-size: 0.8rem;
+		padding: 0.25rem 0.5rem;
+		border-radius: 2rem;
+		margin-right: 0.5rem;
 	}
 </style>

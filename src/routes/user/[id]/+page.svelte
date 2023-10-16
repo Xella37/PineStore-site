@@ -16,6 +16,7 @@
 	import { onMount } from "svelte";
 	import Markdown from "$lib/Markdown.svelte";
 	import Modal from "$lib/Modal.svelte";
+	import ConnectionIcon from "$lib/ConnectionIcon.svelte";
     import ProjectList from "./../../ProjectList.svelte";
 	import { addToast } from "$lib/util.js";
 	import { BASE_URL, getMyProfile, followUser, unfollowUser, checkFollowingUser } from "$lib/database.js";
@@ -69,43 +70,68 @@
 
 <div class="page-container">
 	<div class="page page-thin shadow">
-		<div class="top-buttons">
-			{#if myId == null}
-				<button class="button" on:click|preventDefault={() => { loginModalOpen = true; }}>
-					<i class="fa-solid fa-user-plus"></i>
-					Follow
-				</button>
-			{:else if user.discord_id != myId}
-				{#if following}
-					<button class="button gray" on:click|preventDefault={followButton}>
-						<i class="fa-solid fa-user-check"></i>
-						Following
-					</button>
-				{:else}
-					<button class="button" on:click|preventDefault={followButton}>
-						<i class="fa-solid fa-user-plus"></i>
-						Follow
-					</button>
+		<div class="userinfo">
+			<div class="sidebar">
+				<img class="pfp" src="{BASE_URL}/pfp/{user.discord_id}.png" alt="profile">
+
+				<div class="follow-container">
+					{#if myId == null}
+						<button class="button" on:click|preventDefault={() => { loginModalOpen = true; }}>
+							<i class="fa-solid fa-user-plus"></i>
+							Follow
+						</button>
+					{:else if user.discord_id != myId}
+						{#if following}
+							<button class="button gray" on:click|preventDefault={followButton}>
+								<i class="fa-solid fa-user-check"></i>
+								Following
+							</button>
+						{:else}
+							<button class="button" on:click|preventDefault={followButton}>
+								<i class="fa-solid fa-user-plus"></i>
+								Follow
+							</button>
+						{/if}
+					{/if}
+				</div>
+
+				{#if user.connections?.length > 0}
+					<div class="connections-container">
+						{#each user.connections as con}
+							{#if con.link?.length > 0}
+								<a href="{con.link}" class="no-link">
+									<div class="connection">
+										<span class="connection-icon"><ConnectionIcon id={con.id} /></span>
+										<span class="connection-display">{con.display}</span>
+									</div>
+								</a>
+							{:else}
+								<div class="connection no-link">
+									<span class="connection-icon"><ConnectionIcon id={con.id} /></span>
+									<span class="connection-display">{con.display}</span>
+								</div>
+							{/if}
+						{/each}
+					</div>
 				{/if}
-			{/if}
+			</div>
+
+			<div class="about-block">
+				<span class="created-date"><div id="joinedOn">Joined on</div> {createdDate}</span>
+				<h1>
+					{user.name}
+				</h1>
+				<p id="about" class="markdown-container">
+					{#if user.about_markdown}
+						<Markdown source={user.about_markdown} />
+					{:else if user.about}
+						<Markdown source={user.about} />
+					{:else}
+						<Markdown source={ABOUT_PLACEHOLDER} />
+					{/if}
+				</p>
+			</div>
 		</div>
-
-		<img class="pfp" src="{BASE_URL}/pfp/{user.discord_id}.png" alt="profile">
-		<span class="created-date"><div id="joinedOn">Joined on</div> {createdDate}</span>
-		<h1>
-			{user.name}
-		</h1>
-
-		<p id="about" class="markdown-container">
-			{#if user.about_markdown}
-				<Markdown source={user.about_markdown} />
-			{:else if user.about}
-				<Markdown source={user.about} />
-			{:else}
-				<Markdown source={ABOUT_PLACEHOLDER} />
-			{/if}
-		</p>
-
 		<div class="ruler-text">
 			<span>user has {projects.length} {projects.length == 1 && "project" || "projects"}</span>
 		</div>
@@ -130,6 +156,8 @@
 	.created-date {
 		position: absolute;
 		color: var(--text-color-dark);
+		top: -1rem;
+		right: 0;
 	}
 	.created-date #joinedOn {
 		display: inline-block;
@@ -139,6 +167,48 @@
 		border-radius: 100vw;
 		float: right;
 		width: 8rem;
+		margin-bottom: 1rem;
+	}
+	.connection.no-link {
+		color: var(--text-color-medium);
+	}
+	.connection-icon {
+		margin-right: 0.5em;
+		color: var(--text-color);
+	}
+	.connections-container {
+		display: flex!important;
+		flex-direction: column;
+		gap: 0.5rem;
+	}
+	.connections-container > * {
+		margin-inline: auto;
+	}
+
+	.userinfo {
+		position: relative;
+		display: flex;
+		flex-direction: row;
+		gap: 2rem;
+		margin-top: 1rem;
+	}
+	.sidebar {
+		flex: 1;
+		display: flex;
+		flex-direction: column;
+		width: fit-content;
+		min-width: 9rem;
+	}
+	.sidebar > * {
+		display: block;
+		margin-inline: auto;
+	}
+	.about-block {
+		flex: 3;
+	}
+	.about-block > h1 {
+		margin-top: 0;
+		margin-bottom: 1rem;
 	}
 
 	@media screen and (max-width: 45rem) {
@@ -148,20 +218,48 @@
 		}
 
 		.pfp {
-			width: 5rem;
+			width: 6rem;
+		}
+	}
+	@media screen and (max-width: 35rem) {
+		.userinfo {
+			flex-direction: column;
+			gap: 0;
+		}
+
+		.sidebar {
+			width: unset;
+			margin-top: 2rem;
+		}
+
+		.connections-container {
+			position: absolute;
+			top: 0;
+			left: 0;
+		}
+		.connections-container > * {
+			flex: 1;
+		}
+		.connection-icon {
+			display: block;
+			margin: auto;
+			font-size: 2rem;
+			width: fit-content;
+		}
+		.connection-display {
+			display: none;
+		}
+
+		.about-block h1 {
+			text-align: center;
+			margin-bottom: 3rem;
 		}
 	}
 
-	@media screen and (max-width: 25rem) {
+	@media screen and (max-width: 30rem) {
 		.created-date #joinedOn {
 			display: none;
 		}
-	}
-
-	#about {
-		overflow: hidden;
-		margin-top: 2rem;
-		margin-bottom: 2rem;
 	}
 
 	.ruler-text {
@@ -169,35 +267,34 @@
 		margin-bottom: 1rem;
 	}
 
-	.top-buttons {
-		display: flex;
-		justify-content: center;
-		flex-wrap: wrap;
-		gap: 1rem;
-		position: absolute;
-		z-index: 10;
-		left: 50%;
-		transform: translateX(-50%);
+	.follow-container {
+		margin-top: 0.5rem;
+		margin-bottom: 1.5rem;
 	}
-	.top-buttons > * {
+	.follow-container > * {
 		font-size: 1rem;
 		border-radius: 10rem;
 		text-align: center;
 		min-width: 9rem;
 	}
-	.top-buttons > * i {
+	.follow-container > * i {
 		margin-right: 0.5rem;
 	}
-	@media screen and (max-width: 40rem) {
-		.top-buttons {
-			position: relative;
-			width: 100%;
-			margin-bottom: 1rem;
-			box-sizing: border-box;
+	@media screen and (max-width: 35rem) {
+		.follow-container {
+			position: absolute;
+			top: -4rem;
+			left: 0;
+			right: 0;
 		}
-		.top-buttons > * {
-			flex: 1;
-			min-width: 10rem;
+		.follow-container > * {
+			width: 100%;
+		}
+		.userinfo {
+			margin-top: 4rem;
+		}
+		.created-date {
+			top: 0;
 		}
 	}
 
