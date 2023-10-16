@@ -3,6 +3,7 @@
 	import Modal from "$lib/Modal.svelte";
 	import { BASE_URL, newComment, getComments, deleteComment } from "$lib/database.js";
 	import { calcTimeAgo, addToast } from "$lib/util.js";
+	import Markdown from "$lib/Markdown.svelte";
 
 	export let project;
 	export let comments;
@@ -135,11 +136,8 @@
 				{/if}
 			</div>
 
-			<p class="comment-body" class:deleted={comment.user_discord == "deleted"}>
-				{#each comment.body.split("\n") as line}
-					{line}
-					<br>
-				{/each}
+			<p class="comment-body markdown-container" class:deleted={comment.user_discord == "deleted"}>
+				<Markdown source="{comment.body.split("\n").join("\n\n")}" escaped={true} />
 			</p>
 
 			{#if myId != null}
@@ -180,11 +178,8 @@
 									</button>
 								{/if}
 							</div>
-							<p class="comment-body" class:deleted={reply.user_discord == "deleted"}>
-								{#each reply.body.split("\n") as line}
-									{line}
-									<br>
-								{/each}
+							<p class="comment-body markdown-container" class:deleted={reply.user_discord == "deleted"}>
+								<Markdown source="{reply.body.split("\n").join("\n\n")}" escaped={true} />
 							</p>
 						</div>
 					{/each}
@@ -284,6 +279,9 @@
 	.comment-body {
 		display: block;
 		margin-bottom: 0.5rem;
+	}
+	:global(.comment-body p) {
+		margin-block: 0.37rem;
 	}
 	.comment-body.deleted {
 		font-style: italic;
