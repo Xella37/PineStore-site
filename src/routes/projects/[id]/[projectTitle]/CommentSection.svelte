@@ -101,6 +101,11 @@
 			<button type="submit" class="button post">Post</button>
 		</form>
 	</div>
+{:else}
+	<div class="info-block">
+		<i class="fa-solid fa-right-to-bracket"></i>
+		You can <a href="https://discord.com/api/oauth2/authorize?client_id=1073728324142116948&redirect_uri=https%3A%2F%2Fpinestore.cc%2Fdiscordauth&response_type=code&scope=identify">login with Discord</a> to leave comments and reply to others!
+	</div>
 {/if}
 
 <div id="commentSection">
