@@ -37,14 +37,20 @@
 
 	function sortProjects() {
 		displayProjects = displayProjects.sort((a, b) => {
-			if (sortingMethod == "recent_downloads")
-				return b.downloads_recent - a.downloads_recent;
-			else if (sortingMethod == "total_downloads")
+			if (sortingMethod == "recent_downloads") {
+				let dDownloadsRecent = b.downloads_recent - a.downloads_recent;
+				if (dDownloadsRecent != 0) return dDownloadsRecent;
+				let dDownloads = b.downloads - a.downloads;
+				if (dDownloads != 0) return dDownloads;
+				let dPublish = b.date_publish - a.date_publish;
+				return dPublish;
+			} else if (sortingMethod == "total_downloads") {
 				return b.downloads - a.downloads;
-			else if (sortingMethod == "recent_published")
+			} else if (sortingMethod == "recent_published") {
 				return b.date_publish - a.date_publish;
-			else if (sortingMethod == "recent_update")
+			} else if (sortingMethod == "recent_update") {
 				return (b.date_updated || b.date_publish) - (a.date_updated || a.date_publish); // using || since date_updated is 0 by default
+			}
 		});
 	}
 

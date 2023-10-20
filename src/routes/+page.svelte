@@ -17,9 +17,15 @@
 
 	export let data;
 
-	// let recentProjects = data.projects.slice(-3).reverse();
 	let recentProjects = data.projects.sort((a, b) => {return b.date_publish - a.date_publish}).slice(0, 3);
-	let popularProjects = data.projects.sort((a, b) => {return b.downloads_recent - a.downloads_recent}).slice(0, 6);
+	let popularProjects = data.projects.sort((a, b) => {
+		let dDownloadsRecent = b.downloads_recent - a.downloads_recent;
+		if (dDownloadsRecent != 0) return dDownloadsRecent;
+		let dDownloads = b.downloads - a.downloads;
+		if (dDownloads != 0) return dDownloads;
+		let dPublish = b.date_publish - a.date_publish;
+		return dPublish;
+	}).slice(0, 6);
 
 	let rotateLogo = false;
 	function startRotation() {
