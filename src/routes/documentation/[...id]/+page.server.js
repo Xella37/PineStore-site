@@ -44,31 +44,34 @@ The returned JSON object always has a "success" value with an "error" value as a
 			example_return: `{
 	"success": true,
 	"project": {
-		"id": 4,
-		"date_added": 1692013883788,
+		"id": 1,
+		"date_added": 1694617285452,
 		"date_updated": 0,
 		"date_release": 0,
-		"date_publish": 1692013883788,
+		"date_publish": 1694617285452,
 		"owner_discord": "302427405023313920",
 		"owner_name": "Xella",
 		"name": "CCDoom",
 		"install_command": "pastebin run xLC8mABU",
+		"download_url": null,
 		"target_file": "Doom.lua",
 		"tags": "fun,action",
-		"repository": null,
-		"version": 0,
-		"description_short": null,
+		"repository": "https://github.com/Xella37/CCDoom",
+		"description_short": "CCDoom is a 3d first-person shooter in ComputerCraft made using the Pine3D graphics library. It is inspired by the game \\\"Doom\\\" as the name implies.",
 		"description": "CCDoom is a 3d first-person shooter ... truncated for example",
 		"description_markdown": "CCDoom is a 3d first-person shooter ... truncated for example",
+		"thumbnail_link": "https://cdn.discordapp.com/attachments/1140613598029303908/1145115824743518318/doom3.png",
 		"has_thumbnail": 1,
-		"media_count": 4,
-		"keywords": null,
-		"downloads": 3,
-		"downloads_recent": 0,
-		"views": 5,
+		"hide_thumbnail": 0,
+		"media_count": 5,
+		"keywords": "pine,pine3d,3d,shooter,doom,graphics,first,person",
+		"screenshot_links": "https://cdn.discordapp.com/attachments/1140613598029303908/1146146799845916672/hp_doom.gif,https://cdn.discordapp.com/attachments/1140613598029303908/1145115781366034512/doom1.png,https://cdn.discordapp.com/attachments/1140613598029303908/1145115797350535218/doom2.png,https://cdn.discordapp.com/attachments/1140613598029303908/1145115824743518318/doom3.png,https://cdn.discordapp.com/attachments/1140613598029303908/1145115837624242208/doom4.png",
+		"downloads": 22,
+		"downloads_recent": 20,
+		"views": 58,
 		"visible": 1
 	}
-}`,
+}`
 		},
 		{
 			id: "comments",
@@ -107,28 +110,31 @@ The returned JSON object always has a "success" value with an "error" value as a
 	"projects:": [
 		...,
 		{
-			"id": 4,
-			"date_added": 1692013883788,
+			"id": 1,
+			"date_added": 1694617285452,
 			"date_updated": 0,
 			"date_release": 0,
-			"date_publish": 1692013883788,
+			"date_publish": 1694617285452,
 			"owner_discord": "302427405023313920",
 			"owner_name": "Xella",
 			"name": "CCDoom",
 			"install_command": "pastebin run xLC8mABU",
+			"download_url": null,
 			"target_file": "Doom.lua",
 			"tags": "fun,action",
-			"repository": null,
-			"version": 0,
-			"description_short": null,
+			"repository": "https://github.com/Xella37/CCDoom",
+			"description_short": "CCDoom is a 3d first-person shooter in ComputerCraft made using the Pine3D graphics library. It is inspired by the game \\\"Doom\\\" as the name implies.",
 			"description": "CCDoom is a 3d first-person shooter ... truncated for example",
 			"description_markdown": "CCDoom is a 3d first-person shooter ... truncated for example",
+			"thumbnail_link": "https://cdn.discordapp.com/attachments/1140613598029303908/1145115824743518318/doom3.png",
 			"has_thumbnail": 1,
-			"media_count": 4,
-			"keywords": null,
-			"downloads": 3,
-			"downloads_recent": 0,
-			"views": 5,
+			"hide_thumbnail": 0,
+			"media_count": 5,
+			"keywords": "pine,pine3d,3d,shooter,doom,graphics,first,person",
+			"screenshot_links": "https://cdn.discordapp.com/attachments/1140613598029303908/1146146799845916672/hp_doom.gif,https://cdn.discordapp.com/attachments/1140613598029303908/1145115781366034512/doom1.png,https://cdn.discordapp.com/attachments/1140613598029303908/1145115797350535218/doom2.png,https://cdn.discordapp.com/attachments/1140613598029303908/1145115824743518318/doom3.png,https://cdn.discordapp.com/attachments/1140613598029303908/1145115837624242208/doom4.png",
+			"downloads": 22,
+			"downloads_recent": 20,
+			"views": 58,
 			"visible": 1
 		},
 		...
@@ -151,33 +157,79 @@ The returned JSON object always has a "success" value with an "error" value as a
 	"projects:": [
 		...,
 		{
-			"id": 4,
-			"date_added": 1692013883788,
+			"id": 1,
+			"date_added": 1694617285452,
 			"date_updated": 0,
 			"date_release": 0,
-			"date_publish": 1692013883788,
+			"date_publish": 1694617285452,
 			"owner_discord": "302427405023313920",
 			"owner_name": "Xella",
 			"name": "CCDoom",
 			"install_command": "pastebin run xLC8mABU",
+			"download_url": null,
 			"target_file": "Doom.lua",
 			"tags": "fun,action",
-			"repository": null,
-			"version": 0,
-			"description_short": null,
+			"repository": "https://github.com/Xella37/CCDoom",
+			"description_short": "CCDoom is a 3d first-person shooter in ComputerCraft made using the Pine3D graphics library. It is inspired by the game \\\"Doom\\\" as the name implies.",
 			"description": "CCDoom is a 3d first-person shooter ... truncated for example",
 			"description_markdown": "CCDoom is a 3d first-person shooter ... truncated for example",
+			"thumbnail_link": "https://cdn.discordapp.com/attachments/1140613598029303908/1145115824743518318/doom3.png",
 			"has_thumbnail": 1,
-			"media_count": 4,
-			"keywords": null,
-			"downloads": 3,
-			"downloads_recent": 0,
-			"views": 5,
+			"hide_thumbnail": 0,
+			"media_count": 5,
+			"keywords": "pine,pine3d,3d,shooter,doom,graphics,first,person",
+			"screenshot_links": "https://cdn.discordapp.com/attachments/1140613598029303908/1146146799845916672/hp_doom.gif,https://cdn.discordapp.com/attachments/1140613598029303908/1145115781366034512/doom1.png,https://cdn.discordapp.com/attachments/1140613598029303908/1145115797350535218/doom2.png,https://cdn.discordapp.com/attachments/1140613598029303908/1145115824743518318/doom3.png,https://cdn.discordapp.com/attachments/1140613598029303908/1145115837624242208/doom4.png",
+			"downloads": 22,
+			"downloads_recent": 20,
+			"views": 58,
 			"visible": 1
 		},
 		...
 	]
 }`,
+		},
+		{
+			id: "named",
+			path: "/api/projects/named",
+			type: "GET",
+			get_params: [
+				{
+					name: "name",
+					description: "the name of a project",
+				},
+			],
+			body: `For information on the structure of a project, see <a href="/documentation/project">GET /api/project/:id</a>. Returns project information with a name that has an exact match with the specified name.`,
+			example_return: `{
+				"success": true,
+				"project": {
+					"id": 1,
+					"date_added": 1694617285452,
+					"date_updated": 0,
+					"date_release": 0,
+					"date_publish": 1694617285452,
+					"owner_discord": "302427405023313920",
+					"owner_name": "Xella",
+					"name": "CCDoom",
+					"install_command": "pastebin run xLC8mABU",
+					"download_url": null,
+					"target_file": "Doom.lua",
+					"tags": "fun,action",
+					"repository": "https://github.com/Xella37/CCDoom",
+					"description_short": "CCDoom is a 3d first-person shooter in ComputerCraft made using the Pine3D graphics library. It is inspired by the game \\\"Doom\\\" as the name implies.",
+					"description": "CCDoom is a 3d first-person shooter ... truncated for example",
+					"description_markdown": "CCDoom is a 3d first-person shooter ... truncated for example",
+					"thumbnail_link": "https://cdn.discordapp.com/attachments/1140613598029303908/1145115824743518318/doom3.png",
+					"has_thumbnail": 1,
+					"hide_thumbnail": 0,
+					"media_count": 5,
+					"keywords": "pine,pine3d,3d,shooter,doom,graphics,first,person",
+					"screenshot_links": "https://cdn.discordapp.com/attachments/1140613598029303908/1146146799845916672/hp_doom.gif,https://cdn.discordapp.com/attachments/1140613598029303908/1145115781366034512/doom1.png,https://cdn.discordapp.com/attachments/1140613598029303908/1145115797350535218/doom2.png,https://cdn.discordapp.com/attachments/1140613598029303908/1145115824743518318/doom3.png,https://cdn.discordapp.com/attachments/1140613598029303908/1145115837624242208/doom4.png",
+					"downloads": 22,
+					"downloads_recent": 20,
+					"views": 58,
+					"visible": 1
+				}
+			}`
 		},
 		{
 			id: "user",
@@ -195,10 +247,27 @@ The returned JSON object always has a "success" value with an "error" value as a
 	"success": true,
 	"user": {
 		"discord_id": "302427405023313920",
-		"joined_on": 1694204887165,
+		"joined_on": 1694617285320,
 		"name": "Xella",
-		"about": "Hey, I'm Xella! I've created this site to more easily have people share and distribute their CC projects! I'm also the creator of Pine3D and a few of the games with 3d graphics made using it :3",
-		"about_markdown": null
+		"about": "Hi, I'm Xella!\n\nAs you might know, I've made this website to help people share their CC projects more easily!\nAnother project I'm very proud of is Pine3D which is a 3d graphics library for CC:\nhttps://pine3d.cc/\n\nFeel free to contact me on Discord :)",
+		"about_markdown": null,
+		"connections": [
+			{
+				"id": "github",
+				"display": "Xella37",
+				"link": "https://github.com/Xella37"
+			},
+			{
+				"id": "youtube",
+				"display": "Xella",
+				"link": "https://www.youtube.com/channel/UCDE2STpSWJrIUyKtiYGeWxw"
+			},
+			{
+				"id": "discord",
+				"display": "Xella37",
+				"link": ""
+			}
+		]
 	}
 }`,
 		},
@@ -218,28 +287,31 @@ The returned JSON object always has a "success" value with an "error" value as a
 	"projects:": [
 		...,
 		{
-			"id": 4,
-			"date_added": 1692013883788,
+			"id": 1,
+			"date_added": 1694617285452,
 			"date_updated": 0,
 			"date_release": 0,
-			"date_publish": 1692013883788,
+			"date_publish": 1694617285452,
 			"owner_discord": "302427405023313920",
 			"owner_name": "Xella",
 			"name": "CCDoom",
 			"install_command": "pastebin run xLC8mABU",
+			"download_url": null,
 			"target_file": "Doom.lua",
 			"tags": "fun,action",
-			"repository": null,
-			"version": 0,
-			"description_short": null,
+			"repository": "https://github.com/Xella37/CCDoom",
+			"description_short": "CCDoom is a 3d first-person shooter in ComputerCraft made using the Pine3D graphics library. It is inspired by the game \\\"Doom\\\" as the name implies.",
 			"description": "CCDoom is a 3d first-person shooter ... truncated for example",
 			"description_markdown": "CCDoom is a 3d first-person shooter ... truncated for example",
+			"thumbnail_link": "https://cdn.discordapp.com/attachments/1140613598029303908/1145115824743518318/doom3.png",
 			"has_thumbnail": 1,
-			"media_count": 4,
-			"keywords": null,
-			"downloads": 3,
-			"downloads_recent": 0,
-			"views": 5,
+			"hide_thumbnail": 0,
+			"media_count": 5,
+			"keywords": "pine,pine3d,3d,shooter,doom,graphics,first,person",
+			"screenshot_links": "https://cdn.discordapp.com/attachments/1140613598029303908/1146146799845916672/hp_doom.gif,https://cdn.discordapp.com/attachments/1140613598029303908/1145115781366034512/doom1.png,https://cdn.discordapp.com/attachments/1140613598029303908/1145115797350535218/doom2.png,https://cdn.discordapp.com/attachments/1140613598029303908/1145115824743518318/doom3.png,https://cdn.discordapp.com/attachments/1140613598029303908/1145115837624242208/doom4.png",
+			"downloads": 22,
+			"downloads_recent": 20,
+			"views": 58,
 			"visible": 1
 		},
 		...
@@ -289,15 +361,32 @@ The returned JSON object always has a "success" value with an "error" value as a
 			first_of_group: true,
 			body: `Get all user info corresponding to the authentication token.`,
 			example_return: `{
-	"success": true,
-	"user": {
-		"discord_id": "302427405023313920",
-		"joined_on": 1694204887165,
-		"name": "Xella",
-		"about": "Hey, I'm Xella! I've created this site to more easily have people share and distribute their CC projects! I'm also the creator of Pine3D and a few of the games with 3d graphics made using it :3",
-		"about_markdown": null
-	}
-}`,
+				"success": true,
+				"user": {
+					"discord_id": "302427405023313920",
+					"joined_on": 1694617285320,
+					"name": "Xella",
+					"about": "Hi, I'm Xella!\n\nAs you might know, I've made this website to help people share their CC projects more easily!\nAnother project I'm very proud of is Pine3D which is a 3d graphics library for CC:\nhttps://pine3d.cc/\n\nFeel free to contact me on Discord :)",
+					"about_markdown": null,
+					"connections": [
+						{
+							"id": "github",
+							"display": "Xella37",
+							"link": "https://github.com/Xella37"
+						},
+						{
+							"id": "youtube",
+							"display": "Xella",
+							"link": "https://www.youtube.com/channel/UCDE2STpSWJrIUyKtiYGeWxw"
+						},
+						{
+							"id": "discord",
+							"display": "Xella37",
+							"link": ""
+						}
+					]
+				}
+			}`,
 		},
 		{
 			id: "myprojects",
@@ -309,28 +398,31 @@ The returned JSON object always has a "success" value with an "error" value as a
 	"projects:": [
 		...,
 		{
-			"id": 4,
-			"date_added": 1692013883788,
+			"id": 1,
+			"date_added": 1694617285452,
 			"date_updated": 0,
 			"date_release": 0,
-			"date_publish": 1692013883788,
+			"date_publish": 1694617285452,
 			"owner_discord": "302427405023313920",
 			"owner_name": "Xella",
 			"name": "CCDoom",
 			"install_command": "pastebin run xLC8mABU",
+			"download_url": null,
 			"target_file": "Doom.lua",
 			"tags": "fun,action",
-			"repository": null,
-			"version": 0,
-			"description_short": null,
+			"repository": "https://github.com/Xella37/CCDoom",
+			"description_short": "CCDoom is a 3d first-person shooter in ComputerCraft made using the Pine3D graphics library. It is inspired by the game \\\"Doom\\\" as the name implies.",
 			"description": "CCDoom is a 3d first-person shooter ... truncated for example",
 			"description_markdown": "CCDoom is a 3d first-person shooter ... truncated for example",
+			"thumbnail_link": "https://cdn.discordapp.com/attachments/1140613598029303908/1145115824743518318/doom3.png",
 			"has_thumbnail": 1,
-			"media_count": 4,
-			"keywords": null,
-			"downloads": 3,
-			"downloads_recent": 0,
-			"views": 5,
+			"hide_thumbnail": 0,
+			"media_count": 5,
+			"keywords": "pine,pine3d,3d,shooter,doom,graphics,first,person",
+			"screenshot_links": "https://cdn.discordapp.com/attachments/1140613598029303908/1146146799845916672/hp_doom.gif,https://cdn.discordapp.com/attachments/1140613598029303908/1145115781366034512/doom1.png,https://cdn.discordapp.com/attachments/1140613598029303908/1145115797350535218/doom2.png,https://cdn.discordapp.com/attachments/1140613598029303908/1145115824743518318/doom3.png,https://cdn.discordapp.com/attachments/1140613598029303908/1145115837624242208/doom4.png",
+			"downloads": 22,
+			"downloads_recent": 20,
+			"views": 58,
 			"visible": 1
 		},
 		...
@@ -362,8 +454,43 @@ The returned JSON object always has a "success" value with an "error" value as a
 					description: "markdown version of the about info (max 1500)",
 					optional: true,
 				},
+				{
+					name: "connections",
+					description: "list of connection objects with values: id, display, link",
+					optional: true,
+				},
 			],
-			body: `Using your personal token, you can update your account info. All parameters are optional. Any unspecified property is left unchanged.`,
+			body: `Using your personal token, you can update your account info. All parameters are optional. Any unspecified property is left unchanged. To view an example (especially for connections) take a look at <a href="/documentation/user">/api/user/:id</a>`,
+			example_return: `{
+	"success": true
+}`,
+		},
+		{
+			id: "getoptions",
+			path: "/api/auth/profile/options",
+			type: "GET",
+			// first_of_group: true,
+			body: `Get your user options (mainly notification settings).`,
+			example_return: `{
+	"success": true,
+	"options": {
+		"user_discord": "302427405023313920",
+		"discord_notifications": 1,
+		"discord_noti_comment": 1,
+		"discord_noti_reply": 1,
+		"discord_noti_newfollow_user": 1,
+		"discord_noti_newfollow_project": 1,
+		"discord_noti_following_newproject": 1,
+		"discord_noti_following_projectupdate": 1
+	}
+}`,
+		},
+		{
+			id: "postoptions",
+			path: "/api/auth/profile/options",
+			type: "POST",
+			// first_of_group: true,
+			body: `Update your user options (mainly notification settings).`,
 			example_return: `{
 	"success": true
 }`,
@@ -474,6 +601,21 @@ The returned JSON object always has a "success" value with an "error" value as a
 }`,
 		},
 		{
+			id: "auth-publishupdate",
+			path: "/api/auth/project/publishupdate",
+			type: "POST",
+			post_params: [
+				{
+					name: "projectId",
+					description: "the id of the project to delete",
+				},
+			],
+			body: `This will update the date_updated value of the project and notify any users who are following this project.`,
+			example_return: `{
+	"success": true
+}`,
+		},
+		{
 			id: "auth-media",
 			path: "/api/auth/media",
 			type: "POST",
@@ -525,6 +667,44 @@ The returned JSON object always has a "success" value with an "error" value as a
 				{
 					name: "imageData",
 					description: "the image data of the image (either raw, or base64 encoded)",
+				},
+			],
+			example_return: `{
+	"success": true
+}`,
+		},
+		{
+			id: "auth-comment",
+			path: "/api/auth/comment",
+			type: "POST",
+			first_of_group: true,
+			post_params: [
+				{
+					name: "projectId",
+					description: "id of the project for which to update the thumbnail",
+				},
+				{
+					name: "text",
+					description: "the text body of the comment to be posted",
+				},
+				{
+					name: "replyId",
+					description: "id of the comment this is a reply to.",
+					optional: true,
+				},
+			],
+			example_return: `{
+	"success": true
+}`,
+		},
+		{
+			id: "auth-commentdelete",
+			path: "/api/auth/comment/delete",
+			type: "POST",
+			post_params: [
+				{
+					name: "commentId",
+					description: "id of the comment to delete",
 				},
 			],
 			example_return: `{
