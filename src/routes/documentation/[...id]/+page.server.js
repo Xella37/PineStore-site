@@ -361,32 +361,32 @@ The returned JSON object always has a "success" value with an "error" value as a
 			first_of_group: true,
 			body: `Get all user info corresponding to the authentication token.`,
 			example_return: `{
-				"success": true,
-				"user": {
-					"discord_id": "302427405023313920",
-					"joined_on": 1694617285320,
-					"name": "Xella",
-					"about": "Hi, I'm Xella!\n\nAs you might know, I've made this website to help people share their CC projects more easily!\nAnother project I'm very proud of is Pine3D which is a 3d graphics library for CC:\nhttps://pine3d.cc/\n\nFeel free to contact me on Discord :)",
-					"about_markdown": null,
-					"connections": [
-						{
-							"id": "github",
-							"display": "Xella37",
-							"link": "https://github.com/Xella37"
-						},
-						{
-							"id": "youtube",
-							"display": "Xella",
-							"link": "https://www.youtube.com/channel/UCDE2STpSWJrIUyKtiYGeWxw"
-						},
-						{
-							"id": "discord",
-							"display": "Xella37",
-							"link": ""
-						}
-					]
-				}
-			}`,
+	"success": true,
+	"user": {
+		"discord_id": "302427405023313920",
+		"joined_on": 1694617285320,
+		"name": "Xella",
+		"about": "Hi, I'm Xella!\n\nAs you might know, I've made this website to help people share their CC projects more easily!\nAnother project I'm very proud of is Pine3D which is a 3d graphics library for CC:\nhttps://pine3d.cc/\n\nFeel free to contact me on Discord :)",
+		"about_markdown": null,
+		"connections": [
+			{
+				"id": "github",
+				"display": "Xella37",
+				"link": "https://github.com/Xella37"
+			},
+			{
+				"id": "youtube",
+				"display": "Xella",
+				"link": "https://www.youtube.com/channel/UCDE2STpSWJrIUyKtiYGeWxw"
+			},
+			{
+				"id": "discord",
+				"display": "Xella37",
+				"link": ""
+			}
+		]
+	}
+}`,
 		},
 		{
 			id: "myprojects",
