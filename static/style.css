@@ -72,6 +72,20 @@ body {
 		border-radius: 0;
 	}
 }
+
+.page-wide {
+	max-width: 80rem;
+	border-radius: 1rem;
+	border-top-left-radius: 0;
+	border-top-right-radius: 0;
+}
+@media (max-width: 76rem) {
+	.page-wide {
+		width: calc(100% - 4rem);
+		border-radius: 0;
+	}
+}
+
 #backgroundContainer {
 	position: absolute;
 	z-index: -1;

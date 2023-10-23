@@ -60,7 +60,7 @@
 <div id="backgroundContainer" style="background-image: url('/bg_space.png')"></div>
 
 <div class="page-container">
-	<div class="page shadow">
+	<div class="page page-wide shadow">
 		<h1>Documentation</h1>
 		<div id="docs">
 			<div id="sidebar">
@@ -268,5 +268,19 @@
 			overflow: visible;
 			text-overflow: ellipsis;
 		}
+	}
+
+	pre.lua-codeblock {
+		background-color: rgba(0, 0, 0, 0.25);
+		border-radius: 1rem;
+		margin-top: 1rem;
+		border-radius: 0.5rem;
+		tab-size: 4ch;
+		display: inline-block;
+		width: 100%;
+	}
+	pre.lua-codeblock code {
+		width: 100%;
+		box-sizing: border-box;
 	}
 </style>
