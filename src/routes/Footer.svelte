@@ -2,16 +2,16 @@
 <div id="footer">
 	<div id="footerItems">
 		<div>
-			<div><a href="https://discord.gg/MjsNjK2psB"><i id="discord" class="fab fa-discord"/> Discord</a></div>
+			<div><a href="https://discord.gg/MjsNjK2psB"><i class="fab fa-discord"/> Discord</a></div>
 		</div>
 		<div>
 			<div><a href="https://github.com/Xella37/PineStore-site"><i class="fa-brands fa-github"/> Source code</a></div>
 		</div>
 		<div>
-			<div><a href="/faq"><i id="discord" class="fab fa-question"/>FAQ</a></div>
+			<div><a href="/faq"><i class="fab fa-question"/>FAQ</a></div>
 		</div>
 		<div>
-			<div><a href="/documentation"><i id="discord" class="fas fa-book"/>Docs</a></div>
+			<div><a href="/documentation"><i class="fas fa-book"/>Docs</a></div>
 		</div>
 		<div>
 			<div>© Xella 2023</div>
