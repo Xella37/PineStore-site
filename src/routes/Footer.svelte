@@ -2,7 +2,7 @@
 <div id="footer">
 	<div id="footerItems">
 		<div>
-			<div><a href="https://discord.gg/MjsNjK2psB"><i class="fab fa-discord"/> Discord</a></div>
+			<div><a href="https://discord.gg/sNhyBjGez5"><i class="fab fa-discord"/> Discord</a></div>
 		</div>
 		<div>
 			<div><a href="https://github.com/Xella37/PineStore-site"><i class="fa-brands fa-github"/> Source code</a></div>

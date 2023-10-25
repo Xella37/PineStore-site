@@ -2,7 +2,7 @@
 <img align="right" width="100" height="100" src="static/pinestore_cropped.png">
 The frontend for PineStore in Svelte: https://pinestore.cc/ .
 
-Feel free to help out on the development on the site. Come have a chat on [Discord](https://discord.gg/MjsNjK2psB) about bugfixes, possible changes or suggestions!
+Feel free to help out on the development on the site. Come have a chat on [Discord](https://discord.gg/sNhyBjGez5) about bugfixes, possible changes or suggestions!
 
 ## Setup
 Assuming you already have NodeJS installed, install the dependencies:
