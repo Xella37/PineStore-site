@@ -120,18 +120,18 @@ export const hasUnreadNotifications = () =>
 	api("GET", "auth/notifications/unread");
 
 export const followUser = (userId) =>
-	api("POST", "auth/follow/user/new", { following_id: userId });
+	api("POST", "auth/follow/new", { following_id: userId });
 export const checkFollowingUser = (userId) =>
-	api("GET", "auth/follow/user/check/" + userId);
+	api("GET", "auth/follow/check/" + userId);
 export const unfollowUser = (userId) =>
-	api("POST", "auth/follow/user/remove", { following_id: userId });
+	api("POST", "auth/follow/remove", { following_id: userId });
 
-export const followProject = (id) =>
-	api("POST", "auth/follow/project/new", { project_id: id });
-export const checkFollowingProject = (id) =>
-	api("GET", "auth/follow/project/check/" + id);
-export const unfollowProject = (id) =>
-	api("POST", "auth/follow/project/remove", { project_id: id });
+export const likeProject = (id) =>
+	api("POST", "auth/like/new", { project_id: id });
+export const checkLikedProject = (id) =>
+	api("GET", "auth/like/check/" + id);
+export const unlikeProject = (id) =>
+	api("POST", "auth/like/remove", { project_id: id });
 
 export const saveProject = (id) =>
 	api("POST", "auth/saved/new", { project_id: id });

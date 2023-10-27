@@ -16,7 +16,7 @@
 	import { fade } from "svelte/transition";
 	import { onMount, onDestroy } from "svelte";
 	import { getProjectLink, addToast, tagToDisplay } from "$lib/util.js";
-	import { BASE_URL, getMyProfile, reportProjectView, reportProjectDownload, saveProject, checkSavedProject, unsaveProject, followProject, checkFollowingProject, unfollowProject } from "$lib/database.js";
+	import { BASE_URL, getMyProfile, reportProjectView, reportProjectDownload, saveProject, checkSavedProject, unsaveProject, likeProject, checkLikedProject, unlikeProject } from "$lib/database.js";
 	
 	import Markdown from "$lib/Markdown.svelte";
 	
@@ -150,21 +150,21 @@
 
 	let loginModalOpen = false;
 
-	let following = false;
-	async function followButton() {
-		following = !following;
-		if (following) {
-			let res = await followProject(project.id);
+	let liked = false;
+	async function likeButton() {
+		liked = !liked;
+		if (liked) {
+			let res = await likeProject(project.id);
 			if (res.success)
-				addToast("Following!", "You are now following this project.", "success", 3);
+				addToast("Liked!", "You have liked this project.", "success", 3);
 			else
-				addToast("Failed!", "Failed to follow project. Error: " + (res.error ?? "no error"), "error");
+				addToast("Failed!", "Failed to like project. Error: " + (res.error ?? "no error"), "error");
 		} else {
-			let res = await unfollowProject(project.id);
+			let res = await unlikeProject(project.id);
 			if (res.success)
-				addToast("Unfollowed!", "You are no longer following this project.", "success", 3);
+				addToast("Unliked!", "Your like has been removed.", "success", 3);
 			else
-				addToast("Failed!", "Failed to unfollow project. Error: " + (res.error ?? "no error"), "error");
+				addToast("Failed!", "Failed to unlike project. Error: " + (res.error ?? "no error"), "error");
 		}
 	}
 
@@ -176,7 +176,7 @@
 			if (res.success)
 				addToast("Saved!", "You have saved this project.", "success", 3);
 			else
-				addToast("Failed!", "Failed to follow project. Error: " + (res.error ?? "no error"), "error");
+				addToast("Failed!", "Failed to save project. Error: " + (res.error ?? "no error"), "error");
 		} else {
 			let res = await unsaveProject(project.id);
 			if (res.success)
@@ -191,8 +191,8 @@
 		let profileData = await getMyProfile();
 		myId = profileData?.user?.discord_id;
 		if (myId != null) {
-			let followingData = await checkFollowingProject(project.id);
-			following = followingData.following;
+			let likeData = await checkLikedProject(project.id);
+			liked = likeData.liked;
 			let savedData = await checkSavedProject(project.id);
 			saved = savedData.saved;
 		}
@@ -220,12 +220,12 @@
 		<div class="top-buttons">
 			{#if myId == null}
 				<button class="button" on:click|preventDefault={() => { loginModalOpen = true; }}>
-					<i class="fa-regular fa-star"></i>
-					Save
+					<i class="fa-solid fa-heart"></i>
+					Liked
 				</button>
 				<button class="button" on:click|preventDefault={() => { loginModalOpen = true; }}>
-					<i class="fa-solid fa-plus"></i>
-					Follow
+					<i class="fa-regular fa-heart"></i>
+					Like
 				</button>
 			{:else if project.owner_discord == myId}
 				<a class="button" href="/profile/edit/{project.id}">
@@ -245,15 +245,15 @@
 					</button>
 				{/if}
 
-				{#if following}
-					<button class="button gray" on:click|preventDefault={followButton}>
-						<i class="fa-solid fa-check"></i>
-						Following
+				{#if liked}
+					<button class="button gray" on:click|preventDefault={likeButton}>
+						<i class="fa-solid fa-heart"></i>
+						Liked
 					</button>
 				{:else}
-					<button class="button" on:click|preventDefault={followButton}>
-						<i class="fa-solid fa-plus"></i>
-						Follow
+					<button class="button" on:click|preventDefault={likeButton}>
+						<i class="fa-regular fa-heart"></i>
+						Like
 					</button>
 				{/if}
 			{/if}
@@ -262,6 +262,7 @@
 		<div class="top-info">
 			<span class="total-downloads">{project.downloads} {project.downloads == 1 ? "download" : "downloads"}</span>
 			<span class="total-views">{project.views} {project.views == 1 ? "view" : "views"}</span>
+			<span class="total-likes">{project.likes} {project.likes == 1 ? "like" : "likes"}</span>
 			<span class="project-date">{projectDate}</span>
 		</div>
 
@@ -361,9 +362,15 @@
 		display: block;
 		padding-block: 1rem;
 	}
+	.total-likes {
+		position: absolute;
+		top: 2.5rem;
+		color: var(--text-color-dark);
+		padding-left: 0.25rem;
+	}
 	.total-views {
 		position: absolute;
-		top: 1.5rem;
+		top: 1.25rem;
 		color: var(--text-color-dark);
 		padding-left: 0.25rem;
 	}

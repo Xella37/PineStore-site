@@ -100,9 +100,9 @@
 		{id: "discord_noti_comment", title: "New comments on your projects"},
 		{id: "discord_noti_reply", title: "New replies to your comments"},
 		{id: "discord_noti_newfollow_user", title: "New followers"},
-		{id: "discord_noti_newfollow_project", title: "New project followers"},
+		{id: "discord_noti_newfollow_project", title: "New project saves/followers"},
 		{id: "discord_noti_following_newproject", title: "Newly published project from following"},
-		{id: "discord_noti_following_projectupdate", title: "Updates for following projects"},
+		{id: "discord_noti_following_projectupdate", title: "Updates for saved projects"},
 	];
 	async function toggleOption(option) {
 		console.log("Toggle " + option);
