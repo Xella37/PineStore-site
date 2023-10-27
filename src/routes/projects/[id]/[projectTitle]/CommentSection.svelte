@@ -26,7 +26,6 @@
 				else
 					replies[comment.reply_id] = [comment];
 			} else {
-				console.log("Root comment");
 				rootComments.push(comment);
 			}
 		}
