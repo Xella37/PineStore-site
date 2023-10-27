@@ -220,8 +220,8 @@
 		<div class="top-buttons">
 			{#if myId == null}
 				<button class="button" on:click|preventDefault={() => { loginModalOpen = true; }}>
-					<i class="fa-solid fa-heart"></i>
-					Liked
+					<i class="fa-regular fa-star"></i>
+					Save
 				</button>
 				<button class="button" on:click|preventDefault={() => { loginModalOpen = true; }}>
 					<i class="fa-regular fa-heart"></i>
