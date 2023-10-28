@@ -7,13 +7,18 @@ export const BASE_URL = "https://pinestore.cc";
  * @param {"GET" | "POST"} method 
  * @param {string} path 
  * @param {object?} body for POST request
+ * @param {string?} session force send authentication information
  * @returns 
  */
-async function api(method, path, body) {
+async function api(method, path, body, session) {
 	let requestInit = {
 		"headers": {}
 	}
-	if (path.startsWith("auth/")) {
+	console.log({session});
+
+	if (session != null && session != "SESSION") {
+		requestInit["headers"]["authorization"] = session;
+	} else if (path.startsWith("auth/") || session == "SESSION") {
 		let session = getCookie("session");
 		if (session == null) return {
 			success: false,
@@ -21,6 +26,7 @@ async function api(method, path, body) {
 		};
 		requestInit["headers"]["authorization"] = session;
 	}
+
 	if (method == "POST") {
 		requestInit["method"] = "POST";
 		requestInit["body"] = JSON.stringify(body);
@@ -50,8 +56,8 @@ function removeEmptyStrings(data) {
 	return data;
 }
 
-export const getProject = (id) =>
-	api("GET", "project/" + id);
+export const getProject = (id, session) =>
+	api("GET", "project/" + id, null, session);
 export const getComments = (projectId) =>
 	api("GET", "project/" + projectId + "/comments");
 

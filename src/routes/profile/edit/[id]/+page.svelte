@@ -37,7 +37,7 @@
 	}
 
 	async function loadProject() {
-		let projectData = await getProject(projectId);
+		let projectData = await getProject(projectId, "SESSION");
 		if (!projectData.success)
 			return addToast("Failed!", "Failed to load project. Error: " + (projectData.error ?? "no error"), "error");
 
