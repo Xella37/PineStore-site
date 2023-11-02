@@ -14,7 +14,6 @@ async function api(method, path, body, session) {
 	let requestInit = {
 		"headers": {}
 	}
-	console.log({session});
 
 	if (session != null && session != "SESSION") {
 		requestInit["headers"]["authorization"] = session;
