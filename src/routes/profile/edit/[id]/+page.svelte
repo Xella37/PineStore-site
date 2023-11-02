@@ -123,10 +123,11 @@
 		addToast("Deleted!", "Media removed from project.", "success", 3);
 	}
 
+	let changelogInput = "";
 	let publishUpdateModal = false;
 	async function publishUpdateSubmit() {
 		publishUpdateModal = false;
-		let res = await publishProjectUpdate(project.id);
+		let res = await publishProjectUpdate(project.id, changelogInput);
 		if (res.success)
 			addToast("Update published!", "Your project has been updated.", "success", 3);
 		else
@@ -321,6 +322,8 @@
 	<p>This will also send a notification to anyone who is following this project.</p>
 
 	<form class="model-form" on:submit|preventDefault={publishUpdateSubmit}>
+		<label for="changelogBody">Changelog</label>
+		<textarea bind:value={changelogInput} id="changelogBody" placeholder="Briefly explain what has been added/updated regarding the project." maxlength="2450"></textarea>
 		<button type="submit" style="width:100%;" class="button green">Publish update</button>
 	</form>
 </Modal>
@@ -364,6 +367,12 @@
 	.form-list input[type="checkbox"] {
 		width: 1.5rem;
 		height: 1.5rem;
+	}
+
+	.model-form {
+		display: flex;
+		flex-direction: column;
+		gap: 1rem;
 	}
 
 	#thumbnailPreview {

@@ -26,6 +26,7 @@
 	export let data;
 	let project = data.project;
 	let comments = data.comments;
+	let changelog = data.changelog;
 	let myId = null;
 
 	$: if (data) {
@@ -97,12 +98,15 @@
 		}
 	}
 
-	let projectDate = new Date(Math.max(project.date_added, project.date_updated));
-	projectDate = projectDate.toLocaleDateString("en-US", {
-		day: "numeric",
-		month: "short",
-		year: "numeric",
-	});
+	function formatShortDate(d) {
+		let projectDate = new Date(d);
+		return projectDate.toLocaleDateString("en-US", {
+			day: "numeric",
+			month: "short",
+			year: "numeric",
+		});
+	}
+	let projectDate = formatShortDate(Math.max(project.date_added, project.date_updated));
 
 	let timerText = "TIME";
 	let showTimer = project.date_release > Date.now() && !(project.install_command?.length > 0);
@@ -185,6 +189,8 @@
 				addToast("Failed!", "Failed to unsave project. Error: " + (res.error ?? "no error"), "error");
 		}
 	}
+
+	let changelogOpened = false;
 
 	onMount(async () => {
 		setTimeout(reportProjectView, 3000, project.id); // report a view if the page is open for at least 3 seconds
@@ -278,6 +284,20 @@
 				<a class="button tag gray" href="/projects?tag={encodeURIComponent(tag)}">{tagToDisplay[tag]}</a>
 			{/each}
 		</div>
+
+		{#if changelog != null && changelog.body?.length > 0}
+			<!-- svelte-ignore a11y-click-events-have-key-events -->
+			<div class="changelog" on:click|preventDefault={() => { changelogOpened = !changelogOpened; }}>
+				<span>Updated {formatShortDate(changelog.timestamp)}</span>
+				{#if changelogOpened}
+					{#each changelog.body.split("\n") as paragraph}
+						<p>{paragraph}</p>
+					{/each}
+				{:else}
+					<p class="collapsed">{changelog.body}</p>
+				{/if}
+			</div>
+		{/if}
 
 		<div id="description" class="markdown-container">
 			{#if !project.hide_thumbnail}
@@ -459,6 +479,27 @@
 	.tag {
 		font-size: 1rem;
 		padding: 0.25rem 0.75rem;
+	}
+
+	.changelog {
+		background-color: var(--cc-gray);
+		border-radius: 1rem;
+		padding: 0.5rem 1rem;
+		margin-top: 1.5rem;
+		margin-bottom: 0.5rem;
+		cursor: pointer;
+	}
+	.changelog:hover {
+		background-color: #666;
+	}
+	.changelog p.collapsed {
+		margin-bottom: 0.5rem;
+		display: -webkit-box;
+		-webkit-line-clamp: 2;
+		-webkit-box-orient: vertical;
+		overflow: hidden;
+		-webkit-user-select: none;
+	    user-select: none;
 	}
 
 	#description {

@@ -98,6 +98,53 @@ The returned JSON object always has a "success" value with an "error" value as a
 }`
 		},
 		{
+			id: "changelog",
+			path: "/api/project/:id/changelog",
+			type: "GET",
+			url_params: [
+				{
+					name: "id",
+					description: "id of the project",
+				},
+			],
+			body: `Get the most recent changelog for a project (if there are any).`,
+			example_return: `{
+	"success": true,
+	"changelog": {
+		"project_id": "1",
+		"timestamp": 1698923735655,
+		"body": " Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi quis convallis elit, quis consectetur mauris. Cras venenatis dolor quis felis maximus viverra. Duis mattis purus in sem vulputate pulvinar.\n\nEtiam id tortor felis. Sed dictum, leo sit amet consectetur vehicula, risus nulla faucibus ligula, sed tempus risus arcu non nisi. Vestibulum ac ante non risus interdum egestas. Quisque vel congue nulla. Suspendisse mi ante, mattis at tristique fermentum, ornare ac nibh.\n\nAenean rutrum aliquam tortor, eget molestie velit tincidunt in. Integer convallis auctor justo vitae ultricies. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Aenean feugiat, turpis consectetur accumsan ullamcorper, tortor arcu suscipit ex, eget tempor dui justo eu tellus. Aenean id egestas nulla, vitae condimentum leo. In tristique finibus eleifend. Sed blandit tristique lacus, vitae pulvinar felis sagittis at. Praesent molestie ultricies posuere. Donec quis malesuada nisi, finibus congue erat. Mauris in orci convallis, posuere erat vehicula, pulvinar nibh. Vivamus id tortor mi.\n\nVivamus enim tellus, porttitor vulputate consequat sit amet, tempor a tellus. Proin fermentum neque ac viverra facilisis. Maecenas ultricies dolor sapien, et suscipit lectus viverra in. Sed vitae lacinia justo. Sed vitae vulputate nulla. Nunc iaculis nulla ut commodo tempor. Nunc non turpis at ex lacinia efficitur in a diam. Nulla vel pharetra eros. Nullam vitae dapibus quam. Maecenas pulvinar massa sapien, eget lacinia justo vestibulum at. Interdum et malesuada fames ac ante ipsum primis in faucibus. "
+	}
+}`
+		},
+		{
+			id: "changelogs",
+			path: "/api/project/:id/changelogs",
+			type: "GET",
+			url_params: [
+				{
+					name: "id",
+					description: "id of the project",
+				},
+			],
+			body: `Get all changelogs for a project (if there are any).`,
+			example_return: `{
+	"success": true,
+	"changelogs": [
+		{
+			"project_id": "1",
+			"timestamp": 1698922104092,
+			"body": "I love writing update notes for my projects :3"
+		},
+		{
+			"project_id": "1",
+			"timestamp": 1698923735655,
+			"body": " Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi quis convallis elit, quis consectetur mauris. Cras venenatis dolor quis felis maximus viverra. Duis mattis purus in sem vulputate pulvinar.\n\nEtiam id tortor felis. Sed dictum, leo sit amet consectetur vehicula, risus nulla faucibus ligula, sed tempus risus arcu non nisi. Vestibulum ac ante non risus interdum egestas. Quisque vel congue nulla. Suspendisse mi ante, mattis at tristique fermentum, ornare ac nibh.\n\nAenean rutrum aliquam tortor, eget molestie velit tincidunt in. Integer convallis auctor justo vitae ultricies. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Aenean feugiat, turpis consectetur accumsan ullamcorper, tortor arcu suscipit ex, eget tempor dui justo eu tellus. Aenean id egestas nulla, vitae condimentum leo. In tristique finibus eleifend. Sed blandit tristique lacus, vitae pulvinar felis sagittis at. Praesent molestie ultricies posuere. Donec quis malesuada nisi, finibus congue erat. Mauris in orci convallis, posuere erat vehicula, pulvinar nibh. Vivamus id tortor mi.\n\nVivamus enim tellus, porttitor vulputate consequat sit amet, tempor a tellus. Proin fermentum neque ac viverra facilisis. Maecenas ultricies dolor sapien, et suscipit lectus viverra in. Sed vitae lacinia justo. Sed vitae vulputate nulla. Nunc iaculis nulla ut commodo tempor. Nunc non turpis at ex lacinia efficitur in a diam. Nulla vel pharetra eros. Nullam vitae dapibus quam. Maecenas pulvinar massa sapien, eget lacinia justo vestibulum at. Interdum et malesuada fames ac ante ipsum primis in faucibus. "
+		}
+	]
+}`
+		},
+		{
 			id: "projects",
 			path: "/api/projects",
 			type: "GET",
@@ -596,6 +643,11 @@ The returned JSON object always has a "success" value with an "error" value as a
 				{
 					name: "projectId",
 					description: "the id of the project to delete",
+				},
+				{
+					name: "body",
+					description: "the body for the changelog (2500 max)",
+					optional: true,
 				},
 			],
 			body: `This will update the date_updated value of the project and notify any users who are following this project.`,

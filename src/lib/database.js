@@ -59,6 +59,10 @@ export const getProject = (id, session) =>
 	api("GET", "project/" + id, null, session);
 export const getComments = (projectId) =>
 	api("GET", "project/" + projectId + "/comments");
+export const getLastChangelog = (projectId) =>
+	api("GET", "project/" + projectId + "/changelog");
+export const getChangelogs = (projectId) =>
+	api("GET", "project/" + projectId + "/changelogs");
 
 export const getProjects = () =>
 	api("GET", "projects");
@@ -104,8 +108,8 @@ export const newProject = (name) =>
 	api("POST", "auth/project/new", { name });
 export const deleteProject = (id) =>
 	api("POST", "auth/project/delete", { projectId: id });
-export const publishProjectUpdate = (id) =>
-	api("POST", "auth/project/publishupdate", { projectId: id });
+export const publishProjectUpdate = (id, changelogBody) =>
+	api("POST", "auth/project/publishupdate", { projectId: id, body: changelogBody });
 
 export const addProjectMedia = (projectId, imageData) =>
 	api("POST", "auth/media/add", { projectId, imageData });
