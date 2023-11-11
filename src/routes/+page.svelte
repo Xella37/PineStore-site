@@ -55,7 +55,7 @@
 		<a href="/projects?sort=recent_published" class="no-link">
 			<h2>Recently Published <i class="fa-solid fa-caret-right"></i></h2>
 		</a>
-		<ProjectList projects={recentProjects} blocks={false} />
+		<ProjectList projects={recentProjects} blocks={true} />
 
 		<a href="/projects" class="no-link">
 			<h2>Most Popular <i class="fa-solid fa-caret-right"></i></h2>
