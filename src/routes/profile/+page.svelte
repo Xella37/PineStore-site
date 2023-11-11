@@ -340,6 +340,7 @@
 		overflow: hidden;
 		white-space: nowrap;
 		color: var(--text-color-medium);
+		padding-right: 1rem;
 	}
 	.button-group {
 		float: right;
