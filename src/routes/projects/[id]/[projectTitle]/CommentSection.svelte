@@ -1,7 +1,7 @@
 
 <script>
 	import Modal from "$lib/Modal.svelte";
-	import { BASE_URL, newComment, getComments, deleteComment } from "$lib/database.js";
+	import { BASE_URL, newComment, getComments, deleteComment, editComment } from "$lib/database.js";
 	import { calcTimeAgo, addToast } from "$lib/util.js";
 	import Markdown from "$lib/Markdown.svelte";
 
@@ -85,6 +85,20 @@
 		}
 	}
 
+	let editId;
+	let editText = "";
+	let editCommentModal = false;
+	async function editCommentSubmit() {
+		let res = await editComment(editId, editText);
+		editCommentModal = false;
+		if (res.success) {
+			await refreshComments();
+			addToast("Edited!", "Your comment has been updated.", "success", 3);
+		} else {
+			addToast("Failed!", "Error: " + (res.error ?? "no error"), "error");
+		}
+	}
+
 	function formatCommentTimestamp(timestamp) {
 		return `${calcTimeAgo(timestamp, true)} ago`;
 	}
@@ -130,6 +144,10 @@
 					<button class="delete-button" on:click={() => { deleteId = comment.id; deleteCommentModal = true; }}>
 						<i class="fa-solid fa-trash-can"></i>
 						Delete
+					</button>
+					<button class="edit-button" on:click={() => { editId = comment.id; editText = comment.body; editCommentModal = true; }}>
+						<i class="fa-solid fa-pencil"></i>
+						Edit
 					</button>
 				{/if}
 				{#if myId != null && replyId != comment.id}
@@ -180,6 +198,10 @@
 										<i class="fa-solid fa-trash-can"></i>
 										Delete
 									</button>
+									<button class="edit-button" on:click={() => { editId = reply.id; editText = reply.body; editCommentModal = true; }}>
+										<i class="fa-solid fa-pencil"></i>
+										Edit
+									</button>
 								{/if}
 							</div>
 							<p class="comment-body markdown-container" class:deleted={reply.user_discord == "deleted"}>
@@ -198,6 +220,15 @@
 
 	<form class="model-form" on:submit|preventDefault={deleteCommentSubmit}>
 		<button type="submit" class="button red">Delete</button>
+	</form>
+</Modal>
+
+<Modal title="Edit comment" bind:opened={editCommentModal}>
+	<p>Update your comment below.</p>
+
+	<form class="model-form" on:submit|preventDefault={editCommentSubmit}>
+		<textarea bind:value={editText} placeholder="Write the updated message." maxlength="500"></textarea>
+		<button type="submit" class="button">Finish</button>
 	</form>
 </Modal>
 
@@ -316,6 +347,24 @@
 		cursor: pointer;
 		--color: var(--cc-orange);
 	}
+	.edit-button {
+		--color: var(--cc-yellow);
+		display: none;
+		background: none;
+		color: var(--color);
+		font-size: 0.75rem;
+		margin: 0;
+		border: 0.125rem solid var(--color);
+		border-radius: 2rem;
+		padding: 0.125rem 0.5rem;
+	}
+	.comment:hover > .action-buttons > .edit-button {
+		display: unset;
+	}
+	.edit-button:hover {
+		cursor: pointer;
+		--color: var(--cc-lime);
+	}
 	.reply-button {
 		--color: var(--cc-lightBlue);
 		display: none;
@@ -346,5 +395,11 @@
 
 	.model-form button {
 		width: 100%;
+	}
+
+	.model-form {
+		display: flex;
+		flex-direction: column;
+		gap: 1rem;
 	}
 </style>

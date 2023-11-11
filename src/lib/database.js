@@ -122,6 +122,8 @@ export const newComment = (projectId, replyId, text) =>
 	api("POST", "auth/comment", { projectId, replyId, text });
 export const deleteComment = (id) =>
 	api("POST", "auth/comment/delete", { commentId: id });
+export const editComment = (id, text) =>
+	api("POST", "auth/comment/edit", { commentId: id, text: text });
 
 export const getNotifications = () =>
 	api("GET", "auth/notifications");
