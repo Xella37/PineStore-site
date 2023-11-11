@@ -21,8 +21,7 @@
 	let searchQuery = "";
 	let projects = null;
 
-	async function search(e) {
-		e.preventDefault();
+	async function search() {
 		let data = await searchProjects(searchQuery);
 		if (data.success) {
 			projects = data.projects;
@@ -44,7 +43,7 @@
 <div class="page-container">
 	<div class="page page-thin shadow">
 		<h1>All ComputerCraft projects</h1>
-		<form on:submit={search}>
+		<form on:submit|preventDefault={search}>
 			<input bind:this={searchInput} type="text" bind:value={searchQuery} placeholder="Search query">
 			<button type="submit" class="button">
 				<i class="fa-solid fa-magnifying-glass"></i>

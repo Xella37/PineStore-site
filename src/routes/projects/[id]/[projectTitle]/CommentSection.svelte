@@ -45,8 +45,7 @@
 	}
 
 	let commentText = "";
-	async function postComment(e) {
-		e.preventDefault();
+	async function postComment() {
 		let res = await newComment(project.id, null, commentText);
 		if (res.success) {
 			commentText = "";
@@ -59,8 +58,7 @@
 
 	let replyId;
 	let replyText;
-	async function postReply(e) {
-		e.preventDefault();
+	async function postReply() {
 		let res = await newComment(project.id, replyId, replyText);
 		if (res.success) {
 			replyId = null;
@@ -106,7 +104,7 @@
 
 {#if myId != null}
 	<div class="writing-container" class:inactive={!selectedMainTextarea}>
-		<form on:submit={postComment}>
+		<form on:submit|preventDefault={postComment}>
 			<a href="/user/{myId}">
 				<img src="{BASE_URL}/pfp/{myId}.png" alt="pfp">
 			</a>
@@ -165,7 +163,7 @@
 			{#if myId != null}
 				{#if replyId == comment.id}
 					<div class="writing-container reply">
-						<form on:submit={postReply}>
+						<form on:submit|preventDefault={postReply}>
 							<a href="/user/{myId}">
 								<img src="{BASE_URL}/pfp/{myId}.png" alt="pfp">
 							</a>
