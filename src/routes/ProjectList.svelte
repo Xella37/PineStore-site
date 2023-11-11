@@ -50,6 +50,12 @@
 		text-align: center;
 		font-size: 1.5rem;
 		margin-top: 0.75rem;
+
+		text-overflow: ellipsis;
+		overflow: hidden;
+		white-space: nowrap;
+		padding-inline: 1rem;
+		box-sizing: border-box;
 	}
 	.project-tile span.author {
 		display: inline-block;
