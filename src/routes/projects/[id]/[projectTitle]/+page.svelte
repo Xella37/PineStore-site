@@ -287,12 +287,13 @@
 
 		{#if changelog != null && changelog.body?.length > 0}
 			<!-- svelte-ignore a11y-click-events-have-key-events -->
-			<div class="changelog" on:click|preventDefault={() => { changelogOpened = !changelogOpened; }}>
+			<div class="changelog markdown-container" on:click|preventDefault={() => { changelogOpened = !changelogOpened; }}>
 				<span>Updated {formatShortDate(changelog.timestamp)}</span>
 				{#if changelogOpened}
-					{#each changelog.body.split("\n") as paragraph}
+					<!-- {#each changelog.body.split("\n") as paragraph}
 						<p>{paragraph}</p>
-					{/each}
+					{/each} -->
+					<Markdown source={changelog.body} />
 				{:else}
 					<p class="collapsed">{changelog.body}</p>
 				{/if}
