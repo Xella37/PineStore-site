@@ -17,7 +17,7 @@
 	import Markdown from "$lib/Markdown.svelte";
 	import Modal from "$lib/Modal.svelte";
 	import ConnectionIcon from "$lib/ConnectionIcon.svelte";
-    import ProjectList from "./../../ProjectList.svelte";
+    import ProjectList from "$lib/ProjectList.svelte";
 	import { addToast } from "$lib/util.js";
 	import { BASE_URL, getMyProfile, followUser, unfollowUser, checkFollowingUser } from "$lib/database.js";
 

@@ -14,7 +14,7 @@
 
 <script>
 	import { searchProjects } from "$lib/database.js";
-    import ProjectList from "./../ProjectList.svelte";
+    import ProjectList from "$lib/ProjectList.svelte";
 	import { onMount } from "svelte";
 	import { addToast } from "$lib/util.js";
 

@@ -15,7 +15,7 @@
 	import { page } from "$app/stores";
 	$: projectId = $page.params.id;
 
-	import TagList from "../../../TagList.svelte";
+	import TagList from "$lib/TagList.svelte";
 
 	let savedProject = {
 		description_markdown: "no markdown description",

@@ -17,8 +17,8 @@
 	import { browser } from "$app/environment";
 	import { tags } from "$lib/util.js";
 	import { getMySavedProjects } from "$lib/database.js";
-    import TagList from "./../TagList.svelte";
-	import ProjectList from "./../ProjectList.svelte";
+    import TagList from "$lib/TagList.svelte";
+	import ProjectList from "$lib/ProjectList.svelte";
 
 	export let data;
 	let displayProjects = [];

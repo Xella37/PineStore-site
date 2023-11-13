@@ -13,7 +13,7 @@
 </svelte:head>
 
 <script>
-    import ProjectList from "./ProjectList.svelte";
+    import ProjectList from "$lib/ProjectList.svelte";
 
 	export let data;
 
