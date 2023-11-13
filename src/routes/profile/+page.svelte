@@ -4,12 +4,12 @@
 </svelte:head>
 
 <script>
-	import Markdown from "$lib/Markdown.svelte";
-	import ConnectionIcon from "$lib/ConnectionIcon.svelte";
+	import Markdown from "$lib/svelte/Markdown.svelte";
+	import ConnectionIcon from "$lib/svelte/ConnectionIcon.svelte";
+    import Modal from "$lib/svelte/Modal.svelte";
 	import { onMount } from "svelte";
 	import { logoutUser, getMyProjects, getMyProfile, newProject, setProfileInfo, deleteProject, getUserOptions, setUserOptions } from "$lib/database.js";
 	import { addToast } from "$lib/util.js";
-    import Modal from "$lib/Modal.svelte";
 
 	let profile = {
 		name: "loading...",

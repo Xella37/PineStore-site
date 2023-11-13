@@ -8,14 +8,14 @@
 	import { BASE_URL, getProject, setProjectInfo, setProjectThumbnail, addProjectMedia, removeProjectMedia, publishProjectUpdate } from "$lib/database.js";
 	import { getProjectLink, addToast } from "$lib/util.js";
 
-	import Markdown from "$lib/Markdown.svelte";
-    import Modal from "$lib/Modal.svelte";
-    import CopyField from "$lib/CopyField.svelte";
+	import Markdown from "$lib/svelte/Markdown.svelte";
+    import Modal from "$lib/svelte/Modal.svelte";
+    import CopyField from "$lib/svelte/CopyField.svelte";
 
 	import { page } from "$app/stores";
 	$: projectId = $page.params.id;
 
-	import TagList from "$lib/TagList.svelte";
+	import TagList from "$lib/svelte/TagList.svelte";
 
 	let savedProject = {
 		description_markdown: "no markdown description",

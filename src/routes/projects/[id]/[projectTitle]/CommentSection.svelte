@@ -1,9 +1,9 @@
 
 <script>
-	import Modal from "$lib/Modal.svelte";
+	import Modal from "$lib/svelte/Modal.svelte";
 	import { BASE_URL, newComment, getComments, deleteComment, editComment } from "$lib/database.js";
 	import { calcTimeAgo, addToast } from "$lib/util.js";
-	import Markdown from "$lib/Markdown.svelte";
+	import Markdown from "$lib/svelte/Markdown.svelte";
 
 	export let project;
 	export let comments;

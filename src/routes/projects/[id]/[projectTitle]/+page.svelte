@@ -18,9 +18,9 @@
 	import { getProjectLink, addToast, tagToDisplay } from "$lib/util.js";
 	import { BASE_URL, getMyProfile, reportProjectView, reportProjectDownload, saveProject, checkSavedProject, unsaveProject, likeProject, checkLikedProject, unlikeProject } from "$lib/database.js";
 	
-	import Markdown from "$lib/Markdown.svelte";
+	import Markdown from "$lib/svelte/Markdown.svelte";
 	
-	import Modal from "$lib/Modal.svelte";
+	import Modal from "$lib/svelte/Modal.svelte";
     import CommentSection from "./CommentSection.svelte";
 
 	export let data;

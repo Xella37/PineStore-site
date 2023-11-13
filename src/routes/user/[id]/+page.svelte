@@ -14,10 +14,10 @@
 
 <script>
 	import { onMount } from "svelte";
-	import Markdown from "$lib/Markdown.svelte";
-	import Modal from "$lib/Modal.svelte";
-	import ConnectionIcon from "$lib/ConnectionIcon.svelte";
-    import ProjectList from "$lib/ProjectList.svelte";
+	import Markdown from "$lib/svelte/Markdown.svelte";
+	import Modal from "$lib/svelte/Modal.svelte";
+	import ConnectionIcon from "$lib/svelte/ConnectionIcon.svelte";
+    import ProjectList from "$lib/svelte/ProjectList.svelte";
 	import { addToast } from "$lib/util.js";
 	import { BASE_URL, getMyProfile, followUser, unfollowUser, checkFollowingUser } from "$lib/database.js";
 

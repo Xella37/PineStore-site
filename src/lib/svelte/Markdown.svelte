@@ -1,9 +1,9 @@
 <script>
 	import SvelteMarkdown from "svelte-markdown";
-	import MDImage from "$lib/MDImage.svelte";
-	import MDCode from "$lib/MDCode.svelte";
-	import MDHtmlEscaped from "$lib/MDHtmlEscaped.svelte";
-	import MDHtmlSanitized from "$lib/MDHtmlSanitized.svelte";
+	import MDImage from "./md-renders/MDImage.svelte";
+	import MDCode from "./md-renders/MDCode.svelte";
+	import MDHtmlEscaped from "./md-renders/MDHtmlEscaped.svelte";
+	import MDHtmlSanitized from "./md-renders/MDHtmlSanitized.svelte";
 
 	export let source = "";
 	export let escaped = false;
