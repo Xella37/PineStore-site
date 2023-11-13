@@ -149,17 +149,4 @@
 			animation: rotation ease 500ms;
 		}
 	}
-
-	.splash span {
-		display: block;
-		font-size: 1.25rem;
-		padding-top: 1rem;
-	}
-	.command {
-		display: inline-block;
-		background-color: #2A2A2A;
-		margin-top: 0.5rem;
-		max-width: calc(100% - 2rem);
-		white-space: break-spaces;
-	}
 </style>
