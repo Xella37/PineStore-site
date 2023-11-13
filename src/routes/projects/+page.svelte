@@ -46,6 +46,15 @@
 				return dPublish;
 			} else if (sortingMethod == "total_downloads") {
 				return b.downloads - a.downloads;
+			} else if (sortingMethod == "recent_views") {
+				let dViewsRecent = b.views_recent - a.views_recent;
+				if (dViewsRecent != 0) return dViewsRecent;
+				let dViews = b.views - a.views;
+				if (dViews != 0) return dViews;
+				let dPublish = b.date_publish - a.date_publish;
+				return dPublish;
+			} else if (sortingMethod == "total_views") {
+				return b.views - a.views;
 			} else if (sortingMethod == "recent_published") {
 				return b.date_publish - a.date_publish;
 			} else if (sortingMethod == "recent_update") {
@@ -104,6 +113,8 @@
 				<option value="total_downloads">Total downloads</option>
 				<option value="recent_update">Recently updated</option>
 				<option value="recent_published">Recently published</option>
+				<option value="total_views">Total views</option>
+				<option value="recent_views">Recent views</option>
 			</select>
 		</div>
 
