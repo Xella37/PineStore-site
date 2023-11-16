@@ -135,7 +135,7 @@
 										<div class="notification-item" class:unread={!noti.was_read}>
 											<img src="https://pinestore.cc/pfp/{noti.payload.from_id ?? "???"}.png" alt="pfp">
 											{noti.payload.from_name} / {noti.payload.project_name} <span class="notification-time">{calcTimeAgo(noti.timestamp)}</span>
-											<p>{noti.payload.short_text}</p>
+											<p>{noti.payload.short_text + (noti.payload.short_text.length == 50 ? "..." : "")}</p>
 										</div>
 									</a>
 								{:else if noti.kind == "reply"}
@@ -143,7 +143,7 @@
 										<div class="notification-item" class:unread={!noti.was_read}>
 											<img src="https://pinestore.cc/pfp/{noti.payload.from_id}.png" alt="pfp">
 											{noti.payload.from_name} <span style="color:var(--text-color-medium);">replied to you</span> <span class="notification-time">{calcTimeAgo(noti.timestamp)}</span>
-											<p>{noti.payload.short_text}</p>
+											<p>{noti.payload.short_text + (noti.payload.short_text.length == 50 ? "..." : "")}</p>
 										</div>
 									</a>
 								{:else if noti.kind == "newfollow_user"}
