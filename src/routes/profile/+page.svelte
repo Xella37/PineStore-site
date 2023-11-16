@@ -101,6 +101,8 @@
 		{id: "discord_noti_reply", title: "New replies to your comments"},
 		{id: "discord_noti_newfollow_user", title: "New followers"},
 		{id: "discord_noti_newfollow_project", title: "New project saves/followers"},
+		{id: "discord_noti_milestone_views", title: "Milestones for your project views"},
+		{id: "discord_noti_milestone_downloads", title: "Milestones for your project downloads"},
 		{id: "discord_noti_following_newproject", title: "Newly published project from following"},
 		{id: "discord_noti_following_projectupdate", title: "Updates for saved projects"},
 	];
