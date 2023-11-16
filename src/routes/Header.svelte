@@ -162,6 +162,22 @@
 											<p>{noti.payload.user_name} is now following your project!</p>
 										</div>
 									</a>
+								{:else if noti.kind == "milestone_views"}
+									<a class="no-link" href="{getProjectLink(noti.payload.project_id, noti.payload.project_name)}" on:click={toggleNotifications}>
+										<div class="notification-item" class:unread={!noti.was_read}>
+											<img src="/tada.webp" alt="tada">
+											Congratulations on {noti.payload.views} views! <span class="notification-time">{calcTimeAgo(noti.timestamp)}</span>
+											<p>Your project {noti.payload.project_name} has just reached a milestone of <b>{noti.payload.views}</b> views!</p>
+										</div>
+									</a>
+								{:else if noti.kind == "milestone_downloads"}
+									<a class="no-link" href="{getProjectLink(noti.payload.project_id, noti.payload.project_name)}" on:click={toggleNotifications}>
+										<div class="notification-item" class:unread={!noti.was_read}>
+											<img src="/tada.webp" alt="tada">
+											Congratulations on {noti.payload.downloads} downloads! <span class="notification-time">{calcTimeAgo(noti.timestamp)}</span>
+											<p>Your project {noti.payload.project_name} has just reached a milestone of <b>{noti.payload.downloads}</b> downloads!</p>
+										</div>
+									</a>
 								{:else if noti.kind == "following_newproject"}
 									<a class="no-link" href="{getProjectLink(noti.payload.project_id, noti.payload.project_name)}" on:click={toggleNotifications}>
 										<div class="notification-item" class:unread={!noti.was_read}>
