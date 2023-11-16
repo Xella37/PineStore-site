@@ -167,7 +167,7 @@
 										<div class="notification-item" class:unread={!noti.was_read}>
 											<img src="/tada.webp" alt="tada">
 											Congratulations on {noti.payload.views} views! <span class="notification-time">{calcTimeAgo(noti.timestamp)}</span>
-											<p>Your project {noti.payload.project_name} has just reached a milestone of <b>{noti.payload.views}</b> views!</p>
+											<p>{noti.payload.project_name} just reached <b>{noti.payload.views}</b> views!</p>
 										</div>
 									</a>
 								{:else if noti.kind == "milestone_downloads"}
@@ -175,7 +175,7 @@
 										<div class="notification-item" class:unread={!noti.was_read}>
 											<img src="/tada.webp" alt="tada">
 											Congratulations on {noti.payload.downloads} downloads! <span class="notification-time">{calcTimeAgo(noti.timestamp)}</span>
-											<p>Your project {noti.payload.project_name} has just reached a milestone of <b>{noti.payload.downloads}</b> downloads!</p>
+											<p>{noti.payload.project_name} just reached <b>{noti.payload.downloads}</b> downloads!</p>
 										</div>
 									</a>
 								{:else if noti.kind == "following_newproject"}
@@ -440,12 +440,15 @@
 		border-radius: 10rem;
 	}
 	.notification-item p {
+		display: -webkit-box;
+		-webkit-line-clamp: 2;
+		-webkit-box-orient: vertical;
 		color: var(--text-color);
 		margin-bottom: 0.25rem;
 		text-overflow: ellipsis;
-		max-width: calc(20rem - 5rem);
+		max-width: calc(20rem - 3rem);
 		overflow: hidden;
-		white-space: nowrap;
+		white-space: break-spaces;
 	}
 	.notification-time {
 		color: var(--text-color-dark);
