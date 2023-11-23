@@ -98,6 +98,9 @@
 	}
 
 	function formatCommentTimestamp(timestamp) {
+		let dt = Date.now() - timestamp;
+		if (dt <= 5000)
+			return "just now";
 		return `${calcTimeAgo(timestamp, true)} ago`;
 	}
 </script>
