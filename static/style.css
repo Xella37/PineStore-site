@@ -425,3 +425,11 @@ code.hljs span.hljs-title {
 .table {
 	width: 100%;
 }
+
+.apexcharts-theme-dark > svg {
+	background: none!important;
+}
+
+.apexcharts-theme-dark .apexcharts-gridline {
+	stroke: #545454;
+}

@@ -1,6 +1,7 @@
 
 <svelte:head>
 	<title>Profile</title>
+	<!-- <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script> -->
 </svelte:head>
 
 <script>
@@ -10,6 +11,7 @@
 	import { onMount } from "svelte";
 	import { logoutUser, getMyProjects, getMyProfile, newProject, setProfileInfo, deleteProject, getUserOptions, setUserOptions } from "$lib/database.js";
 	import { addToast } from "$lib/util.js";
+    import AnalyticsGraph from "./AnalyticsGraph.svelte";
 
 	let profile = {
 		name: "loading...",
@@ -112,6 +114,8 @@
 		console.log(options);
 		await sendUserOptions();
 	}
+
+	let selectedAnalytics = "download";
 
 	onMount(() => {
 		loadProfile();
@@ -233,6 +237,28 @@
 				{/each}
 			</div>
 		</form>
+
+		<div class="ruler-text">
+			<span>project analytics</span>
+		</div>
+
+		<div class="flex-list">
+			<button class="button tab" class:selected={selectedAnalytics == "view"} on:click|preventDefault={() => { selectedAnalytics = "view" }}>Views</button>
+			<button class="button tab" class:selected={selectedAnalytics == "download"} on:click|preventDefault={() => { selectedAnalytics = "download" }}>Downloads</button>
+			<!-- <button class="button tab" class:selected={selectedAnalytics == "like"} on:click|preventDefault={() => { selectedAnalytics = "like" }}>Likes</button> -->
+		</div>
+
+		{#if projects.length > 0}
+			<div class="tab-container">
+				{#if selectedAnalytics == "view"}
+					<AnalyticsGraph kind={selectedAnalytics} title="Views" projects={projects} />
+				{:else if selectedAnalytics == "download"}
+					<AnalyticsGraph kind={selectedAnalytics} title="Downloads" projects={projects} />
+				<!-- {:else if selectedAnalytics == "like"}
+					<AnalyticsGraph kind={selectedAnalytics} title="Likes" projects={projects} /> -->
+				{/if}
+			</div>
+		{/if}
 
 		<div class="ruler-text">
 			<span>manage projects</span>
@@ -403,5 +429,16 @@
 		padding: 0.25rem 0.5rem;
 		border-radius: 2rem;
 		margin-right: 0.5rem;
+	}
+
+	.tab {
+		background-color: var(--cc-gray);
+		color: white;
+	}
+	.tab.selected {
+		background-color: var(--cc-blue);
+	}
+	.tab-container {
+		margin-top: 2rem;
 	}
 </style>

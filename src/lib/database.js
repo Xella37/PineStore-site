@@ -153,6 +153,9 @@ export const unsaveProject = (id) =>
 export const getMySavedProjects = (id) =>
 	api("GET", "auth/saved");
 
+export const getMyAnalytics = (kind) =>
+	api("GET", "auth/analytics/" + kind);
+
 export async function isLoggedIn() {
 	let profileData = await getMyProfile();
 	return profileData?.user?.discord_id != null;
