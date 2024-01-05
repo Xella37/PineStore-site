@@ -55,19 +55,33 @@ The returned JSON object always has a "success" value with an "error" value as a
 		"install_command": "pastebin run xLC8mABU",
 		"download_url": null,
 		"target_file": "Doom.lua",
-		"tags": "fun,action",
+		"tags": [
+			"fun",
+			"action"
+		],
 		"repository": "https://github.com/Xella37/CCDoom",
 		"description_short": "CCDoom is a 3d first-person shooter in ComputerCraft made using the Pine3D graphics library. It is inspired by the game \\\"Doom\\\" as the name implies.",
 		"description": "CCDoom is a 3d first-person shooter ... truncated for example",
 		"description_markdown": "CCDoom is a 3d first-person shooter ... truncated for example",
-		"has_thumbnail": 1,
-		"hide_thumbnail": 0,
+		"has_thumbnail": true,
+		"hide_thumbnail": false,
 		"media_count": 5,
-		"keywords": "pine,pine3d,3d,shooter,doom,graphics,first,person",
+		"keywords": [
+			"pine",
+			"pine3d",
+			"3d",
+			"shooter",
+			"doom",
+			"graphics",
+			"first",
+			"person"
+		],
 		"downloads": 22,
 		"downloads_recent": 20,
 		"views": 58,
-		"visible": 1
+		"views_recent": 50,
+		"likes": 3,
+		"visible": true
 	}
 }`
 		},
@@ -111,7 +125,7 @@ The returned JSON object always has a "success" value with an "error" value as a
 			example_return: `{
 	"success": true,
 	"changelog": {
-		"project_id": "1",
+		"project_id": 1,
 		"timestamp": 1698923735655,
 		"body": " Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi quis convallis elit, quis consectetur mauris. Cras venenatis dolor quis felis maximus viverra. Duis mattis purus in sem vulputate pulvinar.\n\nEtiam id tortor felis. Sed dictum, leo sit amet consectetur vehicula, risus nulla faucibus ligula, sed tempus risus arcu non nisi. Vestibulum ac ante non risus interdum egestas. Quisque vel congue nulla. Suspendisse mi ante, mattis at tristique fermentum, ornare ac nibh.\n\nAenean rutrum aliquam tortor, eget molestie velit tincidunt in. Integer convallis auctor justo vitae ultricies. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Aenean feugiat, turpis consectetur accumsan ullamcorper, tortor arcu suscipit ex, eget tempor dui justo eu tellus. Aenean id egestas nulla, vitae condimentum leo. In tristique finibus eleifend. Sed blandit tristique lacus, vitae pulvinar felis sagittis at. Praesent molestie ultricies posuere. Donec quis malesuada nisi, finibus congue erat. Mauris in orci convallis, posuere erat vehicula, pulvinar nibh. Vivamus id tortor mi.\n\nVivamus enim tellus, porttitor vulputate consequat sit amet, tempor a tellus. Proin fermentum neque ac viverra facilisis. Maecenas ultricies dolor sapien, et suscipit lectus viverra in. Sed vitae lacinia justo. Sed vitae vulputate nulla. Nunc iaculis nulla ut commodo tempor. Nunc non turpis at ex lacinia efficitur in a diam. Nulla vel pharetra eros. Nullam vitae dapibus quam. Maecenas pulvinar massa sapien, eget lacinia justo vestibulum at. Interdum et malesuada fames ac ante ipsum primis in faucibus. "
 	}
@@ -132,12 +146,12 @@ The returned JSON object always has a "success" value with an "error" value as a
 	"success": true,
 	"changelogs": [
 		{
-			"project_id": "1",
+			"project_id": 1,
 			"timestamp": 1698922104092,
 			"body": "I love writing update notes for my projects :3"
 		},
 		{
-			"project_id": "1",
+			"project_id": 1,
 			"timestamp": 1698923735655,
 			"body": " Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi quis convallis elit, quis consectetur mauris. Cras venenatis dolor quis felis maximus viverra. Duis mattis purus in sem vulputate pulvinar.\n\nEtiam id tortor felis. Sed dictum, leo sit amet consectetur vehicula, risus nulla faucibus ligula, sed tempus risus arcu non nisi. Vestibulum ac ante non risus interdum egestas. Quisque vel congue nulla. Suspendisse mi ante, mattis at tristique fermentum, ornare ac nibh.\n\nAenean rutrum aliquam tortor, eget molestie velit tincidunt in. Integer convallis auctor justo vitae ultricies. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Aenean feugiat, turpis consectetur accumsan ullamcorper, tortor arcu suscipit ex, eget tempor dui justo eu tellus. Aenean id egestas nulla, vitae condimentum leo. In tristique finibus eleifend. Sed blandit tristique lacus, vitae pulvinar felis sagittis at. Praesent molestie ultricies posuere. Donec quis malesuada nisi, finibus congue erat. Mauris in orci convallis, posuere erat vehicula, pulvinar nibh. Vivamus id tortor mi.\n\nVivamus enim tellus, porttitor vulputate consequat sit amet, tempor a tellus. Proin fermentum neque ac viverra facilisis. Maecenas ultricies dolor sapien, et suscipit lectus viverra in. Sed vitae lacinia justo. Sed vitae vulputate nulla. Nunc iaculis nulla ut commodo tempor. Nunc non turpis at ex lacinia efficitur in a diam. Nulla vel pharetra eros. Nullam vitae dapibus quam. Maecenas pulvinar massa sapien, eget lacinia justo vestibulum at. Interdum et malesuada fames ac ante ipsum primis in faucibus. "
 		}
@@ -155,30 +169,47 @@ The returned JSON object always has a "success" value with an "error" value as a
 	"projects:": [
 		...,
 		{
-			"id": 1,
-			"date_added": 1694617285452,
-			"date_updated": 0,
-			"date_release": 0,
-			"date_publish": 1694617285452,
-			"owner_discord": "302427405023313920",
-			"owner_name": "Xella",
-			"name": "CCDoom",
-			"install_command": "pastebin run xLC8mABU",
-			"download_url": null,
-			"target_file": "Doom.lua",
-			"tags": "fun,action",
-			"repository": "https://github.com/Xella37/CCDoom",
-			"description_short": "CCDoom is a 3d first-person shooter in ComputerCraft made using the Pine3D graphics library. It is inspired by the game \\\"Doom\\\" as the name implies.",
-			"description": "CCDoom is a 3d first-person shooter ... truncated for example",
-			"description_markdown": "CCDoom is a 3d first-person shooter ... truncated for example",
-			"has_thumbnail": 1,
-			"hide_thumbnail": 0,
-			"media_count": 5,
-			"keywords": "pine,pine3d,3d,shooter,doom,graphics,first,person",
-			"downloads": 22,
-			"downloads_recent": 20,
-			"views": 58,
-			"visible": 1
+			"success": true,
+			"project": {
+				"id": 1,
+				"date_added": 1694617285452,
+				"date_updated": 0,
+				"date_release": 0,
+				"date_publish": 1694617285452,
+				"owner_discord": "302427405023313920",
+				"owner_name": "Xella",
+				"name": "CCDoom",
+				"install_command": "pastebin run xLC8mABU",
+				"download_url": null,
+				"target_file": "Doom.lua",
+				"tags": [
+					"fun",
+					"action"
+				],
+				"repository": "https://github.com/Xella37/CCDoom",
+				"description_short": "CCDoom is a 3d first-person shooter in ComputerCraft made using the Pine3D graphics library. It is inspired by the game \\\"Doom\\\" as the name implies.",
+				"description": "CCDoom is a 3d first-person shooter ... truncated for example",
+				"description_markdown": "CCDoom is a 3d first-person shooter ... truncated for example",
+				"has_thumbnail": true,
+				"hide_thumbnail": false,
+				"media_count": 5,
+				"keywords": [
+					"pine",
+					"pine3d",
+					"3d",
+					"shooter",
+					"doom",
+					"graphics",
+					"first",
+					"person"
+				],
+				"downloads": 22,
+				"downloads_recent": 20,
+				"views": 58,
+				"views_recent": 50,
+				"likes": 3,
+				"visible": true
+			}
 		},
 		...
 	]
@@ -200,30 +231,47 @@ The returned JSON object always has a "success" value with an "error" value as a
 	"projects:": [
 		...,
 		{
-			"id": 1,
-			"date_added": 1694617285452,
-			"date_updated": 0,
-			"date_release": 0,
-			"date_publish": 1694617285452,
-			"owner_discord": "302427405023313920",
-			"owner_name": "Xella",
-			"name": "CCDoom",
-			"install_command": "pastebin run xLC8mABU",
-			"download_url": null,
-			"target_file": "Doom.lua",
-			"tags": "fun,action",
-			"repository": "https://github.com/Xella37/CCDoom",
-			"description_short": "CCDoom is a 3d first-person shooter in ComputerCraft made using the Pine3D graphics library. It is inspired by the game \\\"Doom\\\" as the name implies.",
-			"description": "CCDoom is a 3d first-person shooter ... truncated for example",
-			"description_markdown": "CCDoom is a 3d first-person shooter ... truncated for example",
-			"has_thumbnail": 1,
-			"hide_thumbnail": 0,
-			"media_count": 5,
-			"keywords": "pine,pine3d,3d,shooter,doom,graphics,first,person",
-			"downloads": 22,
-			"downloads_recent": 20,
-			"views": 58,
-			"visible": 1
+			"success": true,
+			"project": {
+				"id": 1,
+				"date_added": 1694617285452,
+				"date_updated": 0,
+				"date_release": 0,
+				"date_publish": 1694617285452,
+				"owner_discord": "302427405023313920",
+				"owner_name": "Xella",
+				"name": "CCDoom",
+				"install_command": "pastebin run xLC8mABU",
+				"download_url": null,
+				"target_file": "Doom.lua",
+				"tags": [
+					"fun",
+					"action"
+				],
+				"repository": "https://github.com/Xella37/CCDoom",
+				"description_short": "CCDoom is a 3d first-person shooter in ComputerCraft made using the Pine3D graphics library. It is inspired by the game \\\"Doom\\\" as the name implies.",
+				"description": "CCDoom is a 3d first-person shooter ... truncated for example",
+				"description_markdown": "CCDoom is a 3d first-person shooter ... truncated for example",
+				"has_thumbnail": true,
+				"hide_thumbnail": false,
+				"media_count": 5,
+				"keywords": [
+					"pine",
+					"pine3d",
+					"3d",
+					"shooter",
+					"doom",
+					"graphics",
+					"first",
+					"person"
+				],
+				"downloads": 22,
+				"downloads_recent": 20,
+				"views": 58,
+				"views_recent": 50,
+				"likes": 3,
+				"visible": true
+			}
 		},
 		...
 	]
@@ -243,30 +291,47 @@ The returned JSON object always has a "success" value with an "error" value as a
 			example_return: `{
 	"success": true,
 	"project": {
-		"id": 1,
-		"date_added": 1694617285452,
-		"date_updated": 0,
-		"date_release": 0,
-		"date_publish": 1694617285452,
-		"owner_discord": "302427405023313920",
-		"owner_name": "Xella",
-		"name": "CCDoom",
-		"install_command": "pastebin run xLC8mABU",
-		"download_url": null,
-		"target_file": "Doom.lua",
-		"tags": "fun,action",
-		"repository": "https://github.com/Xella37/CCDoom",
-		"description_short": "CCDoom is a 3d first-person shooter in ComputerCraft made using the Pine3D graphics library. It is inspired by the game \\\"Doom\\\" as the name implies.",
-		"description": "CCDoom is a 3d first-person shooter ... truncated for example",
-		"description_markdown": "CCDoom is a 3d first-person shooter ... truncated for example",
-		"has_thumbnail": 1,
-		"hide_thumbnail": 0,
-		"media_count": 5,
-		"keywords": "pine,pine3d,3d,shooter,doom,graphics,first,person",
-		"downloads": 22,
-		"downloads_recent": 20,
-		"views": 58,
-		"visible": 1
+		"success": true,
+		"project": {
+			"id": 1,
+			"date_added": 1694617285452,
+			"date_updated": 0,
+			"date_release": 0,
+			"date_publish": 1694617285452,
+			"owner_discord": "302427405023313920",
+			"owner_name": "Xella",
+			"name": "CCDoom",
+			"install_command": "pastebin run xLC8mABU",
+			"download_url": null,
+			"target_file": "Doom.lua",
+			"tags": [
+				"fun",
+				"action"
+			],
+			"repository": "https://github.com/Xella37/CCDoom",
+			"description_short": "CCDoom is a 3d first-person shooter in ComputerCraft made using the Pine3D graphics library. It is inspired by the game \\\"Doom\\\" as the name implies.",
+			"description": "CCDoom is a 3d first-person shooter ... truncated for example",
+			"description_markdown": "CCDoom is a 3d first-person shooter ... truncated for example",
+			"has_thumbnail": true,
+			"hide_thumbnail": false,
+			"media_count": 5,
+			"keywords": [
+				"pine",
+				"pine3d",
+				"3d",
+				"shooter",
+				"doom",
+				"graphics",
+				"first",
+				"person"
+			],
+			"downloads": 22,
+			"downloads_recent": 20,
+			"views": 58,
+			"views_recent": 50,
+			"likes": 3,
+			"visible": true
+		}
 	}
 }`
 		},
@@ -326,30 +391,47 @@ The returned JSON object always has a "success" value with an "error" value as a
 	"projects:": [
 		...,
 		{
-			"id": 1,
-			"date_added": 1694617285452,
-			"date_updated": 0,
-			"date_release": 0,
-			"date_publish": 1694617285452,
-			"owner_discord": "302427405023313920",
-			"owner_name": "Xella",
-			"name": "CCDoom",
-			"install_command": "pastebin run xLC8mABU",
-			"download_url": null,
-			"target_file": "Doom.lua",
-			"tags": "fun,action",
-			"repository": "https://github.com/Xella37/CCDoom",
-			"description_short": "CCDoom is a 3d first-person shooter in ComputerCraft made using the Pine3D graphics library. It is inspired by the game \\\"Doom\\\" as the name implies.",
-			"description": "CCDoom is a 3d first-person shooter ... truncated for example",
-			"description_markdown": "CCDoom is a 3d first-person shooter ... truncated for example",
-			"has_thumbnail": 1,
-			"hide_thumbnail": 0,
-			"media_count": 5,
-			"keywords": "pine,pine3d,3d,shooter,doom,graphics,first,person",
-			"downloads": 22,
-			"downloads_recent": 20,
-			"views": 58,
-			"visible": 1
+			"success": true,
+			"project": {
+				"id": 1,
+				"date_added": 1694617285452,
+				"date_updated": 0,
+				"date_release": 0,
+				"date_publish": 1694617285452,
+				"owner_discord": "302427405023313920",
+				"owner_name": "Xella",
+				"name": "CCDoom",
+				"install_command": "pastebin run xLC8mABU",
+				"download_url": null,
+				"target_file": "Doom.lua",
+				"tags": [
+					"fun",
+					"action"
+				],
+				"repository": "https://github.com/Xella37/CCDoom",
+				"description_short": "CCDoom is a 3d first-person shooter in ComputerCraft made using the Pine3D graphics library. It is inspired by the game \\\"Doom\\\" as the name implies.",
+				"description": "CCDoom is a 3d first-person shooter ... truncated for example",
+				"description_markdown": "CCDoom is a 3d first-person shooter ... truncated for example",
+				"has_thumbnail": true,
+				"hide_thumbnail": false,
+				"media_count": 5,
+				"keywords": [
+					"pine",
+					"pine3d",
+					"3d",
+					"shooter",
+					"doom",
+					"graphics",
+					"first",
+					"person"
+				],
+				"downloads": 22,
+				"downloads_recent": 20,
+				"views": 58,
+				"views_recent": 50,
+				"likes": 3,
+				"visible": true
+			}
 		},
 		...
 	]
@@ -435,30 +517,47 @@ The returned JSON object always has a "success" value with an "error" value as a
 	"projects:": [
 		...,
 		{
-			"id": 1,
-			"date_added": 1694617285452,
-			"date_updated": 0,
-			"date_release": 0,
-			"date_publish": 1694617285452,
-			"owner_discord": "302427405023313920",
-			"owner_name": "Xella",
-			"name": "CCDoom",
-			"install_command": "pastebin run xLC8mABU",
-			"download_url": null,
-			"target_file": "Doom.lua",
-			"tags": "fun,action",
-			"repository": "https://github.com/Xella37/CCDoom",
-			"description_short": "CCDoom is a 3d first-person shooter in ComputerCraft made using the Pine3D graphics library. It is inspired by the game \\\"Doom\\\" as the name implies.",
-			"description": "CCDoom is a 3d first-person shooter ... truncated for example",
-			"description_markdown": "CCDoom is a 3d first-person shooter ... truncated for example",
-			"has_thumbnail": 1,
-			"hide_thumbnail": 0,
-			"media_count": 5,
-			"keywords": "pine,pine3d,3d,shooter,doom,graphics,first,person",
-			"downloads": 22,
-			"downloads_recent": 20,
-			"views": 58,
-			"visible": 1
+			"success": true,
+			"project": {
+				"id": 1,
+				"date_added": 1694617285452,
+				"date_updated": 0,
+				"date_release": 0,
+				"date_publish": 1694617285452,
+				"owner_discord": "302427405023313920",
+				"owner_name": "Xella",
+				"name": "CCDoom",
+				"install_command": "pastebin run xLC8mABU",
+				"download_url": null,
+				"target_file": "Doom.lua",
+				"tags": [
+					"fun",
+					"action"
+				],
+				"repository": "https://github.com/Xella37/CCDoom",
+				"description_short": "CCDoom is a 3d first-person shooter in ComputerCraft made using the Pine3D graphics library. It is inspired by the game \\\"Doom\\\" as the name implies.",
+				"description": "CCDoom is a 3d first-person shooter ... truncated for example",
+				"description_markdown": "CCDoom is a 3d first-person shooter ... truncated for example",
+				"has_thumbnail": true,
+				"hide_thumbnail": false,
+				"media_count": 5,
+				"keywords": [
+					"pine",
+					"pine3d",
+					"3d",
+					"shooter",
+					"doom",
+					"graphics",
+					"first",
+					"person"
+				],
+				"downloads": 22,
+				"downloads_recent": 20,
+				"views": 58,
+				"views_recent": 50,
+				"likes": 3,
+				"visible": true
+			}
 		},
 		...
 	]
@@ -510,13 +609,13 @@ The returned JSON object always has a "success" value with an "error" value as a
 	"success": true,
 	"options": {
 		"user_discord": "302427405023313920",
-		"discord_notifications": 1,
-		"discord_noti_comment": 1,
-		"discord_noti_reply": 1,
-		"discord_noti_newfollow_user": 1,
-		"discord_noti_newfollow_project": 1,
-		"discord_noti_following_newproject": 1,
-		"discord_noti_following_projectupdate": 1
+		"discord_notifications": true,
+		"discord_noti_comment": true,
+		"discord_noti_reply": true,
+		"discord_noti_newfollow_user": true,
+		"discord_noti_newfollow_project": false,
+		"discord_noti_following_newproject": true,
+		"discord_noti_following_projectupdate": true
 	}
 }`,
 		},
