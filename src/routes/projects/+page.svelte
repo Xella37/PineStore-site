@@ -32,7 +32,7 @@
 	function filterProjects() {
 		// use tags to filter projects
 		if (selectedTag == null) return;
-		displayProjects = displayProjects.filter(project => project.tags?.split(",").includes(selectedTag));
+		displayProjects = displayProjects.filter(project => project.tags.includes(selectedTag));
 	}
 
 	function sortProjects() {

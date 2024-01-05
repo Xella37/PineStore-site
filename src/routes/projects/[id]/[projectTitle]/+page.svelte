@@ -9,7 +9,7 @@
 	<meta name="twitter:description" content="{project.description_short || project.description?.slice(0, 200) || "This project does not yet have a description."}" />
 	<meta property="og:url" content="{BASE_URL}{getProjectLink(project.id, project.name)}" />
 	<meta property="og:image" content="{project.has_thumbnail ? `${BASE_URL}/project/${project.id}/thumbnail_full.webp` : "/project-placeholder.webp"}" />
-	<meta name="keywords" content="{project.name}, {project.owner_name}, {project.keywords}, computercraft, computer, craft, lua, minecraft, mine, programming, library, games, programs, collection, store">
+	<meta name="keywords" content="{project.name}, {project.owner_name}, {(project.keywords ?? []).join(",")}, computercraft, computer, craft, lua, minecraft, mine, programming, library, games, programs, collection, store">
 </svelte:head>
 
 <script>
@@ -280,7 +280,7 @@
 		</h1>
 
 		<div class="tags-container">
-			{#each project.tags?.split(",") ?? [] as tag}
+			{#each project.tags ?? [] as tag}
 				<a class="button tag gray" href="/projects?tag={encodeURIComponent(tag)}">{tagToDisplay[tag]}</a>
 			{/each}
 		</div>

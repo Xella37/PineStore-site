@@ -42,13 +42,15 @@
 			return addToast("Failed!", "Failed to load project. Error: " + (projectData.error ?? "no error"), "error");
 
 		savedProject = projectData.project;
-		savedProject.selectedTags = savedProject.tags?.split(",") ?? [];
+		savedProject.selectedTags = savedProject.tags ?? [];
+		savedProject.keywordsString = savedProject.keywords.join(",") ?? [];
 		project = {...savedProject};
 	}
 
 	async function saveProject() {
 		let sendData = {...project};
-		sendData.tags = project.selectedTags.join(",");
+		sendData.tags = project.selectedTags;
+		sendData.keywords = project.keywordsString.split(",");
 		console.log(sendData);
 		let saveData = await setProjectInfo(sendData);
 		unsavedChanges = false;
@@ -234,7 +236,7 @@
 				<input id="repoInput" type="text" bind:value={project.repository} maxlength="150" placeholder="https://github.com/username/repository">
 
 				<label for="keywordsInput">Keywords used for search (comma separated)</label>
-				<input id="keywordsInput" type="text" bind:value={project.keywords} maxlength="300" placeholder="example,keywords,go,here">
+				<input id="keywordsInput" type="text" bind:value={project.keywordsString} maxlength="300" placeholder="example,keywords,go,here">
 
 				<label for="tagsInput">Tags (preferrably 2-3)</label>
 				<TagList hideSaved bind:selectedTags={project.selectedTags} />
