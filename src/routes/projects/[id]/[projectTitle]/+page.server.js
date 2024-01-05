@@ -1,6 +1,5 @@
 import { error } from "@sveltejs/kit";
-import { getProject, getComments } from "$lib/database.js";
-import { getLastChangelog } from "../../../../lib/database.js";
+import { getProject, getComments, getLastChangelog } from "$lib/database.js";
 
 export const prerender = false;
 export const ssr = true;
