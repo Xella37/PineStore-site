@@ -134,6 +134,10 @@
 	<div class="page page-thin shadow">
 		<div class="corner-buttons">
 			{#if !editingProfile}
+				<a href="/user/{profile.discord_id}" target="_blank" class="button">
+					<i class="fa-solid fa-arrow-up-right-from-square"></i>
+					View profile
+				</a>
 				<button on:click={() => { editingProfile = true; }} id="editProfile" class="button">
 					<i class="fa-solid fa-pencil"></i>
 					Edit profile
@@ -349,7 +353,7 @@
 	.corner-buttons > * {
 		flex-grow: 1;
 	}
-	@media screen and (max-width: 40rem) {
+	@media screen and (max-width: 50rem) {
 		.corner-buttons {
 			width: 100%;
 		}

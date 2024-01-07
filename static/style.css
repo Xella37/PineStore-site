@@ -258,6 +258,7 @@ textarea {
 	box-shadow: rgba(0, 0, 0, 0.5) 0rem 0rem 0rem 0rem;
 	transition: all 150ms ease;
 	cursor: pointer;
+	text-align: center;
 }
 .button:hover {
 	color: black;
