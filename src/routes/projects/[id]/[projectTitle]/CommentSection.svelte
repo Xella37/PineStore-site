@@ -20,7 +20,6 @@
 
 		for (const comment of comments) {
 			if (comment.reply_id != null) {
-				console.log(`Reply to ${comment.reply_id}`);
 				if (replies[comment.reply_id])
 					replies[comment.reply_id].push(comment);
 				else
