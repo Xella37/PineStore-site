@@ -741,7 +741,7 @@ The returned JSON object always has a "success" value with an "error" value as a
 			post_params: [
 				{
 					name: "projectId",
-					description: "the id of the project to delete",
+					description: "the id of the project to update",
 				},
 				{
 					name: "body",
