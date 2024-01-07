@@ -158,8 +158,8 @@
 									<a class="no-link" href="https://pinestore.cc/user/{noti.payload.user_id}" on:click={toggleNotifications}>
 										<div class="notification-item" class:unread={!noti.was_read}>
 											<img src="https://pinestore.cc/pfp/{noti.payload.user_id}.png" alt="pfp">
-											New follower / {noti.payload.project_name} <span class="notification-time">{calcTimeAgo(noti.timestamp)}</span>
-											<p>{noti.payload.user_name} is now following your project!</p>
+											Saved / {noti.payload.project_name} <span class="notification-time">{calcTimeAgo(noti.timestamp)}</span>
+											<p>{noti.payload.user_name} saved your project!</p>
 										</div>
 									</a>
 								{:else if noti.kind == "milestone_views"}
