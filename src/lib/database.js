@@ -1,6 +1,6 @@
 
-// export const BASE_URL = "https://pinestore.cc";
-export const BASE_URL = "http://localhost:3704";
+export const BASE_URL = "https://pinestore.cc";
+// export const BASE_URL = "http://localhost:3704";
 
 /**
  * Interact with the PineStore API
