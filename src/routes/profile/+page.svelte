@@ -282,13 +282,14 @@
 							<span>{project.likes} {project.likes == 1 ? "like" : "likes"}</span>
 						</div>
 
-						<a href="/profile/edit/{project.id}" class="button"><i class="fa-solid fa-pencil"></i></a>
-
-						<button class="button red" on:click|preventDefault={() => { projectToDelete = project.id; deleteProjectModal = true; }}><i class="fa-solid fa-trash-can"></i></button>
+						<div class="button-group">
+							<a href="/profile/edit/{project.id}" class="button"><i class="fa-solid fa-pencil"></i></a>
+							<button class="button red" on:click|preventDefault={() => { projectToDelete = project.id; deleteProjectModal = true; }}><i class="fa-solid fa-trash-can"></i></button>
+						</div>
 					</div>
 
 					<div>
-						<span>{project.name}</span>
+						<span class="project-title">{project.name}</span>
 						<i>{project.description_short ?? project.description}</i>
 					</div>
 				</div>
@@ -374,8 +375,9 @@
 		padding: 1rem;
 		border-radius: 1rem;
 	}
-	.list-project span {
+	.list-project .project-title {
 		font-size: 1.125rem;
+		padding-right: 1rem;
 	}
 	.list-project > div > i {
 		display: block;
@@ -399,6 +401,23 @@
 		line-height: 1em;
 		font-size: 0.75rem;
 		color: var(--text-color-dark);
+	}
+	.button-group {
+		display: flex;
+		gap: 1rem;
+	}
+	@media screen and (max-width: 30rem) {
+		.info-group {
+			/* padding-block: 0.5rem; */
+			justify-content: space-around;
+		}
+		.info-group span {
+			/* font-size: 1rem; */
+		}
+		.button-group {
+			flex-direction: column;
+			gap: 0.5rem;
+		}
 	}
 
 	#newProject {
