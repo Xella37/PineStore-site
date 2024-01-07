@@ -14,7 +14,10 @@
 				<span class="name">{project.name}</span>
 				<span class="author">by {project.owner_name}</span>
 				<div class="image-container">
-					<span class="downloads"><i class="fa-solid fa-download"></i> {project.downloads}</span>
+					<div class="thumbnail-info">
+						<span class="downloads"><i class="fa-solid fa-download"></i> {project.downloads}</span>
+						<span class="likes"><i class="fa-solid fa-heart"></i> {project.likes}</span>
+					</div>
 					{#if project.has_thumbnail}
 						<div class="div-img" style="background-image: url({BASE_URL}/project/{project.id}/thumbnail.webp)" alt="project"></div>
 					{:else}
@@ -84,8 +87,11 @@
 		left: 0;
 		right: 0;
 	}
-	.project-tile span.downloads {
+	.thumbnail-info {
 		position: absolute;
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
 		z-index: 10;
 		top: -1px;
 		right: 0;
@@ -94,7 +100,7 @@
 		padding: 0.5rem 1rem;
 		border-bottom-left-radius: 1rem;
 	}
-	.project-tile span.downloads i {
+	.project-tile span i {
 		margin-right: 0.5rem;
 		color: var(--text-color-dark);
 	}
