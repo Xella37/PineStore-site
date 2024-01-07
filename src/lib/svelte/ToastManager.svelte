@@ -13,7 +13,13 @@
 
 		for (let i = $toasts.length; i--; i >= 0) {
 			let toast = $toasts[i];
-			if (toast.duration && now > toast.timestamp + toast.duration)
+			if (!toast.duration) continue;
+			let dt = now - toast.timestamp;
+
+			toast.durationProgress = dt / toast.duration;
+			$toasts = $toasts;
+
+			if (dt > toast.duration + 250)
 				closeToast(i);
 		}
 	}, 250);
@@ -38,6 +44,10 @@
 				{toast.title}
 			</span>
 			<span class="body">{toast.body}</span>
+
+			{#if toast.duration}
+				<div class="duration-progress" style="right:{(1 - toast.durationProgress) * 100}%"></div>
+			{/if}
 		</div>
 	{/each}
 </div>
@@ -61,6 +71,8 @@
 		color: black;
 		border-radius: 1rem;
 		padding: 0.75rem 1rem;
+		padding-bottom: 1rem;
+		overflow: hidden;
 	}
 	.toast .title {
 		display: block;
@@ -90,5 +102,15 @@
 	}
 	.toast .title i.warning {
 		color: var(--cc-orange);
+	}
+
+	.duration-progress {
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		right: 0%;
+		height: 0.5rem;
+		background-color: var(--cc-lightGray);
+		transition: right linear 250ms;
 	}
 </style>

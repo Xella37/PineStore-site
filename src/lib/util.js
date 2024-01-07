@@ -29,6 +29,7 @@ export function addToast(title, body, icon, duration) {
 			timestamp: Date.now(),
 			icon: icon,
 			duration: duration * 1000,
+			durationProgress: 0,
 		}
 	]);
 }
