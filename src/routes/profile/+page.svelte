@@ -30,7 +30,11 @@
 		let projectsData = await getMyProjects();
 		if (!projectsData.success)
 			return addToast("Failed!", "Error: " + (projectsData.error ?? "no error"), "error");
-		projects = projectsData.projects;
+		projects = projectsData.projects.sort((a, b) => {
+			let tB = Math.max(b.date_updated, b.date_publish, b.date_added);
+			let tA = Math.max(a.date_updated, a.date_publish, a.date_added);
+			return tB - tA;
+		});
 	}
 
 	async function loadProfile() {
