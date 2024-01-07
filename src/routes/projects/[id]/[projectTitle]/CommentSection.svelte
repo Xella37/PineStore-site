@@ -103,6 +103,10 @@
 			return "just now";
 		return `${calcTimeAgo(timestamp, true)} ago`;
 	}
+
+	function ctrlEnter(e) {
+		return e.key == "Enter" && e.ctrlKey;
+	}
 </script>
 
 {#if myId != null}
@@ -111,7 +115,7 @@
 			<a href="/user/{myId}">
 				<img src="{BASE_URL}/pfp/{myId}.png" alt="pfp">
 			</a>
-			<textarea on:focus={() => { selectedMainTextarea = true; }} bind:value={commentText} placeholder="Write a new comment!" maxlength="500"></textarea>
+			<textarea on:keydown={(e) => { ctrlEnter(e) && postComment() }} on:focus={() => { selectedMainTextarea = true; }} bind:value={commentText} placeholder="Write a new comment!" maxlength="500"></textarea>
 			<button type="submit" class="button post">Post</button>
 		</form>
 	</div>
@@ -170,7 +174,7 @@
 							<a href="/user/{myId}">
 								<img src="{BASE_URL}/pfp/{myId}.png" alt="pfp">
 							</a>
-							<textarea bind:value={replyText} placeholder="Write a reply!" maxlength="500"></textarea>
+							<textarea on:keydown={(e) => { ctrlEnter(e) && postReply() }} bind:value={replyText} placeholder="Write a reply!" maxlength="500"></textarea>
 							<button type="submit" class="button post">Post</button>
 							<button on:click|preventDefault={() => { replyId = null; }} class="button gray close">Close</button>
 						</form>
