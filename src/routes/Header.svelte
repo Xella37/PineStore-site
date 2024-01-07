@@ -178,6 +178,14 @@
 											<p>{noti.payload.project_name} just reached <b>{noti.payload.downloads}</b> downloads!</p>
 										</div>
 									</a>
+								{:else if noti.kind == "milestone_likes"}
+									<a class="no-link" href="{getProjectLink(noti.payload.project_id, noti.payload.project_name)}" on:click={toggleNotifications}>
+										<div class="notification-item" class:unread={!noti.was_read}>
+											<img src="/tada.webp" alt="tada">
+											Congratulations on {noti.payload.likes} likes! <span class="notification-time">{calcTimeAgo(noti.timestamp)}</span>
+											<p>{noti.payload.project_name} just reached <b>{noti.payload.likes}</b> likes!</p>
+										</div>
+									</a>
 								{:else if noti.kind == "following_newproject"}
 									<a class="no-link" href="{getProjectLink(noti.payload.project_id, noti.payload.project_name)}" on:click={toggleNotifications}>
 										<div class="notification-item" class:unread={!noti.was_read}>
