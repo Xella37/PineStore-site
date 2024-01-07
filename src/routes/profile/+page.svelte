@@ -271,8 +271,15 @@
 		<div class="projects-container">
 			{#each projects as project}
 				<div class="list-project">
-					<div class="button-group">
+					<div class="right-area">
+						<div class="info-group">
+							<span>{project.downloads} {project.downloads == 1 ? "download" : "downloads"}</span>
+							<span>{project.views} {project.views == 1 ? "view" : "views"}</span>
+							<span>{project.likes} {project.likes == 1 ? "like" : "likes"}</span>
+						</div>
+
 						<a href="/profile/edit/{project.id}" class="button"><i class="fa-solid fa-pencil"></i></a>
+
 						<button class="button red" on:click|preventDefault={() => { projectToDelete = project.id; deleteProjectModal = true; }}><i class="fa-solid fa-trash-can"></i></button>
 					</div>
 
@@ -374,10 +381,20 @@
 		color: var(--text-color-medium);
 		padding-right: 1rem;
 	}
-	.button-group {
+	.right-area {
 		float: right;
 		display: flex;
 		gap: 1rem;
+	}
+	.info-group {
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+	}
+	.info-group span {
+		line-height: 1em;
+		font-size: 0.75rem;
+		color: var(--text-color-dark);
 	}
 
 	#newProject {
