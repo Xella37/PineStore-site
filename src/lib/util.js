@@ -58,10 +58,25 @@ export function calcTimeAgo(timestamp, fullLength=false) {
 	}
 
 	let d = Math.floor(s/60/60/24);
+	if (d <= 31) {
+		if (fullLength)
+			return `${d} ${d == 1 ? "day" : "days"}`;
+		else
+			return `${d}d`;
+	}
+	if (d <= 365) {
+		let m = Math.floor(d / 30);
+		if (fullLength)
+			return `${m} ${m == 1 ? "month" : "months"}`;
+		else
+			return `${m}mo`;
+	}
+
+	let y = Math.floor(d / 365);
 	if (fullLength)
-		return `${d} ${d == 1 ? "day" : "days"}`;
+		return `${y} ${y == 1 ? "year" : "years"}`;
 	else
-		return `${d}d`;
+		return `${y}y`;
 }
 
 const allTags = [
