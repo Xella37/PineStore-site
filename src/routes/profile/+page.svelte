@@ -396,6 +396,7 @@
 		display: flex;
 		flex-direction: column;
 		justify-content: space-between;
+		text-align: right;
 	}
 	.info-group span {
 		line-height: 1em;
