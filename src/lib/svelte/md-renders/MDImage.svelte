@@ -11,5 +11,6 @@
 		max-width: 100%;
 		display: block;
 		margin: auto;
+		margin-block: 1rem;
 	}
 </style>
