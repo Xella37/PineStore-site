@@ -77,6 +77,7 @@
 		height: auto;
 		overflow: hidden;
 		padding: 56% 0 0 0;
+		background-color: #111;
 	}
 	.project-tile .div-img {
 		display: block;
