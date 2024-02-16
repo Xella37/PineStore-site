@@ -9,12 +9,16 @@
 
 <div class="flex-list" class:flex-blocks={blocks}>
 	{#each projects as project}
-		<a href="{getProjectLink(project.id, project.name)}">
+		<a href="{getProjectLink(project.id, project.name)}" class="no-link">
 			<div class="project-tile shadow">
 				<span class="name">{project.name}</span>
 				<span class="author">by {project.owner_name}</span>
+				<div class="ribbon">
+					<span><i class="fa-solid fa-download"></i> {project.downloads}</span>
+					<span><i class="fa-regular fa-heart"></i> {project.likes}</span>
+					<span><i class="fa-regular fa-comment-dots"></i> {project.comment_count}</span>
+				</div>
 				<div class="image-container">
-					<span class="downloads"><i class="fa-solid fa-download"></i> {project.downloads}</span>
 					{#if project.has_thumbnail}
 						<div class="div-img" style="background-image: url({BASE_URL}/project/{project.id}/thumbnail.webp)" alt="project"></div>
 					{:else}
@@ -49,7 +53,8 @@
 		width: 100%;
 		text-align: center;
 		font-size: 1.5rem;
-		margin-top: 0.75rem;
+		margin-top: 0.5rem;
+		margin-bottom: -0.25rem;
 
 		text-overflow: ellipsis;
 		overflow: hidden;
@@ -63,7 +68,7 @@
 		text-align: center;
 		font-size: 1.25rem;
 		color: var(--text-color-dark);
-		margin-bottom: 0.75rem;
+		margin-bottom: 0.5rem;
 	}
 	.project-tile .image-container {
 		position: relative;
@@ -84,17 +89,17 @@
 		left: 0;
 		right: 0;
 	}
-	.project-tile span.downloads {
-		position: absolute;
-		z-index: 10;
-		top: -1px;
-		right: 0;
-		color: var(--text-color);
-		background-color: #444;
-		padding: 0.5rem 1rem;
-		border-bottom-left-radius: 1rem;
+	.ribbon {
+		display: flex;
+		justify-content: space-evenly;
+		background-color: #555;
+		font-size: 0.85rem;
 	}
-	.project-tile span.downloads i {
+	.ribbon span {
+		color: var(--text-color);
+		padding: 0.5rem;
+	}
+	.ribbon span i {
 		margin-right: 0.5rem;
 		color: var(--text-color-dark);
 	}
