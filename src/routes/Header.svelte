@@ -22,10 +22,9 @@
 	async function loadNotifications() {
 		notifications = null;
 		let notiData = await getNotifications();
-		for (const noti of notiData.notifications) {
-			noti.payload = JSON.parse(noti.payload);
-		}
-		notifications = notiData.notifications.reverse();
+		let notis = notiData.notifications.sort((a, b) => b.timestamp - a.timestamp).slice(0, 30);
+		notis.forEach(noti => { noti.payload = JSON.parse(noti.payload) });
+		notifications = notis;
 	}
 
 	function toggleNotifications() {
