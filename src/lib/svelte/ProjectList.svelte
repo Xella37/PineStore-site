@@ -13,10 +13,12 @@
 			<div class="project-tile shadow">
 				<span class="name">{project.name}</span>
 				<span class="author">by {project.owner_name}</span>
-				<div class="ribbon">
-					<span><i class="fa-solid fa-download"></i> {project.downloads}</span>
-					<span><i class="fa-regular fa-heart"></i> {project.likes}</span>
-					<span><i class="fa-regular fa-comment-dots"></i> {project.comment_count}</span>
+				<div class="ribbon-container">
+					<div class="ribbon">
+						<span><i class="fa-solid fa-download"></i> {project.downloads}</span>
+						<span><i class="fa-regular fa-heart"></i> {project.likes}</span>
+						<span><i class="fa-regular fa-comment-dots"></i> {project.comment_count}</span>
+					</div>
 				</div>
 				<div class="image-container">
 					{#if project.has_thumbnail}
@@ -90,11 +92,22 @@
 		left: 0;
 		right: 0;
 	}
+	.project-tile:hover .ribbon {
+		transform: translateY(0%);
+	}
+	.ribbon-container {
+		position: absolute;
+		z-index: 1;
+		width: 100%;
+		overflow: hidden;
+	}
 	.ribbon {
 		display: flex;
 		justify-content: space-evenly;
 		background-color: #555;
 		font-size: 0.85rem;
+		transform: translateY(-100%);
+		transition: transform ease 100ms;
 	}
 	.ribbon span {
 		color: var(--text-color);
