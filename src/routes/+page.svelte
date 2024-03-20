@@ -17,7 +17,25 @@
 
 	export let data;
 
-	let recentProjects = data.projects.sort((a, b) => {return b.date_publish - a.date_publish}).slice(0, 3);
+	let recentProjects = data.projects.sort((a, b) => {
+		return b.date_publish - a.date_publish;
+	}).slice(0, 3);
+
+	let now = Date.now();
+	function calcNewHotScore(project) {
+		let daysSincePublish = (now - project.date_publish) / 1000 / 60 / 60 / 24;
+		let timeMultiplier = (Math.atan(10 - 0.2*daysSincePublish) / Math.PI + 0.5) ** 1;
+
+		let scoreDownloads = project.downloads_recent * 1;
+		let scoreViews = project.views_recent * 0.2;
+
+		let score = (scoreDownloads + scoreViews) * timeMultiplier;
+		return score;
+	}
+	let newHotProjects = data.projects.sort((a, b) => {
+		return calcNewHotScore(b) - calcNewHotScore(a);
+	}).slice(0, 6);
+
 	let popularProjects = data.projects.sort((a, b) => {
 		let dDownloadsRecent = b.downloads_recent - a.downloads_recent;
 		if (dDownloadsRecent != 0) return dDownloadsRecent;
@@ -56,6 +74,9 @@
 			<h2>Recently Published <i class="fa-solid fa-caret-right"></i></h2>
 		</a>
 		<ProjectList projects={recentProjects} blocks={true} />
+
+		<h2>New and Hot <i class="fa-solid fa-bolt"></i></h2>
+		<ProjectList projects={newHotProjects} blocks={true} />
 
 		<a href="/projects" class="no-link">
 			<h2>Most Popular <i class="fa-solid fa-caret-right"></i></h2>
