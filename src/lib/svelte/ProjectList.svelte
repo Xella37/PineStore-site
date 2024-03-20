@@ -71,6 +71,7 @@
 		font-size: 1.25rem;
 		color: var(--text-color-dark);
 		margin-bottom: 0.5rem;
+		line-height: 1.5rem;
 	}
 	.project-tile .image-container {
 		position: relative;
