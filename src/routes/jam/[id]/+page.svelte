@@ -237,4 +237,11 @@
 		margin-top: 0;
 		padding-bottom: 0;
 	}
+	#description :global(img) {
+		box-shadow: unset!important;
+	}
+	#description :global(td), #description :global(th) {
+		text-align: left;
+		padding: 0.5rem 1rem;
+	}
 </style>
