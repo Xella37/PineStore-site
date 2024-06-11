@@ -103,6 +103,7 @@
 					<div class="header-item call-to-action">
 						<i class="fa-brands fa-discord"></i>
 						<span>Login</span>
+						<div class="rainbow"></div>
 					</div>
 				</a>
 			{/if}
@@ -209,8 +210,11 @@
 					<div class="notifications-close-box" on:click={() => { notificationsOpened = false; }}>
 					</div>
 				{/if}
+				<div class="rainbow"></div>
 			</div>
 		{/if}
+
+		<div class="mobile-rainbow"></div>
 	</div>
 
 	{#if mobileHeaderOpen}
@@ -236,6 +240,61 @@
 		padding-left: 2rem;
 		padding-right: 2rem;
 		z-index: 15;
+	}
+
+	/* RAINBOW */
+	.rainbow {
+		position: absolute;
+		right: -1rem;
+		top: -1rem;
+		bottom: -1rem;
+		width: 12rem;
+		transform: translateX(100%);
+		background: linear-gradient(110deg, 
+                transparent 0%,
+                transparent 20%,
+                #CC4C4C 20%, #CC4C4C 30%,
+                #F2B233 30%, #F2B233 40%,
+                #DEDE6C 40%, #DEDE6C 50%,
+                #7FCC19 50%, #7FCC19 60%,
+                #99B2F2 60%, #99B2F2 70%,
+                #B266E5 70%, #B266E5 80%,
+                transparent 80%);
+	}
+	.mobile-rainbow {
+		display: none;
+	}
+	@media (max-width: 65rem) {
+		.rainbow {
+			display: none;
+		}
+		/* .rainbow {
+			position: relative;
+			height: 4rem;
+		} */
+		.mobile-rainbow {
+			position: relative;
+			display: block;
+			height: 12rem;
+			left: -2rem;
+			width: calc(100% + 4rem);
+			/* position: absolute;
+			right: -1rem;
+			top: -1rem;
+			bottom: -1rem; */
+			/* width: 12rem; */
+			/* transform: translateX(100%); */
+			background: linear-gradient(175deg, 
+					transparent 0%,
+					transparent 20%,
+					#CC4C4C 20%, #CC4C4C 30%,
+					#F2B233 30%, #F2B233 40%,
+					#DEDE6C 40%, #DEDE6C 50%,
+					#7FCC19 50%, #7FCC19 60%,
+					#99B2F2 60%, #99B2F2 70%,
+					#B266E5 70%, #B266E5 80%,
+					transparent 80%);
+		}
 	}
 
 	.header-item {
