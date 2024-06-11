@@ -1,6 +1,6 @@
 
-export const BASE_URL = "https://pinestore.cc";
-// export const BASE_URL = "http://localhost:3704";
+// export const BASE_URL = "https://pinestore.cc";
+export const BASE_URL = "http://localhost:3704";
 
 /**
  * Interact with the PineStore API
@@ -152,6 +152,15 @@ export const unsaveProject = (id) =>
 	api("POST", "auth/saved/remove", { project_id: id });
 export const getMySavedProjects = (id) =>
 	api("GET", "auth/saved");
+
+export const getJam = (id) =>
+	api("GET", "jam/" + id);
+export const joinJam = (id) =>
+	api("POST", "auth/saved/join", { jam_id: id });
+export const checkJoinedJam = (id) =>
+	api("GET", "auth/saved/joined/" + id);
+export const leaveJam = (id) =>
+	api("POST", "auth/saved/leave", { jam_id: id });
 
 export const getMyAnalytics = (kind) =>
 	api("GET", "auth/analytics/" + kind);
