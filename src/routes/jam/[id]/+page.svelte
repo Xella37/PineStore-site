@@ -16,7 +16,7 @@
 	import { fade } from "svelte/transition";
 	import { onMount, onDestroy } from "svelte";
 	import { addToast } from "$lib/util.js";
-	import { BASE_URL } from "$lib/database.js";
+	import { BASE_URL, getMyProfile, checkJoinedJam, joinJam, leaveJam } from "$lib/database.js";
 	
 	import Markdown from "$lib/svelte/Markdown.svelte";
 	
@@ -25,6 +25,45 @@
 
 	$: if (data) {
 		jam = data.jam;
+	}
+
+	let user;
+	let joined = false;
+
+	onMount(async () => {
+		let profileData = await getMyProfile();
+		user = profileData?.user;
+		if (user != null) {
+			let joinData = await checkJoinedJam(jam.id);
+			console.log(joinData);
+			joined = joinData.joined;
+		}
+	});
+
+	async function clickSubmit() {
+
+	}
+	async function clickJoin() {
+		joined = true;
+		let res = await joinJam(jam.id);
+		if (res.success) {
+			addToast("Joined!", `You have joined ${jam.title}!`, "success", 3);
+			jam.contestant_count++;
+		} else {
+			joined = false;
+			addToast("Failed!", "Error: " + (res.error ?? "no error"), "error");
+		}
+	}
+	async function clickLeave() {
+		joined = false;
+		let res = await leaveJam(jam.id);
+		if (res.success) {
+			addToast("Left!", `You have left ${jam.title}.`, "success", 3);
+			jam.contestant_count--;
+		} else {
+			joined = true;
+			addToast("Failed!", "Error: " + (res.error ?? "no error"), "error");
+		}
 	}
 
 	let days = 0;
@@ -78,6 +117,7 @@
 	<div class="page page-thin shadow">
 
 		<h1>
+			<span class="joined-count">{jam.contestant_count} joined</span>
 			{jam.title}
 		</h1>
 
@@ -113,6 +153,15 @@
 			{/if}
 		</div>
 
+		<div class="actions">
+			{#if joined}
+				<button class="button disabled" on:click|preventDefault={clickSubmit}>Submit project</button>
+				<button class="button red" on:click|preventDefault={clickLeave}>Leave jam</button>
+			{:else}
+				<button class="button" on:click|preventDefault={clickJoin}>Join jam</button>
+			{/if}
+		</div>
+
 		<div id="description" class="markdown-container">
 			<Markdown source={jam.description_markdown} />
 		</div>
@@ -123,6 +172,13 @@
 	h1 {
 		font-size: 4rem;
 		margin-bottom: 1rem;
+	}
+
+	.joined-count {
+		float: right;
+		font-size: 2rem;
+		font-weight: normal;
+		color: var(--cc-lightGray);
 	}
 
 	@media screen and (max-width: 45rem) {
@@ -166,6 +222,12 @@
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
+	}
+
+	.actions {
+		display: flex;
+		justify-content: center;
+		gap: 1rem;
 	}
 
 	#description {
