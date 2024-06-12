@@ -100,7 +100,7 @@
 		let m = Math.floor(s / 60);
 		minutes = m % 60;
 		let h = Math.floor(m / 60);
-		hours = h % 60;
+		hours = h % 24;
 		days = Math.floor(h / 24);
 	}
 	updateTimerText();
