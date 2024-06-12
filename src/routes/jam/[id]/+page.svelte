@@ -86,7 +86,6 @@
 		let start = jam.date_start;
 		let end = jam.date_end;
 		let now = Date.now();
-		now += 1000 * 60 * 60 * 24 * 18;
 		started = now > start;
 		ended = now > end;
 
@@ -144,19 +143,19 @@
 					</div>
 					<div class="block">
 						<span class="count">{days}</span>
-						<span class="label">days</span>
+						<span class="label">{days == 1 ? "day" : "days"}</span>
 					</div>
 					<div class="block">
 						<span class="count">{hours}</span>
-						<span class="label">hours</span>
+						<span class="label">{hours == 1 ? "hour" : "hours"}</span>
 					</div>
 					<div class="block">
 						<span class="count">{minutes}</span>
-						<span class="label">minutes</span>
+						<span class="label">{minutes == 1 ? "minute" : "minutes"}</span>
 					</div>
 					<div class="block">
 						<span class="count">{seconds}</span>
-						<span class="label">seconds</span>
+						<span class="label">{seconds == 1 ? "second" : "seconds"}</span>
 					</div>
 				</div>
 			{/if}
