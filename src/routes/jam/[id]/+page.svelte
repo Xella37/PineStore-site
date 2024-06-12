@@ -242,6 +242,10 @@
 	}
 
 	@media (width < 720px) {
+		.info-block.time {
+			padding-left: 5rem;
+		}
+
 		.timer {
 			gap: 1rem;
 		}
@@ -251,7 +255,8 @@
 		}
 
 		.timer > div.block {
-			min-width: 4rem;
+			min-width: 34%;
+			width: 3rem;
 			padding: 0.3rem 0.15rem;
 		}
 	}
