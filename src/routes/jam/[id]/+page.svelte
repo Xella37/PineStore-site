@@ -86,6 +86,7 @@
 		let start = jam.date_start;
 		let end = jam.date_end;
 		let now = Date.now();
+		now += 1000 * 60 * 60 * 24 * 19;
 		started = now > start;
 		ended = now > end;
 
@@ -93,7 +94,7 @@
 		if (started)
 			dt = end - now;
 		if (ended)
-			return;
+			dt = 0;
 
 		let s = Math.floor(dt / 1000);
 		seconds = s % 60;
@@ -130,35 +131,35 @@
 		</h1>
 
 		<div class="info-block time">
-			{#if !ended}
-				<i class="fa-regular fa-hourglass-half"></i>
+			<i class="fa-regular fa-hourglass-half"></i>
 
-				<div class="timer">
-					<div class="info">
-						{#if started}
-							Ends in
-						{:else}
-							Starts in
-						{/if}
-					</div>
-					<div class="block">
-						<span class="count">{days}</span>
-						<span class="label">{days == 1 ? "day" : "days"}</span>
-					</div>
-					<div class="block">
-						<span class="count">{hours}</span>
-						<span class="label">{hours == 1 ? "hour" : "hours"}</span>
-					</div>
-					<div class="block">
-						<span class="count">{minutes}</span>
-						<span class="label">{minutes == 1 ? "minute" : "minutes"}</span>
-					</div>
-					<div class="block">
-						<span class="count">{seconds}</span>
-						<span class="label">{seconds == 1 ? "second" : "seconds"}</span>
-					</div>
+			<div class="timer">
+				<div class="info">
+					{#if !started}
+						Starts in
+					{:else if !ended}
+						Ends in
+					{:else}
+						JAM ENDED
+					{/if}
 				</div>
-			{/if}
+				<div class="block">
+					<span class="count">{days}</span>
+					<span class="label">{days == 1 ? "day" : "days"}</span>
+				</div>
+				<div class="block">
+					<span class="count">{hours}</span>
+					<span class="label">{hours == 1 ? "hour" : "hours"}</span>
+				</div>
+				<div class="block">
+					<span class="count">{minutes}</span>
+					<span class="label">{minutes == 1 ? "minute" : "minutes"}</span>
+				</div>
+				<div class="block">
+					<span class="count">{seconds}</span>
+					<span class="label">{seconds == 1 ? "second" : "seconds"}</span>
+				</div>
+			</div>
 		</div>
 
 		<div class="actions">
