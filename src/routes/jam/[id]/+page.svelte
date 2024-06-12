@@ -18,6 +18,7 @@
 	import { addToast } from "$lib/util.js";
 	import { BASE_URL, getMyProfile, checkJoinedJam, joinJam, leaveJam } from "$lib/database.js";
 	
+	import Modal from "$lib/svelte/Modal.svelte";
 	import Markdown from "$lib/svelte/Markdown.svelte";
 	
 	export let data;
@@ -26,6 +27,8 @@
 	$: if (data) {
 		jam = data.jam;
 	}
+
+	let loginModalOpen = false;
 
 	let user;
 	let joined = false;
@@ -44,6 +47,11 @@
 
 	}
 	async function clickJoin() {
+		if (user == null) {
+			loginModalOpen = true;
+			return;
+		}
+
 		joined = true;
 		let res = await joinJam(jam.id);
 		if (res.success) {
@@ -78,6 +86,7 @@
 		let start = jam.date_start;
 		let end = jam.date_end;
 		let now = Date.now();
+		now += 1000 * 60 * 60 * 24 * 18;
 		started = now > start;
 		ended = now > end;
 
@@ -168,6 +177,14 @@
 	</div>
 </div>
 
+<Modal title="Login" bind:opened={loginModalOpen}>
+	<p>To save and follow projects, you need to be logged in on the site.</p>
+	<a href="https://discord.com/api/oauth2/authorize?client_id=1073728324142116948&redirect_uri=https%3A%2F%2Fpinestore.cc%2Fdiscordauth&response_type=code&scope=identify" class="modal-button button">
+		<i class="fa-brands fa-discord"></i>
+		Login with Discord
+	</a>
+</Modal>
+
 <style>
 	h1 {
 		font-size: 4rem;
@@ -243,5 +260,15 @@
 	#description :global(td), #description :global(th) {
 		text-align: left;
 		padding: 0.5rem 1rem;
+	}
+
+	.modal-button {
+		display: block;
+		box-sizing: border-box;
+		width: 100%;
+		text-align: center;
+	}
+	.modal-button > i {
+		margin-right: 0.5em;
 	}
 </style>
