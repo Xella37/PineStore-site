@@ -86,7 +86,6 @@
 		let start = jam.date_start;
 		let end = jam.date_end;
 		let now = Date.now();
-		now += 1000 * 60 * 60 * 24 * 19;
 		started = now > start;
 		ended = now > end;
 
@@ -220,6 +219,7 @@
 		flex-direction: row;
 		gap: 1.5rem;
 		justify-content: center;
+		flex-wrap: wrap;
 	}
 	.timer > div.block {
 		display: flex;
@@ -235,10 +235,25 @@
 	.timer .label {
 		font-size: 0.75rem;
 	}
-	.timer .info {
+	.timer div.info {
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
+	}
+
+	@media (width < 720px) {
+		.timer {
+			gap: 1rem;
+		}
+
+		.timer div.info {
+			width: 100%;
+		}
+
+		.timer > div.block {
+			min-width: 4rem;
+			padding: 0.3rem 0.15rem;
+		}
 	}
 
 	.actions {
