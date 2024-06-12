@@ -222,6 +222,13 @@
 		<!-- svelte-ignore a11y-no-static-element-interactions -->
 		<div id="closeBox" on:click={closeHeader} transition:fade={{duration: 150}}></div>
 	{/if}
+
+	<a href="/jam/pinejam2024" class="no-link">
+		<div class="jam-banner shadow">
+			PineJam 2024! Starting June 17th!
+			<i class="fa-solid fa-chevron-right"></i>
+		</div>
+	</a>
 </div>
 
 <style>
@@ -240,6 +247,20 @@
 		padding-left: 2rem;
 		padding-right: 2rem;
 		z-index: 15;
+	}
+
+	.jam-banner {
+		position: relative;
+		z-index: 10;
+		background-color: var(--cc-green);
+		padding: 1rem 2rem;
+		font-size: 1.5rem;
+		text-align: center;
+		color: white;
+		transition: background-color ease 200ms;
+	}
+	.jam-banner:hover {
+		background-color: var(--cc-cyan);
 	}
 
 	/* RAINBOW */
