@@ -427,6 +427,7 @@
 			height: calc(100vh - 8rem);
 			top: 0;
 			padding-top: 7rem;
+			flex-wrap: nowrap;
 		}
 		#headerItems.mobile-open {
 			transform: translateX(0%);
@@ -439,6 +440,12 @@
 			padding: 0;
 			background-color: #444;
 			z-index: 10;
+		}
+
+		/* JAM HEADER / REMOVE AFTER JAM */
+		#headerItems {
+			height: calc(100vh - 11rem);
+			padding-top: 10rem;
 		}
 	}
 
