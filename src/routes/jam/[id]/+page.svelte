@@ -282,6 +282,12 @@
 		padding: 0.5rem 1rem;
 	}
 
+	#description :global(h3) {
+		font-size: 3rem;
+		text-align: center;
+		background: linear-gradient(#dedf6d, #f2b234);background-clip: text;-webkit-background-clip: text;color: transparent;font-weight: bold;
+	}
+
 	.modal-button {
 		display: block;
 		box-sizing: border-box;
