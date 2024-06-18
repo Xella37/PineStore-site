@@ -159,8 +159,12 @@ export const joinJam = (id) =>
 	api("POST", "auth/jam/join", { jam_id: id });
 export const checkJoinedJam = (id) =>
 	api("GET", "auth/jam/joined/" + id);
+export const checkMyJamStatus = (id) =>
+	api("GET", "auth/jam/status/" + id);
 export const leaveJam = (id) =>
 	api("POST", "auth/jam/leave", { jam_id: id });
+export const submitJam = (jamId, projectId) =>
+	api("POST", "auth/jam/submit", { jam_id: jamId, project_id: projectId });
 
 export const getMyAnalytics = (kind) =>
 	api("GET", "auth/analytics/" + kind);

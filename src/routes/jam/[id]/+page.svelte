@@ -13,10 +13,9 @@
 </svelte:head>
 
 <script>
-	import { fade } from "svelte/transition";
 	import { onMount, onDestroy } from "svelte";
 	import { addToast } from "$lib/util.js";
-	import { BASE_URL, getMyProfile, checkJoinedJam, joinJam, leaveJam } from "$lib/database.js";
+	import { BASE_URL, getProject, getMyProfile, checkMyJamStatus, joinJam, leaveJam, getMyProjects, submitJam } from "$lib/database.js";
 	
 	import Modal from "$lib/svelte/Modal.svelte";
 	import Markdown from "$lib/svelte/Markdown.svelte";
@@ -29,22 +28,51 @@
 	}
 
 	let loginModalOpen = false;
+	let submissionModalOpen = false;
 
 	let user;
 	let joined = false;
+	let submittedProject = null;
 
 	onMount(async () => {
 		let profileData = await getMyProfile();
 		user = profileData?.user;
 		if (user != null) {
-			let joinData = await checkJoinedJam(jam.id);
-			console.log(joinData);
-			joined = joinData.joined;
+			let jamStatus = await checkMyJamStatus(jam.id);
+			joined = jamStatus.joined;
+			if (jamStatus.project_submitted != null) {
+				let projectData = await getProject(jamStatus.project_submitted);
+				submittedProject = projectData.project;
+			}
 		}
 	});
 
+	let projects = [];
 	async function clickSubmit() {
+		if (!started || ended)
+			return;
 
+		submissionModalOpen = true;
+		let data = await getMyProjects();
+		projects = data.projects.filter(p => {
+			return p.date_added >= jam.date_start && p.visible;
+		});
+	}
+	let submissionProjectId = "";
+	async function submitProject() {
+		if (submissionProjectId.length <= 0)
+			return;
+
+		let res = await submitJam(jam.id, parseInt(submissionProjectId));
+		if (res.success) {
+			addToast("Submitted!", `Your project has been submitted successfully!`, "success", 3);
+			jam.submission_count++;
+			let projectData = await getProject(parseInt(submissionProjectId));
+			submittedProject = projectData.project;
+		} else {
+			addToast("Failed!", "Error: " + (res.error ?? "no error"), "error");
+		}
+		submissionModalOpen = false;
 	}
 	async function clickJoin() {
 		if (user == null) {
@@ -123,9 +151,14 @@
 
 <div class="page-container">
 	<div class="page page-thin shadow">
+		<div class="jam-info">
+			<span>{jam.contestant_count} joined</span>
+			{#if started}
+				<span>{jam.submission_count} {jam.submission_count == 1 ? "submission" : "submissions"}</span>
+			{/if}
+		</div>
 
 		<h1>
-			<span class="joined-count">{jam.contestant_count} joined</span>
 			{jam.title}
 		</h1>
 
@@ -163,8 +196,12 @@
 
 		<div class="actions">
 			{#if joined}
-				<button class="button disabled" on:click|preventDefault={clickSubmit}>Submit project</button>
-				<button class="button red" on:click|preventDefault={clickLeave}>Leave jam</button>
+				{#if submittedProject == null}
+					<button class="button" class:disabled={!started || ended} on:click|preventDefault={clickSubmit}>Submit project</button>
+					<button class="button red" on:click|preventDefault={clickLeave}>Leave jam</button>
+				{:else}
+					<span class="submission-text">You have submitted "{submittedProject.name}"</span>
+				{/if}
 			{:else}
 				<button class="button" on:click|preventDefault={clickJoin}>Join jam</button>
 			{/if}
@@ -184,17 +221,39 @@
 	</a>
 </Modal>
 
+<Modal title="Submit Jam Project" bind:opened={submissionModalOpen}>
+	<p>Submit your project for the jam!</p>
+	<p>Pick one of your projects to submit. Don't see your project? Make sure your project is created after the start of the jam, and that your project <b>has been published</b>.</p>
+
+	<form class="submission-form" on:submit|preventDefault={submitProject}>
+		<select bind:value={submissionProjectId}>
+			<option value="" disabled selected>Select project</option>
+			{#each projects as project}
+				<option value="{project.id}">
+					{project.name}
+				</option>
+			{/each}
+		</select>
+
+		<button type="submit" class="button" class:disabled={!(parseInt(submissionProjectId) > 0)}>Submit Project</button>
+	</form>
+</Modal>
+
 <style>
 	h1 {
 		font-size: 4rem;
 		margin-bottom: 1rem;
 	}
 
-	.joined-count {
+	.jam-info {
+		display: flex;
+		flex-direction: column;
 		float: right;
-		font-size: 2rem;
+		margin-top: 3rem;
+		font-size: 1.5rem;
 		font-weight: normal;
 		color: var(--cc-lightGray);
+		text-align: right;
 	}
 
 	@media screen and (max-width: 45rem) {
@@ -266,6 +325,12 @@
 		justify-content: center;
 		gap: 1rem;
 	}
+	.submission-text {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		color: var(--text-color-medium);
+	}
 
 	#description {
 		overflow: hidden;
@@ -296,5 +361,12 @@
 	}
 	.modal-button > i {
 		margin-right: 0.5em;
+	}
+
+	.submission-form {
+		display: flex;
+		flex-direction: column;
+		gap: 1.5rem;
+		margin-top: 2rem;
 	}
 </style>
