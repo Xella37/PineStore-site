@@ -32,6 +32,7 @@
 	$: if (data) {
 		project = data.project;
 		comments = data.comments;
+		changelog = data.changelog;
 	}
 
 	const DESCRIPTION_PLACEHOLDER = `*This project does not have any description set.*\n\nUse the Discord bot to edit your poject with the /editproject command to configure a description.`;
@@ -52,7 +53,7 @@
 	}
 
 	let imageLinks = [];
-	$: if (project.media_count) {
+	$: if (data) {
 		imageLinks = [];
 		for (let i = 0; i < project.media_count; i++) {
 			imageLinks.push(`${BASE_URL}/project/${project.id}/image_${i}.webp`);
