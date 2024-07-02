@@ -197,13 +197,21 @@
 		<div class="actions">
 			{#if joined}
 				{#if submittedProject == null}
-					<button class="button" class:disabled={!started || ended} on:click|preventDefault={clickSubmit}>Submit project</button>
-					<button class="button red" on:click|preventDefault={clickLeave}>Leave jam</button>
+					{#if ended}
+						<span class="submission-text">You can no longer submit.</span>
+					{:else}
+						<button class="button" class:disabled={!started || ended} on:click|preventDefault={clickSubmit}>Submit project</button>
+						<button class="button red" on:click|preventDefault={clickLeave}>Leave jam</button>
+					{/if}
 				{:else}
 					<span class="submission-text">You have submitted "{submittedProject.name}"</span>
 				{/if}
 			{:else}
-				<button class="button" on:click|preventDefault={clickJoin}>Join jam</button>
+				{#if ended}
+					<span class="submission-text">You can no longer join.</span>
+				{:else}
+					<button class="button" on:click|preventDefault={clickJoin}>Join jam</button>
+				{/if}
 			{/if}
 		</div>
 
