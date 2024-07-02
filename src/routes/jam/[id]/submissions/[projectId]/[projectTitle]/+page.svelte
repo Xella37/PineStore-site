@@ -40,6 +40,16 @@
 		let encodedName = encodeURIComponent(name.replace(/[^a-zA-Z0-9]+/g," ").replaceAll(" ", "-").toLowerCase());
 		return `/jam/${jam.id}/submissions/${id}/${encodedName}`;
 	}
+
+	function formatShortDate(d) {
+		let projectDate = new Date(d);
+		return projectDate.toLocaleDateString("en-US", {
+			day: "numeric",
+			month: "short",
+			year: "numeric",
+		});
+	}
+	let projectDate = formatShortDate(submission.JamContestant.date_submitted);
 </script>
 
 <div id="backgroundContainer"></div>
@@ -47,8 +57,7 @@
 <div class="page-container">
 	<div class="page page-thin shadow">
 		<div class="jam-info">
-			<span>{jam.contestant_count} joined</span>
-			<span>{jam.submission_count} {jam.submission_count == 1 ? "submission" : "submissions"}</span>
+			<span>Submitted on {projectDate}</span>
 		</div>
 
 		<a href="/jam/{jam.id}" class="no-link">
