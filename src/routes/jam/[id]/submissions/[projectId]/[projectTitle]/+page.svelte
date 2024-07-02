@@ -17,7 +17,7 @@
 	import { BASE_URL } from "$lib/database.js";
 	
 	import Markdown from "$lib/svelte/Markdown.svelte";
-    import ImageGallery from "$lib/svelte/ImageGallery.svelte";
+	import ImageGallery from "$lib/svelte/ImageGallery.svelte";
 	
 	export let data;
 	let jam = data.jam;
@@ -104,6 +104,10 @@
 		font-size: 3rem;
 		margin-top: 1rem;
 		margin-bottom: 1rem;
+	}
+
+	h1:hover, h2:hover {
+		color: var(--cc--yellow);
 	}
 
 	.jam-info {
