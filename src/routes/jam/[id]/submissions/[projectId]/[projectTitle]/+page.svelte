@@ -17,6 +17,7 @@
 	import { BASE_URL } from "$lib/database.js";
 	
 	import Markdown from "$lib/svelte/Markdown.svelte";
+    import ImageGallery from "$lib/svelte/ImageGallery.svelte";
 	
 	export let data;
 	let jam = data.jam;
@@ -25,6 +26,14 @@
 	$: if (data) {
 		jam = data.jam;
 		submission = data.submission;
+	}
+
+	let imageLinks = [];
+	$: if (data) {
+		imageLinks = [];
+		for (let i = 0; i < submission.media_count; i++) {
+			imageLinks.push(`${BASE_URL}/project/${submission.id}/image_${i}.webp`);
+		}
 	}
 
 	function getSubmissionLink(id, name) {
@@ -80,6 +89,8 @@
 				<Markdown source={"No description."} />
 			{/if}
 		</div>
+
+		<ImageGallery {imageLinks} />
 	</div>
 </div>
 

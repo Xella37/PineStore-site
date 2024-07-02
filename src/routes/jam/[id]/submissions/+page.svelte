@@ -16,8 +16,6 @@
 	import { tagToDisplay } from "$lib/util.js";
 	import { BASE_URL } from "$lib/database.js";
 	
-	import Modal from "$lib/svelte/Modal.svelte";
-	
 	export let data;
 	let jam = data.jam;
 	let submissions = data.submissions;
