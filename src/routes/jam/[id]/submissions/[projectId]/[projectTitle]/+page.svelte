@@ -99,6 +99,11 @@
 			{/if}
 		</div>
 
+		<div class="info-block info">
+			<i class="fa-regular fa-clock"></i>
+			Judging in progress...
+		</div>
+
 		<ImageGallery {imageLinks} />
 	</div>
 </div>
