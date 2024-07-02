@@ -155,6 +155,10 @@ export const getMySavedProjects = (id) =>
 
 export const getJam = (id) =>
 	api("GET", "jam/" + id);
+export const getJamSubmissions = (id) =>
+	api("GET", "jam/" + id + "/submissions");
+export const getJamSubmission = (id, projectId) =>
+	api("GET", "jam/" + id + "/submission/" + projectId);
 export const joinJam = (id) =>
 	api("POST", "auth/jam/join", { jam_id: id });
 export const checkJoinedJam = (id) =>

@@ -215,6 +215,10 @@
 			{/if}
 		</div>
 
+		{#if started}
+			<a class="button view-submission-button" href="/jam/{jam.id}/submissions">View submissions</a>
+		{/if}
+
 		<div id="description" class="markdown-container">
 			<Markdown source={jam.description_markdown} />
 		</div>
@@ -376,5 +380,10 @@
 		flex-direction: column;
 		gap: 1.5rem;
 		margin-top: 2rem;
+	}
+
+	.view-submission-button {
+		display: block;
+		margin-block: 1rem;
 	}
 </style>
