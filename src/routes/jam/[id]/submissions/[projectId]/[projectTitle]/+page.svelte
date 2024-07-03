@@ -137,6 +137,7 @@
 
 	#description {
 		margin-top: 1rem;
+		overflow: hidden;
 	}
 
 	@media screen and (max-width: 45rem) {
