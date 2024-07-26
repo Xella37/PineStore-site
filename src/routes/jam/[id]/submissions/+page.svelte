@@ -50,27 +50,54 @@
 			<span>submissions</span>
 		</div>
 
-		<div class="submissions-container">
+		<div class="submissions-container" class:results={jam.judging_finished}>
 			{#each submissions as submission}
 				<a href="{getSubmissionLink(submission.id, submission.name)}" class="no-link">
-					<div class="submission">
-						<div class="image-container">
-							{#if submission.has_thumbnail}
-								<div class="div-img" style="background-image: url({BASE_URL}/project/{submission.id}/thumbnail.webp)" alt="project"></div>
-							{:else}
-								<div class="div-img" style="background-image: url(/project-placeholder.webp)" alt="project placeholder"></div>
-							{/if}
-						</div>
-						<div class="submission-info">
-							<span class="title">{submission.name}</span>
-							<span class="description">{submission.description_short ?? submission.description.slice(0, 100) + "..."}</span>
+					<div class="submission-container" class:medal={submission.medal} class:gold={submission.medal == "gold"} class:silver={submission.medal == "silver"} class:bronze={submission.medal == "bronze"}>
+						<div class="submission">
+							<div class="image-container">
+								{#if submission.has_thumbnail}
+									<div class="div-img" style="background-image: url({BASE_URL}/project/{submission.id}/thumbnail.webp)" alt="project"></div>
+								{:else}
+									<div class="div-img" style="background-image: url(/project-placeholder.webp)" alt="project placeholder"></div>
+								{/if}
+							</div>
+							<div class="submission-info">
+								<span class="title">{submission.name}</span>
+								<span class="description">{submission.description_short ?? submission.description.slice(0, 100) + "..."}</span>
 
-							<div class="tags-container">
-								{#each submission.tags ?? [] as tag}
-									<a class="button tag gray" href="/projects?tag={encodeURIComponent(tag)}">{tagToDisplay[tag]}</a>
-								{/each}
+								<div class="tags-container">
+									{#each submission.tags ?? [] as tag}
+										<a class="button tag gray" href="/projects?tag={encodeURIComponent(tag)}">{tagToDisplay[tag]}</a>
+									{/each}
+								</div>
 							</div>
 						</div>
+
+						{#if jam.judging_finished}
+							<div class="judge-scores">
+								<div class="judge-score">
+									<div class="main">
+										<div class="score-list">
+											{#each Object.keys(submission.JamContestant.scores) as categoryName}
+												<div>
+													<span class="name">
+														{categoryName}
+													</span>
+													<span class="value">
+														{#if categoryName == "Final"}
+															{submission.JamContestant.scores[categoryName]?.toFixed(2) ?? "No score"}
+														{:else}
+															{submission.JamContestant.scores[categoryName]}
+														{/if}
+													</span>
+												</div>
+											{/each}
+										</div>
+									</div>
+								</div>
+							</div>	
+						{/if}
 					</div>
 				</a>
 			{/each}
@@ -114,15 +141,22 @@
 		gap: 1rem;
 	}
 
-	.submission {
+	.submission-container {
+		position: relative;
 		display: flex;
+		flex-direction: column;
 		gap: 1rem;
 		color: var(--text-color);
 		padding: 0.5rem;
 	}
-	.submission:hover {
+	.submission-container:hover {
 		background-color: #555;
 		border-radius: 1rem;
+	}
+
+	.submission {
+		display: flex;
+		gap: 1rem;
 	}
 
 	.image-container {
@@ -160,6 +194,18 @@
 		color: var(--text-color-medium);
 	}
 
+	@media (max-width: 600px) {
+		.submission {
+			flex-direction: column;
+		}
+
+		.image-container {
+			width: 100%;
+			height: unset;
+			aspect-ratio: 1.78889;
+		}
+	}
+
 	.tags-container {
 		display: flex;
 		gap: 0.5rem;
@@ -168,5 +214,30 @@
 	.tag {
 		font-size: 1rem;
 		padding: 0.25rem 0.75rem;
+	}
+
+	.submission-container {
+		--gold: #d6b547;
+		--silver: #e8e8e8;
+		--bronze: #946b2e;
+	}
+
+	.medal::before {
+		content: "";
+		position: absolute;
+		top: 0.5rem;
+		bottom: 0.5rem;
+		left: -0.75rem;
+		width: 0.5rem;
+		border-radius: 1rem;
+	}
+	.medal.gold::before {
+		background-color: var(--gold);
+	}
+	.medal.silver::before {
+		background-color: var(--silver);
+	}
+	.medal.bronze::before {
+		background-color: var(--bronze);
 	}
 </style>

@@ -171,6 +171,8 @@
 						Starts in
 					{:else if !ended}
 						Ends in
+					{:else if !jam.judging_finished}
+						Judging in progress...
 					{:else}
 						JAM ENDED
 					{/if}
@@ -216,7 +218,11 @@
 		</div>
 
 		{#if started}
-			<a class="button view-submission-button" href="/jam/{jam.id}/submissions">View submissions</a>
+			{#if jam.judging_finished}
+				<a class="button view-submission-button" href="/jam/{jam.id}/submissions">View results</a>
+			{:else}
+				<a class="button view-submission-button" href="/jam/{jam.id}/submissions">View submissions</a>
+			{/if}
 		{/if}
 
 		<div id="description" class="markdown-container">

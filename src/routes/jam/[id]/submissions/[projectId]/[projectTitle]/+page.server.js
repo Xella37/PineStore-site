@@ -16,8 +16,12 @@ export async function load({ params, cookies }) {
 	if (!submissionData.success)
 		throw error(404, submissionData.error);
 
+
+	console.log(submissionData);
+
 	return {
 		jam: jamData.jam,
 		submission: submissionData.submission,
+		scores_all: submissionData.scores_all,
 	};
 };

@@ -22,10 +22,27 @@
 	export let data;
 	let jam = data.jam;
 	let submission = data.submission;
+	let allScores = data.scores_all;
 
 	$: if (data) {
 		jam = data.jam;
 		submission = data.submission;
+		allScores = data.scores_all;
+		if (jam.judging_finished) {
+			for (let score of allScores) {
+				let catScores = score.scores;
+				let keys = Object.keys(catScores);
+				let sum = 0;
+				let count = 0;
+				for (const key of keys) {
+					if (key != "Final") {
+						sum += catScores[key];
+						count++;
+					}
+				}
+				catScores["Final"] = (sum / count).toFixed(2);
+			}
+		}
 	}
 
 	let imageLinks = [];
@@ -99,10 +116,81 @@
 			{/if}
 		</div>
 
-		<div class="info-block info">
-			<i class="fa-regular fa-clock"></i>
-			Judging in progress...
-		</div>
+		{#if jam.judging_finished}
+			<div class="ruler-text">
+				<span>judge results</span>
+			</div>
+
+			<div class="judge-scores">
+				{#each allScores as judgeScore}
+					<div class="judge-score">
+						<div class="judge">
+							<a href="/user/{judgeScore.user_discord}"><img src="{BASE_URL}/pfp/{judgeScore.user_discord}.png" alt="profile"></a>
+							<span class="username">{judgeScore.User.name}</span>
+						</div>
+
+						<div class="main">
+							<div class="score-list">
+								{#each Object.keys(judgeScore.scores) as categoryName}
+									<div>
+										<span class="name">
+											{categoryName}
+										</span>
+										<span class="value">
+											{judgeScore.scores[categoryName]}
+										</span>
+									</div>
+								{/each}
+							</div>
+
+							{#if judgeScore.comment != null}
+								<span class="comment">
+									<i class="fa-solid fa-quote-left"></i>
+									{judgeScore.comment}
+									<i class="fa-solid fa-quote-right"></i>
+								</span>
+							{:else}
+								<span class="comment">
+									<i>No comment</i>
+								</span>
+							{/if}
+						</div>
+					</div>
+				{/each}
+			</div>
+
+			<div class="ruler-text">
+				<span>final scores</span>
+			</div>
+
+			<div class="judge-scores">
+				<div class="judge-score">
+					<div class="main">
+						<div class="score-list">
+							{#each Object.keys(submission.JamContestant.scores) as categoryName}
+								<div>
+									<span class="name">
+										{categoryName}
+									</span>
+									<span class="value">
+										{#if categoryName == "Final"}
+											{submission.JamContestant.scores[categoryName]?.toFixed(2) ?? "No score"}
+										{:else}
+											{submission.JamContestant.scores[categoryName]}
+										{/if}
+									</span>
+								</div>
+							{/each}
+						</div>
+					</div>
+				</div>
+			</div>			
+		{:else}
+			<div class="info-block info">
+				<i class="fa-regular fa-clock"></i>
+				Judging in progress...
+			</div>
+		{/if}
 
 		<ImageGallery {imageLinks} />
 	</div>
@@ -136,8 +224,11 @@
 	}
 
 	#description {
-		margin-top: 1rem;
 		overflow: hidden;
+		padding: 1.5rem;
+		margin: -1.5rem;
+		margin-top: 0;
+		padding-bottom: 0;
 	}
 
 	@media screen and (max-width: 45rem) {
@@ -191,5 +282,9 @@
 	.tag {
 		font-size: 1rem;
 		padding: 0.25rem 0.75rem;
+	}
+
+	.info-block {
+		margin-top: 3rem;
 	}
 </style>

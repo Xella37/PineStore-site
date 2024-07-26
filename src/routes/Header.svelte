@@ -225,7 +225,7 @@
 
 	<a href="/jam/pinejam2024" class="no-link">
 		<div class="jam-banner shadow">
-			PineJam 2024! Judging in progress...
+			PineJam 2024! Results!
 			<i class="fa-solid fa-chevron-right"></i>
 		</div>
 	</a>
