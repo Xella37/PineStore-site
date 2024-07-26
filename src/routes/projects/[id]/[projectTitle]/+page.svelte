@@ -26,12 +26,14 @@
 
 	export let data;
 	let project = data.project;
+	let jam = data.jam;
 	let comments = data.comments;
 	let changelog = data.changelog;
 	let myId = null;
 
 	$: if (data) {
 		project = data.project;
+		jam = data.jam;
 		comments = data.comments;
 		changelog = data.changelog;
 	}
@@ -243,6 +245,9 @@
 		</h1>
 
 		<div class="tags-container">
+			{#if jam}
+				<a class="button tag submission" href="/jam/{jam.id}">{jam.title}</a>
+			{/if}
 			{#each project.tags ?? [] as tag}
 				<a class="button tag gray" href="/projects?tag={encodeURIComponent(tag)}">{tagToDisplay[tag]}</a>
 			{/each}
@@ -428,6 +433,10 @@
 	.tag {
 		font-size: 1rem;
 		padding: 0.25rem 0.75rem;
+	}
+	.tag.submission {
+		background-color: var(--cc-pink);
+		color: black;
 	}
 
 	.changelog {

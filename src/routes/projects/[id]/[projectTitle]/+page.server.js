@@ -18,6 +18,7 @@ export async function load({ params, cookies }) {
 
 	return {
 		project: projectData.project,
+		jam: projectData.jam,
 		comments: commentData.comments,
 		changelog: changelogData.changelog,
 	};
