@@ -11,6 +11,9 @@
 			<div><a href="/faq"><i class="fab fa-question"/>FAQ</a></div>
 		</div>
 		<div>
+			<div><a href="/jam"><i class="fa-solid fa-jar"></i>Jams</a></div>
+		</div>
+		<div>
 			<div><a href="/documentation"><i class="fas fa-book"/>Docs</a></div>
 		</div>
 		<div>

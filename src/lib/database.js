@@ -153,6 +153,8 @@ export const unsaveProject = (id) =>
 export const getMySavedProjects = (id) =>
 	api("GET", "auth/saved");
 
+export const getJams = () =>
+	api("GET", "jams");
 export const getJam = (id) =>
 	api("GET", "jam/" + id);
 export const getJamSubmissions = (id) =>

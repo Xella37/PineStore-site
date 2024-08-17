@@ -223,12 +223,12 @@
 		<div id="closeBox" on:click={closeHeader} transition:fade={{duration: 150}}></div>
 	{/if}
 
-	<a href="/jam/pinejam2024" class="no-link">
+	<!-- <a href="/jam/pinejam2024" class="no-link">
 		<div class="jam-banner shadow">
 			PineJam 2024! Results!
 			<i class="fa-solid fa-chevron-right"></i>
 		</div>
-	</a>
+	</a> -->
 </div>
 
 <style>
