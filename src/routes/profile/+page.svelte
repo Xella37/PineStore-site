@@ -113,9 +113,9 @@
 		{id: "discord_noti_following_projectupdate", title: "Updates for saved projects"},
 	];
 	async function toggleOption(option) {
-		console.log("Toggle " + option);
+		// console.log("Toggle " + option);
 		options[option] = !options[option];
-		console.log(options);
+		// console.log(options);
 		await sendUserOptions();
 	}
 

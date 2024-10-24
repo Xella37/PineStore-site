@@ -7,7 +7,7 @@ export const ssr = true;
 export async function load({ params, cookies }) {
 	let jamData = await getJams(params.id);
 
-	console.log(jamData);
+	// console.log(jamData);
 
 	if (!jamData.success)
 		throw error(404, jamData.error);

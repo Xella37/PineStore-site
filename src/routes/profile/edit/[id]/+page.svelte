@@ -51,7 +51,7 @@
 		let sendData = {...project};
 		sendData.tags = project.selectedTags;
 		sendData.keywords = project.keywordsString.split(",");
-		console.log(sendData);
+		// console.log(sendData);
 		let saveData = await setProjectInfo(sendData);
 		unsavedChanges = false;
 		savedProject = {...project};
@@ -76,7 +76,7 @@
 		reader.readAsDataURL(image);
 		reader.onload = async e => {
 			let imageData = e.target.result;
-			console.log(imageData);
+			// console.log(imageData);
 
 			try {
 				await setProjectThumbnail(project.id, imageData);
