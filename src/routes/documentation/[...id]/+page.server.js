@@ -86,6 +86,44 @@ The returned JSON object always has a "success" value with an "error" value as a
 }`
 		},
 		{
+			id: "image",
+			path: "/api/project/:id/image/:index",
+			type: "GET",
+			url_params: [
+				{
+					name: "id",
+					description: "id of the project",
+				},
+				{
+					name: "index",
+					description: "index of the image (\"thumbnail\" or 0 - (project.media_count - 1))",
+				},
+			],
+			get_params: [
+				{
+					name: "mode",
+					description: "fit mode: cover (default), contain, stretch",
+					optional: true,
+				},
+				{
+					name: "format",
+					description: "desired output format: nfp (default), bimg",
+					optional: true,
+				},
+				{
+					name: "w",
+					description: "disired output width in px (default: 51*2)",
+					optional: true,
+				},
+				{
+					name: "h",
+					description: "disired output height in px (default: 19*3)",
+					optional: true,
+				},
+			],
+			body: `Get the thumbnail of a project with index "thumbnail" or one of the media with indexing starting at 0`,
+		},
+		{
 			id: "comments",
 			path: "/api/project/:id/comments",
 			type: "GET",
