@@ -171,6 +171,10 @@ export const leaveJam = (id) =>
 	api("POST", "auth/jam/leave", { jam_id: id });
 export const submitJam = (jamId, projectId) =>
 	api("POST", "auth/jam/submit", { jam_id: jamId, project_id: projectId });
+export const submitJudgeScore = (jamId, projectId, comment, scores) =>
+	api("POST", "auth/jam/judge/post", { jam_id: jamId, project_id: projectId, comment: comment, scores: scores });
+export const getMyJudgeScore = (jamId, projectId) =>
+	api("GET", "auth/jam/judge/score?jam_id=" + encodeURIComponent(jamId) + "&project_id=" + encodeURIComponent(projectId));
 
 export const getMyAnalytics = (kind) =>
 	api("GET", "auth/analytics/" + kind);

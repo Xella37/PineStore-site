@@ -14,11 +14,15 @@
 
 <script>
 	import { tagToDisplay } from "$lib/util.js";
-	import { BASE_URL } from "$lib/database.js";
+	import { BASE_URL, getMyProfile, getMyJudgeScore } from "$lib/database.js";
+    import { onMount } from "svelte";
 	
 	export let data;
 	let jam = data.jam;
 	let submissions = data.submissions;
+	let myId = null;
+	let iAmJudge = false;
+	let alreadyJudged = {};
 
 	$: if (data) {
 		jam = data.jam;
@@ -29,6 +33,27 @@
 		let encodedName = encodeURIComponent(name.replace(/[^a-zA-Z0-9]+/g," ").replaceAll(" ", "-").toLowerCase());
 		return `/jam/${jam.id}/submissions/${id}/${encodedName}`;
 	}
+
+	function getSubmissionJudgeLink(id) {
+		return `/jam/${jam.id}/submissions/judge/${id}`;
+	}
+
+	onMount(async () => {
+		let profileData = await getMyProfile();
+		myId = profileData?.user?.discord_id;
+		
+		if (myId != null) {
+			iAmJudge = jam.judges.includes(myId);
+
+			for (const submission of submissions) {			
+				let res = await getMyJudgeScore(jam.id, submission.id);
+				if (res.success && res.score != null)
+					alreadyJudged[submission.id] = true;
+			};
+		} else {
+			iAmJudge = false;
+		}
+	});
 </script>
 
 <div id="backgroundContainer"></div>
@@ -96,7 +121,19 @@
 										</div>
 									</div>
 								</div>
-							</div>	
+							</div>
+						{:else if iAmJudge}
+							<div class="judge-menu">
+								{#if alreadyJudged[submission.id]}
+									<a class="button green" href="{getSubmissionJudgeLink(submission.id)}">
+										View your scores
+									</a>
+								{:else}
+									<a class="button" href="{getSubmissionJudgeLink(submission.id)}">
+										Judge submission "{submission.name}"
+									</a>
+								{/if}
+							</div>
 						{/if}
 					</div>
 				</a>
@@ -239,5 +276,14 @@
 	}
 	.medal.bronze::before {
 		background-color: var(--bronze);
+	}
+
+	.judge-menu {
+
+	}
+	.judge-menu .button {
+		width: 100%;
+		display: inline-block;
+		box-sizing: border-box;
 	}
 </style>
