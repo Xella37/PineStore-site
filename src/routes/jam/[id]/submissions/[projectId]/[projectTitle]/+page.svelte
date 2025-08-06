@@ -83,12 +83,22 @@
 			</h1>
 		</a>
 
-		<a href="/user/{submission.owner_discord}"><img class="pfp" src="{BASE_URL}/pfp/{submission.owner_discord}.png" alt="profile"></a>
+		<div class="pfps">
+			<a href="/user/{submission.owner_discord}"><img class="pfp" src="{BASE_URL}/pfp/{submission.owner_discord}.png" alt="profile"></a>
+			{#each submission.coOwners as coOwner}
+				<a href="/user/{coOwner.discord_id}"><img class="pfp copfp" src="{BASE_URL}/pfp/{coOwner.discord_id}.png" alt="profile"></a>
+			{/each}
+		</div>
 
 		<a href="{getProjectLink(submission.id, submission.name)}" class="no-link">
 			<h2>
 				{submission.name}
-				<span class="subheader">by <a href="/user/{submission.owner_discord}">{submission.owner_name}</a></span>
+				<span class="subheader">
+					by <a href="/user/{submission.owner_discord}">{submission.owner_name}</a>
+					{#each submission.coOwners as coOwner}
+						, <a href="/user/{coOwner.discord_id}">{coOwner.name}</a>
+					{/each}
+				</span>
 			</h2>
 		</a>
 
@@ -185,6 +195,11 @@
 					</div>
 				</div>
 			</div>			
+		{:else if Date.now() < jam.date_end}
+			<div class="info-block info">
+				<i class="fa-regular fa-clock"></i>
+				Judging starts once jam ends
+			</div>
 		{:else}
 			<div class="info-block info">
 				<i class="fa-regular fa-clock"></i>
@@ -206,6 +221,8 @@
 		font-size: 3rem;
 		margin-top: 1rem;
 		margin-bottom: 1rem;
+		word-break: break-word;
+		max-width: calc(100% - 4rem);
 	}
 
 	h1:hover, h2:hover {
@@ -235,6 +252,9 @@
 		h1 {
 			font-size: 2.5rem;
 		}
+		h2 {
+			font-size: 2.5rem;
+		}
 	}
 	@media screen and (max-width: 30rem) {
 		h1 {
@@ -244,12 +264,28 @@
 		}
 	}
 
-	.pfp {
-		border-radius: 100vw;
+	.pfps {
 		float: right;
 		position: relative;
-		top: 0;
-		width: 6rem;
+		top: 1rem;
+		width: 12rem;
+		display: flex;
+		gap: 1rem;
+		justify-content: end;
+		flex-wrap: wrap;
+	}
+	.pfps > * {
+		max-width: 6rem;
+		min-width: 4rem;
+		flex: 1;
+		flex-grow: 0;
+	}
+	.pfps:not(:has(.copfp)) > *:first-child {
+		flex-grow: 1;
+	}
+	.pfp {
+		border-radius: 100vw;
+		max-width: 100%;
 	}
 
 	.project-image {
@@ -261,9 +297,17 @@
 	}
 
 	@media screen and (max-width: 45rem) {
-		.pfp {
-			width: 4rem;
-			top: 2rem;
+		.pfps {
+			width: unset;
+			max-width: 7rem;
+			top: 0rem;
+			gap: 0.5rem;
+			max-height: 8rem;
+			flex-wrap: wrap;
+		}
+		.pfps > * {
+			min-width: 3rem;
+			width: 3rem;
 		}
 
 		.project-image {
@@ -271,6 +315,15 @@
 			width: 100%;
 			margin-left: 0;
 			margin-bottom: 1.5rem;
+		}
+	}
+	@media screen and (max-width: 30rem) {
+		.pfps {
+			flex-direction: column;
+			flex-wrap: wrap-reverse;
+			justify-content: start;
+			max-width: unset;
+			overflow: inherit;
 		}
 	}
 

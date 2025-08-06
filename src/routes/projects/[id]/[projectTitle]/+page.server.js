@@ -1,5 +1,5 @@
 import { error } from "@sveltejs/kit";
-import { getProject, getComments, getLastChangelog } from "$lib/database.js";
+import { getProject, getComments, getLastChangelog, getUser } from "$lib/database.js";
 
 export const prerender = false;
 export const ssr = true;
@@ -10,8 +10,14 @@ export async function load({ params, cookies }) {
 	let changelogData = getLastChangelog(params.id);
 
 	projectData = await projectData;
+	let coOwnerIDs = projectData.project.co_owner_ids;
+	let coOwners = [];
+	for (const userId of coOwnerIDs)
+		coOwners.push(getUser(userId));
 	commentData = await commentData;
 	changelogData = await changelogData;
+	coOwners = await Promise.all(coOwners);
+	projectData.project.coOwners = coOwners.filter(coOwner => coOwner.success).map(res => res.user);
 
 	if (!projectData.success)
 		throw error(404, projectData.error);

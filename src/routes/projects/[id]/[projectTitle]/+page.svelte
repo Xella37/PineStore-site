@@ -237,11 +237,21 @@
 			<span class="project-date">{projectDate}</span>
 		</div>
 
-		<a href="/user/{project.owner_discord}"><img class="pfp" src="{BASE_URL}/pfp/{project.owner_discord}.png" alt="profile"></a>
+		<div class="pfps">
+			<a href="/user/{project.owner_discord}"><img class="pfp" src="{BASE_URL}/pfp/{project.owner_discord}.png" alt="profile"></a>
+			{#each project.coOwners as coOwner}
+				<a href="/user/{coOwner.discord_id}"><img class="pfp copfp" src="{BASE_URL}/pfp/{coOwner.discord_id}.png" alt="profile"></a>
+			{/each}
+		</div>
 
 		<h1>
 			{project.name}
-			<span class="subheader">by <a href="/user/{project.owner_discord}">{project.owner_name}</a></span>
+			<span class="subheader">
+				by <a href="/user/{project.owner_discord}">{project.owner_name}</a>
+				{#each project.coOwners as coOwner}
+					, <a href="/user/{coOwner.discord_id}">{coOwner.name}</a>
+				{/each}
+			</span>
 		</h1>
 
 		<div class="tags-container">
@@ -255,6 +265,7 @@
 
 		{#if changelog != null && changelog.body?.length > 0}
 			<!-- svelte-ignore a11y-click-events-have-key-events -->
+			<!-- svelte-ignore a11y-no-static-element-interactions -->
 			<div class="changelog markdown-container" on:click|preventDefault={() => { changelogOpened = !changelogOpened; }}>
 				<span>Updated {formatShortDate(changelog.timestamp)}</span>
 				{#if changelogOpened}
@@ -323,12 +334,28 @@
 		/* margin-top: 4rem; */
 	}
 
-	.pfp {
-		border-radius: 100vw;
+	.pfps {
 		float: right;
 		position: relative;
 		top: 3rem;
-		width: 6rem;
+		width: 12rem;
+		display: flex;
+		gap: 1rem;
+		justify-content: end;
+		flex-wrap: wrap;
+	}
+	.pfps > * {
+		max-width: 6rem;
+		min-width: 4rem;
+		flex: 1;
+		flex-grow: 0;
+	}
+	.pfps:not(:has(.copfp)) > *:first-child {
+		flex-grow: 1;
+	}
+	.pfp {
+		border-radius: 100vw;
+		max-width: 100%;
 	}
 
 	.top-info {
@@ -405,9 +432,17 @@
 			font-size: 2.5rem;
 		}
 
-		.pfp {
-			width: 4rem;
+		.pfps {
+			width: unset;
+			max-width: 7rem;
 			top: 2rem;
+			gap: 0.5rem;
+			max-height: 8rem;
+			flex-wrap: wrap;
+		}
+		.pfps > * {
+			min-width: 3rem;
+			width: 3rem;
 		}
 
 		.project-image {
@@ -422,6 +457,15 @@
 			font-size: 1.75rem;
 			margin-top: 2rem;
 			margin-bottom: 2rem;
+			word-break: break-word;
+		}
+
+		.pfps {
+			flex-direction: column;
+			flex-wrap: wrap-reverse;
+			justify-content: start;
+			max-width: unset;
+			overflow: inherit;
 		}
 	}
 

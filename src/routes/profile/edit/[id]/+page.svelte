@@ -44,6 +44,7 @@
 		savedProject = projectData.project;
 		savedProject.selectedTags = savedProject.tags ?? [];
 		savedProject.keywordsString = savedProject.keywords.join(",") ?? [];
+		savedProject.coOwnerIDsString = savedProject.co_owner_ids.join(",") ?? "";
 		project = {...savedProject};
 	}
 
@@ -51,6 +52,7 @@
 		let sendData = {...project};
 		sendData.tags = project.selectedTags;
 		sendData.keywords = project.keywordsString.split(",");
+		sendData.co_owner_ids = project.coOwnerIDsString.split(",");
 		// console.log(sendData);
 		let saveData = await setProjectInfo(sendData);
 		unsavedChanges = false;
@@ -195,6 +197,9 @@
 					{#if savedProject.visible}
 						<button class="button green" on:click|preventDefault={() => { publishUpdateModal = true; }}>Publish update</button>
 					{/if}
+
+					<label for="coOwnerIDs">Co owner IDs (comma separated, without spaces)</label>
+					<input id="coOwnerIDs" type="text" bind:value={project.coOwnerIDsString} maxlength="150" placeholder="1234567890,1234567891">
 				</div>
 				<div class="form-list">
 					<!-- svelte-ignore a11y-label-has-associated-control -->

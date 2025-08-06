@@ -8,7 +8,7 @@
 	<meta name="description" content="{jam.description_markdown?.slice(0, 200) ?? "No description."}" />
 	<meta name="twitter:description" content="{jam.description_markdown?.slice(0, 200) ?? "No description."}" />
 	<meta property="og:url" content="{BASE_URL}/jam/{jam.id}" />
-	<meta property="og:image" content="https://pinestore.cc/pinejam2024.png" />
+	<meta property="og:image" content="https://pinestore.cc/pinejam2025.png" />
 	<meta name="keywords" content="{jam.title}, {(jam.title.split(" ")).join(", ")}, jam, ccjam, pinejam, contest, computercraft, computer, craft, lua, minecraft, mine, programming, library, games, programs, collection, store">
 </svelte:head>
 

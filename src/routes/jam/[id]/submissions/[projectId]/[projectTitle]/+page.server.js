@@ -1,5 +1,5 @@
 import { error } from "@sveltejs/kit";
-import { getJam, getJamSubmission } from "$lib/database.js";
+import { getJam, getJamSubmission, getUser } from "$lib/database.js";
 
 export const prerender = false;
 export const ssr = true;
@@ -8,15 +8,19 @@ export async function load({ params, cookies }) {
 	let jamData = getJam(params.id);
 	let submissionData = getJamSubmission(params.id, params.projectId);
 
-	jamData = await jamData;
 	submissionData = await submissionData;
+	let coOwnerIDs = submissionData.submission.co_owner_ids;
+	let coOwners = [];
+	for (const userId of coOwnerIDs)
+		coOwners.push(getUser(userId));
+	jamData = await jamData;
+	coOwners = await Promise.all(coOwners);
+	submissionData.submission.coOwners = coOwners.filter(coOwner => coOwner.success).map(res => res.user);
 
 	if (!jamData.success)
 		throw error(404, jamData.error);
 	if (!submissionData.success)
 		throw error(404, submissionData.error);
-
-	// console.log(submissionData);
 
 	return {
 		jam: jamData.jam,
