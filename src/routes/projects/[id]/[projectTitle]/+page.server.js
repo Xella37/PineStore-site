@@ -10,7 +10,7 @@ export async function load({ params, cookies }) {
 	let changelogData = getLastChangelog(params.id);
 
 	projectData = await projectData;
-	let coOwnerIDs = projectData.project.co_owner_ids;
+	let coOwnerIDs = projectData.project.co_owner_ids.filter(id => id.length > 0);
 	let coOwners = [];
 	for (const userId of coOwnerIDs)
 		coOwners.push(getUser(userId));
