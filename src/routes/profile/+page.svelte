@@ -176,7 +176,7 @@
 				<div class="connections-container">
 					{#each profile.connections as con}
 						{#if con.link?.length > 0}
-							<a href="{con.link}" class="no-link">
+							<a href="{con.link}" target="_blank"  class="no-link">
 								<div class="connection">
 									<span class="connection-icon"><ConnectionIcon id={con.id} /></span>
 									{con.display}
