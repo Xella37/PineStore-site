@@ -1,7 +1,7 @@
 
 <script>
 	import { fade } from "svelte/transition";
-	import { isLoggedIn, getNotifications, hasUnreadNotifications } from "$lib/database.js";
+	import { isLoggedIn, getNotifications, hasUnreadNotifications, getJams } from "$lib/database.js";
 	import { getProjectLink, calcTimeAgo } from "$lib/util.js";
     import { onMount } from "svelte";
 
@@ -34,8 +34,42 @@
 			loadNotifications();
 	}
 
+	let jamStatus;
+	let jamData;
 	let loggedIn = false;
 	onMount(async () => {
+		let res = await getJams();
+		if (res.success) {
+			let now = Date.now();
+			let MS_DAY = 1000 * 60 * 60 * 24;
+			for (const jam of res.jams) {
+				if (now > jam.date_start - MS_DAY * 7 * 8) {
+					jamData = jam;
+					if (now < jam.date_start) {
+						// starting soon
+						jamStatus = "starting";
+						break;
+					} else if (now < jam.date_end) {
+						// ongoing
+						jamStatus = "ongoing";
+						break;
+					} else if (!jam.judging_finished) {
+						// judging in progress
+						jamStatus = "judging";
+						break;
+					} else if (now < jam.date_end + MS_DAY * 7 * 4) {
+						// results are in!
+						jamStatus = "results";
+						break;
+					}
+				}
+			}
+			console.log({
+				jamData,
+				jamStatus,
+			})
+		}
+
 		loggedIn = await isLoggedIn();
 		let newNotiData = await hasUnreadNotifications();
 		unreadNotifications = newNotiData.unread;
@@ -223,12 +257,22 @@
 		<div id="closeBox" on:click={closeHeader} transition:fade={{duration: 150}}></div>
 	{/if}
 
-	<!-- <a href="/jam/pinejam2024" class="no-link">
-		<div class="jam-banner shadow">
-			PineJam 2024! Results!
-			<i class="fa-solid fa-chevron-right"></i>
-		</div>
-	</a> -->
+	{#if jamStatus != null}
+		<a href="/jam/{jamData.id}" class="no-link">
+			<div class="jam-banner shadow">
+				{#if jamStatus == "starting"}
+					{jamData.title} is starting soon!
+				{:else if jamStatus == "ongoing"}
+					{jamData.title} is currently ongoing
+				{:else if jamStatus == "judging"}
+					Judging is in progress for {jamData.title}
+				{:else if jamStatus == "results"}
+					The {jamData.title} results are in!
+				{/if}
+				<i class="fa-solid fa-chevron-right"></i>
+			</div>
+		</a>
+	{/if}
 </div>
 
 <style>
