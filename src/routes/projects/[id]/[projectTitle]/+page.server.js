@@ -10,6 +10,8 @@ export async function load({ params, cookies }) {
 	let changelogData = getLastChangelog(params.id);
 
 	projectData = await projectData;
+	if (!projectData.success)
+		throw error(404, projectData.error);
 	let coOwnerIDs = projectData.project.co_owner_ids.filter(id => id.length > 0);
 	let coOwners = [];
 	for (const userId of coOwnerIDs)
@@ -18,9 +20,6 @@ export async function load({ params, cookies }) {
 	changelogData = await changelogData;
 	coOwners = await Promise.all(coOwners);
 	projectData.project.coOwners = coOwners.filter(coOwner => coOwner.success).map(res => res.user);
-
-	if (!projectData.success)
-		throw error(404, projectData.error);
 
 	return {
 		project: projectData.project,
