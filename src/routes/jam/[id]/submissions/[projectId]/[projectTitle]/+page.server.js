@@ -9,6 +9,8 @@ export async function load({ params, cookies }) {
 	let submissionData = getJamSubmission(params.id, params.projectId);
 
 	submissionData = await submissionData;
+	if (!submissionData.success)
+		throw error(404, submissionData.error);
 	let coOwnerIDs = submissionData.submission.co_owner_ids.filter(id => id.length > 0);
 	let coOwners = [];
 	for (const userId of coOwnerIDs)
@@ -19,8 +21,6 @@ export async function load({ params, cookies }) {
 
 	if (!jamData.success)
 		throw error(404, jamData.error);
-	if (!submissionData.success)
-		throw error(404, submissionData.error);
 
 	return {
 		jam: jamData.jam,
