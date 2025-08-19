@@ -221,7 +221,14 @@
 			{#if jam.judging_finished}
 				<a class="button view-submission-button" href="/jam/{jam.id}/submissions">View results</a>
 			{:else}
-				<a class="button view-submission-button" href="/jam/{jam.id}/submissions">View submissions</a>
+				{#if user?.discord_id == jam.organizer_discord}
+					<div class="button-group">
+						<a class="button overview-button" href="/jam/{jam.id}/organizer">Overview</a>
+						<a class="button view-submission-button" href="/jam/{jam.id}/submissions">View submissions</a>
+					</div>
+				{:else}
+					<a class="button view-submission-button" href="/jam/{jam.id}/submissions">View submissions</a>
+				{/if}
 			{/if}
 		{/if}
 
@@ -391,5 +398,16 @@
 	.view-submission-button {
 		display: block;
 		margin-block: 1rem;
+	}
+	.button-group {
+		display: flex;
+		gap: 1rem;
+		margin-block: 1rem;
+		flex-wrap: wrap;
+	}
+	.button-group .button {
+		flex: 1;
+		display: inline-block;
+		margin-block: 0;
 	}
 </style>
