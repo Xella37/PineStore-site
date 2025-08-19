@@ -176,6 +176,9 @@ export const submitJudgeScore = (jamId, projectId, comment, scores) =>
 export const getMyJudgeScore = (jamId, projectId) =>
 	api("GET", "auth/jam/judge/score?jam_id=" + encodeURIComponent(jamId) + "&project_id=" + encodeURIComponent(projectId));
 
+export const getJamScores = (jamId) =>
+	api("GET", "auth/jam/organizer/scores?jam_id=" + encodeURIComponent(jamId));
+
 export const getMyAnalytics = (kind) =>
 	api("GET", "auth/analytics/" + kind);
 
