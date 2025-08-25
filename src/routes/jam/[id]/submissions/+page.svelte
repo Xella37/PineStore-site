@@ -110,11 +110,7 @@
 														{categoryName}
 													</span>
 													<span class="value">
-														{#if categoryName == "Final"}
-															{submission.JamContestant.scores[categoryName]?.toFixed(2) ?? "No score"}
-														{:else}
-															{submission.JamContestant.scores[categoryName]}
-														{/if}
+														{submission.JamContestant.scores[categoryName]?.toFixed(2) ?? "No score"}
 													</span>
 												</div>
 											{/each}
@@ -285,5 +281,56 @@
 		width: 100%;
 		display: inline-block;
 		box-sizing: border-box;
+	}
+
+	.judge-scores {
+		display: flex;
+		flex-direction: column;
+		gap: 1rem;
+	}
+
+	.judge-score {
+		background-color: var(--cc-gray);
+		border-radius: 1rem;
+		padding: 1rem;
+		display: flex;
+		gap: 1rem;
+		justify-content: center;
+		flex-wrap: wrap;
+	}
+	@media (max-width: 500px) {
+		.judge-score {
+			flex-direction: column;
+		}
+	}
+
+	.judge-score .main {
+		flex: 4;
+		display: flex;
+		flex-direction: column;
+		gap: 1rem;
+	}
+
+	.score-list {
+		display: flex;
+		gap: 1rem;
+		justify-content: space-around;
+		flex-wrap: wrap;
+	}
+	.score-list > div {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+	}
+
+	.score-list .name {
+		text-align: center;
+		color: var(--text-color-medium);
+	}
+
+	.score-list .value {
+		text-align: center;
+		font-size: 2.25rem;
+		font-weight: lighter;
 	}
 </style>

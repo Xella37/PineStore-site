@@ -183,11 +183,7 @@
 										{categoryName}
 									</span>
 									<span class="value">
-										{#if categoryName == "Final"}
-											{submission.JamContestant.scores[categoryName]?.toFixed(2) ?? "No score"}
-										{:else}
-											{submission.JamContestant.scores[categoryName]}
-										{/if}
+										{submission.JamContestant.scores[categoryName]?.toFixed(2) ?? "No score"}
 									</span>
 								</div>
 							{/each}
