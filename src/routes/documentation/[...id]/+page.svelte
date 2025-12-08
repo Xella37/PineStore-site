@@ -270,7 +270,7 @@
 		}
 	}
 
-	pre.lua-codeblock {
+	:global(pre.lua-codeblock) {
 		background-color: rgba(0, 0, 0, 0.25);
 		border-radius: 1rem;
 		margin-top: 1rem;
@@ -279,7 +279,7 @@
 		display: inline-block;
 		width: 100%;
 	}
-	pre.lua-codeblock code {
+	:global(pre.lua-codeblock) code {
 		width: 100%;
 		box-sizing: border-box;
 	}

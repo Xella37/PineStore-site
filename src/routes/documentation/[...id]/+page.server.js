@@ -501,7 +501,14 @@ The returned JSON object always has a "success" value with an "error" value as a
 					description: "id of the project for which to register a new download",
 				},
 			],
-			body: `If you are building a CC front-end application, you must use this endpoint to report to the server when a project has been installed using the install command. This increases the download and downloads_recent count for the given project.`,
+			body: `If you are building a CC front-end application, you must use this endpoint to report to the server when a project has been installed using the install command. This increases the download and downloads_recent count for the given project.
+			
+<h3>Example</h3>
+<pre class="lua-codeblock" class:code-unready={!codeblockRendered}><code class="language-lua">local res = http.post("https://pinestore.cc/api/log/download", textutils.serialiseJSON({
+    projectId = projectId,
+}), {["Content-Type"] = "application/json"})
+</code></pre>
+`,
 			example_return: `{
 	"success": true
 }`,
@@ -509,14 +516,21 @@ The returned JSON object always has a "success" value with an "error" value as a
 		{
 			id: "authorization",
 			title: "Authorization",
-			body: `Using your personal token, which you can get using the /newtoken command with the Discord bot, you can manage your projects with a few API endpoints. Each of these endpoints require authentication using this token using the "Authentication" HTTP header with the value set to your personal token.`,
+			body: `Using your personal token, which you can get using the /newtoken command with the Discord bot, you can manage your projects with a few API endpoints. Each of these endpoints require authorization using this token using the "Authorization" HTTP header with the value set to your personal token.
+
+<h3>Example</h3>
+<pre class="lua-codeblock" class:code-unready={!codeblockRendered}><code class="language-lua">local res = http.get("https://pinestore.cc/api/auth/profile", {["Authorization"] = AUTH_TOKEN})
+local data = res.readAll()
+print(data)
+</code></pre>
+`,
 		},
 		{
 			id: "auth-profile",
 			path: "/api/auth/profile",
 			type: "GET",
 			first_of_group: true,
-			body: `Get all user info corresponding to the authentication token.`,
+			body: `Get all user info corresponding to the authorization token.`,
 			example_return: `{
 	"success": true,
 	"user": {

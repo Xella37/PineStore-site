@@ -7,7 +7,7 @@ export const BASE_URL = "https://pinestore.cc";
  * @param {"GET" | "POST"} method 
  * @param {string} path 
  * @param {object?} body for POST request
- * @param {string?} session force send authentication information
+ * @param {string?} session force send authorization information
  * @returns 
  */
 async function api(method, path, body, session) {
