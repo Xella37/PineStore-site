@@ -233,7 +233,7 @@
 		<form>
 			<h2>Discord notifications (bot DMs)</h2>
 			<p>All notifications will be visible in the top-right, but you can additionally enable to be notified on Discord with a DM from our bot.</p>
-			<p>You must have a Discord server in common with our bot. You can <a href="https://discord.com/oauth2/authorize?client_id=1073728324142116948&scope=bot&permissions=277025475584">add the bot</a> to your server, or alternatively join <a href="https://discord.gg/sNhyBjGez5">our Discord server</a>.</p>
+			<p>You must have a Discord server in common with our bot. You can <a href="https://discord.com/oauth2/authorize?client_id=1073728324142116948&scope=bot&permissions=277025475584">add the bot</a> to your server, or alternatively join <a href="https://discord.gg/XNBftfypnX">our Discord server</a>.</p>
 
 			<div class="options-list">
 				{#each toggleOptions as option}
