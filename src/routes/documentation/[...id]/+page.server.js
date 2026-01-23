@@ -33,7 +33,7 @@ The returned JSON object always has a "success" value with an "error" value as a
 			id: "project",
 			path: "/api/project/:id",
 			type: "GET",
-			interactive_test: true,
+			playground_enabled: true,
 			first_of_group: true,
 			url_params: [
 				{
@@ -91,7 +91,7 @@ The returned JSON object always has a "success" value with an "error" value as a
 			id: "image",
 			path: "/api/project/:id/image/:index",
 			type: "GET",
-			interactive_test: true,
+			playground_enabled: true,
 			url_params: [
 				{
 					name: "id",
@@ -132,7 +132,7 @@ The returned JSON object always has a "success" value with an "error" value as a
 			id: "comments",
 			path: "/api/project/:id/comments",
 			type: "GET",
-			interactive_test: true,
+			playground_enabled: true,
 			url_params: [
 				{
 					name: "id",
@@ -160,7 +160,7 @@ The returned JSON object always has a "success" value with an "error" value as a
 			id: "changelog",
 			path: "/api/project/:id/changelog",
 			type: "GET",
-			interactive_test: true,
+			playground_enabled: true,
 			url_params: [
 				{
 					name: "id",
@@ -182,7 +182,7 @@ The returned JSON object always has a "success" value with an "error" value as a
 			id: "changelogs",
 			path: "/api/project/:id/changelogs",
 			type: "GET",
-			interactive_test: true,
+			playground_enabled: true,
 			url_params: [
 				{
 					name: "id",
@@ -211,7 +211,7 @@ The returned JSON object always has a "success" value with an "error" value as a
 			id: "projects",
 			path: "/api/projects",
 			type: "GET",
-			interactive_test: true,
+			playground_enabled: true,
 			first_of_group: true,
 			body: `For information on the structure of a project, see <a href="/documentation/project">GET /api/project/:id</a>. Returns a full list of all projects.`,
 			example_return: `{
@@ -269,7 +269,7 @@ The returned JSON object always has a "success" value with an "error" value as a
 			id: "search",
 			path: "/api/projects/search",
 			type: "GET",
-			interactive_test: true,
+			playground_enabled: true,
 			get_params: [
 				{
 					name: "q",
@@ -332,7 +332,7 @@ The returned JSON object always has a "success" value with an "error" value as a
 			id: "named",
 			path: "/api/projects/named",
 			type: "GET",
-			interactive_test: true,
+			playground_enabled: true,
 			get_params: [
 				{
 					name: "name",
@@ -391,7 +391,7 @@ The returned JSON object always has a "success" value with an "error" value as a
 			id: "user",
 			path: "/api/user/:id",
 			type: "GET",
-			interactive_test: true,
+			playground_enabled: true,
 			first_of_group: true,
 			url_params: [
 				{
@@ -432,7 +432,7 @@ The returned JSON object always has a "success" value with an "error" value as a
 			id: "userprojects",
 			path: "/api/user/:id/projects",
 			type: "GET",
-			interactive_test: true,
+			playground_enabled: true,
 			url_params: [
 				{
 					name: "id",

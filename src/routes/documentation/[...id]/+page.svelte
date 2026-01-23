@@ -19,20 +19,31 @@
 	import { page } from "$app/stores";
     import EndpointTesting from "./EndpointTesting.svelte";
     import Markdown from "$lib/svelte/Markdown.svelte";
-	$: pageId = $page.params.id;
 
 	export let data;
+
+	$: pageId = $page.params.id;
+
 	let pages = data.pages;
-	$: thisPage = data.thisPage;
+	let thisPage = data.thisPage;
 
-	$: exampleReturn = thisPage.example_return;
-
-	let selectedTab = data.thisPage.example_return != null ? "example" : "playground";
+	let exampleReturn = thisPage.example_return;
+	let playgroundEnabled = thisPage.playground_enabled;
+	let selectedTab = "example";
 
 	$: if (pageId) {
+		for (const p of pages) {
+			if (p.id == pageId) {
+				thisPage = p;
+				break;
+			}
+		}
+		exampleReturn = thisPage.example_return;
+		playgroundEnabled = thisPage.playground_enabled;
+
 		if (exampleReturn == null)
 			selectedTab = "playground";
-		else if (thisPage.interactive_test == null)
+		else if (!playgroundEnabled)
 			selectedTab = "example";
 	}
 </script>
@@ -117,7 +128,7 @@
 					</div>
 				{/if}
 
-				{#if exampleReturn || thisPage.interactive_test}
+				{#if exampleReturn || playgroundEnabled}
 					<!-- svelte-ignore a11y-click-events-have-key-events -->
 					<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
 					<div class="example-tabs">
@@ -125,7 +136,7 @@
 							<h3 on:click={() => { selectedTab = "example"; }} class:selected-tab={selectedTab == "example"}>Example of response</h3>
 						{/if}
 
-						{#if thisPage.interactive_test}
+						{#if playgroundEnabled}
 							<h3 on:click={() => { selectedTab = "playground"; }} class:selected-tab={selectedTab == "playground"}>Interactive playground</h3>
 						{/if}
 					</div>
@@ -141,7 +152,7 @@
 							</div>
 						{/if}
 	
-						{#if thisPage.interactive_test}
+						{#if playgroundEnabled}
 							<div class="tab-content" class:selected={selectedTab == "playground"}>
 								<EndpointTesting path={thisPage.path} url_params={thisPage.url_params ?? []} get_params={thisPage.get_params ?? []} />
 							</div>
