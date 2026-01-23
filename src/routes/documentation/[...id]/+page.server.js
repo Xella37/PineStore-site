@@ -33,11 +33,13 @@ The returned JSON object always has a "success" value with an "error" value as a
 			id: "project",
 			path: "/api/project/:id",
 			type: "GET",
+			interactive_test: true,
 			first_of_group: true,
 			url_params: [
 				{
 					name: "id",
 					description: "id of the project",
+					example_value: "1",
 				},
 			],
 			body: `View all information of a project. Timestamps (date_added, date_updated, date_release) are UNIX timestamps in milliseconds. The target_file is the file after installation that should be run to run the project. Most fields can be null, because it is not yet complete or because it is a library or other type of project that cannot be installed etc. The description has three variants, all of which are optional. Try to use which is best in your use case and try to use the others as fallbacks (e.g. description_short with a truncated version of the default description as fallback). Keywords and tags are both a list of items seperated by a comma, which are not trailed by a space. Download_recent shows the number of downloads in the last 30 days.`,
@@ -89,14 +91,17 @@ The returned JSON object always has a "success" value with an "error" value as a
 			id: "image",
 			path: "/api/project/:id/image/:index",
 			type: "GET",
+			interactive_test: true,
 			url_params: [
 				{
 					name: "id",
 					description: "id of the project",
+					example_value: "1",
 				},
 				{
 					name: "index",
 					description: "index of the image (\"thumbnail\" or 0 - (project.media_count - 1))",
+					example_value: "thumbnail",
 				},
 			],
 			get_params: [
@@ -127,10 +132,12 @@ The returned JSON object always has a "success" value with an "error" value as a
 			id: "comments",
 			path: "/api/project/:id/comments",
 			type: "GET",
+			interactive_test: true,
 			url_params: [
 				{
 					name: "id",
 					description: "id of the project",
+					example_value: "1",
 				},
 			],
 			body: `Get a list of comments corresponding to a project. Only the reply_id can be null. If this is not null, it is the id of the comment to which it is a reply.`,
@@ -153,10 +160,12 @@ The returned JSON object always has a "success" value with an "error" value as a
 			id: "changelog",
 			path: "/api/project/:id/changelog",
 			type: "GET",
+			interactive_test: true,
 			url_params: [
 				{
 					name: "id",
 					description: "id of the project",
+					example_value: "6",
 				},
 			],
 			body: `Get the most recent changelog for a project (if there are any).`,
@@ -173,10 +182,12 @@ The returned JSON object always has a "success" value with an "error" value as a
 			id: "changelogs",
 			path: "/api/project/:id/changelogs",
 			type: "GET",
+			interactive_test: true,
 			url_params: [
 				{
 					name: "id",
 					description: "id of the project",
+					example_value: "6",
 				},
 			],
 			body: `Get all changelogs for a project (if there are any).`,
@@ -200,6 +211,7 @@ The returned JSON object always has a "success" value with an "error" value as a
 			id: "projects",
 			path: "/api/projects",
 			type: "GET",
+			interactive_test: true,
 			first_of_group: true,
 			body: `For information on the structure of a project, see <a href="/documentation/project">GET /api/project/:id</a>. Returns a full list of all projects.`,
 			example_return: `{
@@ -257,6 +269,7 @@ The returned JSON object always has a "success" value with an "error" value as a
 			id: "search",
 			path: "/api/projects/search",
 			type: "GET",
+			interactive_test: true,
 			get_params: [
 				{
 					name: "q",
@@ -319,6 +332,7 @@ The returned JSON object always has a "success" value with an "error" value as a
 			id: "named",
 			path: "/api/projects/named",
 			type: "GET",
+			interactive_test: true,
 			get_params: [
 				{
 					name: "name",
@@ -377,6 +391,7 @@ The returned JSON object always has a "success" value with an "error" value as a
 			id: "user",
 			path: "/api/user/:id",
 			type: "GET",
+			interactive_test: true,
 			first_of_group: true,
 			url_params: [
 				{
@@ -417,6 +432,7 @@ The returned JSON object always has a "success" value with an "error" value as a
 			id: "userprojects",
 			path: "/api/user/:id/projects",
 			type: "GET",
+			interactive_test: true,
 			url_params: [
 				{
 					name: "id",

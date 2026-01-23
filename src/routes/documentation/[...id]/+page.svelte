@@ -1,8 +1,5 @@
 
 <svelte:head>
-	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.2.0/styles/default.min.css">
-	<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.2.0/highlight.min.js"></script>
-
 	<title>Docs - PineStore</title>
 	<meta property="og:type" content="website">
 	<meta property="og:site_name" content="pinestore.cc" />
@@ -16,9 +13,11 @@
 </svelte:head>
 
 <script>
-	import { onMount } from "svelte";
+	import Highlight from "svelte-highlight";
+	import json from "svelte-highlight/languages/json";
 
 	import { page } from "$app/stores";
+    import EndpointTesting from "./EndpointTesting.svelte";
 	$: pageId = $page.params.id;
 
 	export let data;
@@ -26,34 +25,14 @@
 	$: thisPage = data.thisPage;
 
 	$: exampleReturn = thisPage.example_return;
-	let includeCodeBlocks = true;
 
-	let mounted = false;
-	let codeblockRendered = false;
+	let selectedTab = exampleReturn != null ? "example" : "playground";
 
-	function firstCodeHighlight() {
-		if (typeof(hljs) == "undefined")
-			return setTimeout(firstCodeHighlight, 250);
-		hljs.highlightAll();
-		codeblockRendered = true;
-		mounted = true;
-	}
-
-	onMount(firstCodeHighlight);
 	$: if (pageId) {
-		// console.log("Switched to page " + pageId);
-		if (mounted) {
-			codeblockRendered = false;
-			includeCodeBlocks = false;
-			setTimeout(() => {
-				includeCodeBlocks = true;
-				setTimeout(() => {
-					// console.log("Re-highlighting!");
-					hljs.highlightAll();
-					codeblockRendered = true;
-				}, 0);
-			}, 100);
-		}
+		if (exampleReturn == null)
+			selectedTab = "playground";
+		else if (thisPage.interactive_test == null)
+			selectedTab = "example";
 	}
 </script>
 
@@ -133,17 +112,36 @@
 					</div>
 				{/if}
 
-				{#if exampleReturn}
-					<h3>Example of returned JSON</h3>
+				{#if exampleReturn || thisPage.interactive_test}
+					<!-- svelte-ignore a11y-click-events-have-key-events -->
+					<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
+					<div class="example-tabs">
+						{#if exampleReturn}
+							<h3 on:click={() => { selectedTab = "example"; }} class:selected-tab={selectedTab == "example"}>Example of response</h3>
+						{/if}
 
-					{#if includeCodeBlocks}
-						<pre class="lua-codeblock" class:code-unready={!codeblockRendered}><code class="language-lua">{exampleReturn}</code></pre>
-					{/if}
-					{#if !codeblockRendered}
-						<div class="codeblock-placeholder">
-							<i class="fa-solid fa-code"></i>
-						</div>
-					{/if}
+						{#if thisPage.interactive_test}
+							<h3 on:click={() => { selectedTab = "playground"; }} class:selected-tab={selectedTab == "playground"}>Interactive playground</h3>
+						{/if}
+					</div>
+
+					<div class="example-tabs-content">
+						{#if exampleReturn}
+							<div class="tab-content" class:selected={selectedTab == "example"}>
+								<div class="tab-content" class:selected={selectedTab == "example"}>
+									<div class="code-block">
+										<Highlight language={json} code={exampleReturn} />
+									</div>
+								</div>
+							</div>
+						{/if}
+	
+						{#if thisPage.interactive_test}
+							<div class="tab-content" class:selected={selectedTab == "playground"}>
+								<EndpointTesting path={thisPage.path} url_params={thisPage.url_params ?? []} get_params={thisPage.get_params ?? []} />
+							</div>
+						{/if}
+					</div>
 				{/if}
 			</div>
 		</div>
@@ -214,6 +212,7 @@
 
 	#content {
 		flex-grow: 1;
+		min-width: 0;
 		border-top: 0.5rem solid #444;
 	}
 
@@ -263,7 +262,6 @@
 			flex-direction: column;
 		}
 		#sidebar a {
-			padding-right: 1rem;
 			white-space: break-spaces;
 			overflow: visible;
 			text-overflow: ellipsis;
@@ -282,5 +280,54 @@
 	:global(pre.lua-codeblock) code {
 		width: 100%;
 		box-sizing: border-box;
+	}
+
+	.example-tabs {
+		display: flex;
+		flex-direction: column;
+		gap: 1rem;
+		margin-top: 2rem;
+		margin-bottom: 1rem;
+	}
+
+	.example-tabs > * {
+		background-color: var(--cc-gray);
+		padding: 0.5rem 2rem;
+		border-radius: 1rem;
+		cursor: pointer;
+		margin: 0;
+	}
+	.example-tabs > *.selected-tab {
+		background-color: var(--cc-blue);
+		font-weight: 600;
+	}
+
+	.tab-content {
+
+	}
+	.tab-content:not(.selected) {
+		display: none;
+	}
+
+	@media screen and (min-width: 60rem) {
+		.example-tabs {
+			flex-direction: row;
+			gap: 2rem;
+			border-bottom: var(--cc-blue) 0.25rem solid;
+			padding-left: 2rem;
+		}
+
+		.example-tabs > * {
+			border-bottom-left-radius: 0;
+			border-bottom-right-radius: 0;
+		}
+		.example-tabs > *.selected-tab {
+		}
+
+		.tab-content {
+
+		}
+		.tab-content:not(.selected) {
+		}
 	}
 </style>
