@@ -26,7 +26,7 @@
 
 	$: exampleReturn = thisPage.example_return;
 
-	let selectedTab = exampleReturn != null ? "example" : "playground";
+	let selectedTab = data.thisPage.example_return != null ? "example" : "playground";
 
 	$: if (pageId) {
 		if (exampleReturn == null)
