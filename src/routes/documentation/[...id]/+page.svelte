@@ -18,6 +18,7 @@
 
 	import { page } from "$app/stores";
     import EndpointTesting from "./EndpointTesting.svelte";
+    import Markdown from "$lib/svelte/Markdown.svelte";
 	$: pageId = $page.params.id;
 
 	export let data;
@@ -74,6 +75,10 @@
 					<p>
 						{@html thisPage.body}
 					</p>
+				{/if}
+
+				{#if thisPage.body_markdown}
+					<Markdown source="{thisPage.body_markdown}" />
 				{/if}
 
 				{#if thisPage.url_params}
