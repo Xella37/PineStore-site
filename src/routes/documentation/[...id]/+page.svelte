@@ -31,7 +31,7 @@
 	let playgroundEnabled = thisPage.playground_enabled;
 	let selectedTab = "example";
 
-	$: if (pageId) {
+	$: if (pageId.length >= 0) {
 		for (const p of pages) {
 			if (p.id == pageId) {
 				thisPage = p;
