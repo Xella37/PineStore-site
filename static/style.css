@@ -371,6 +371,7 @@ pre.lua-codeblock code {
 code.hljs {
 	background: var(--sidebar-color);
 	color: #CED6E2;
+	white-space: break-spaces;
 }
 
 code.hljs span.hljs-keyword {
