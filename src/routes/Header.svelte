@@ -291,7 +291,6 @@
 		padding-left: 2rem;
 		padding-right: 2rem;
 		z-index: 15;
-		overflow: hidden;
 	}
 
 	.jam-banner {
