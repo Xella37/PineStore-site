@@ -17,7 +17,6 @@
 	function processComments() {
 		rootComments = [];
 		replies = {};
-		console.log(comments);
 
 		for (const comment of comments) {
 			if (comment.reply_id != null) {
