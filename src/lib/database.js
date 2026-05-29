@@ -93,6 +93,7 @@ export const setProfileInfo = (profileData) =>
 	api("POST", "auth/profile/update", removeEmptyStrings({
 		"allow_null": true,
 		"name": profileData.name,
+		"profile_public": profileData.profile_public,
 		"about": profileData.about,
 		"about_markdown": profileData.about_markdown,
 		"connections": profileData.connections,

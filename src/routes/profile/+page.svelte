@@ -15,6 +15,7 @@
 
 	let profile = {
 		name: "loading...",
+		profile_public: true,
 		joined_on: 0,
 		about: "loading...",
 		about_markdown: "loading...",
@@ -160,43 +161,61 @@
 
 		{#if !editingProfile}
 			<h1>{profile.name}'s profile</h1>
-			
-			<p id="about" class="markdown-container">
-				{#if profile.about_markdown}
-					<Markdown source={profile.about_markdown} />
-				{:else if profile.about}
-					<Markdown source={profile.about} />
-				{:else}
-					<Markdown source={"No about info..."} />
-				{/if}
-			</p>
 
-			<h2>Connections</h2>
-			{#if profile.connections?.length > 0}
-				<div class="connections-container">
-					{#each profile.connections as con}
-						{#if con.link?.length > 0}
-							<a href="{con.link}" target="_blank"  class="no-link">
-								<div class="connection">
+			{#if profile.profile_public}
+				<span class="profile-public public">
+					<i class="fa-solid fa-circle-check"></i>
+					Profile is public
+				</span>
+
+				<p id="about" class="markdown-container">
+					{#if profile.about_markdown}
+						<Markdown source={profile.about_markdown} />
+					{:else if profile.about}
+						<Markdown source={profile.about} />
+					{:else}
+						<Markdown source={"No about info..."} />
+					{/if}
+				</p>
+
+				<h2>Connections</h2>
+				{#if profile.connections?.length > 0}
+					<div class="connections-container">
+						{#each profile.connections as con}
+							{#if con.link?.length > 0}
+								<a href="{con.link}" target="_blank"  class="no-link">
+									<div class="connection">
+										<span class="connection-icon"><ConnectionIcon id={con.id} /></span>
+										{con.display}
+									</div>
+								</a>
+							{:else}
+								<div class="connection no-link">
 									<span class="connection-icon"><ConnectionIcon id={con.id} /></span>
 									{con.display}
 								</div>
-							</a>
-						{:else}
-							<div class="connection no-link">
-								<span class="connection-icon"><ConnectionIcon id={con.id} /></span>
-								{con.display}
-							</div>
-						{/if}
-					{/each}
-				</div>
+							{/if}
+						{/each}
+					</div>
+				{:else}
+					<p>None</p>
+				{/if}
 			{:else}
-				<p>None</p>
+				<span class="profile-public hidden">
+					<i class="fa-solid fa-triangle-exclamation"></i>
+					Profile hidden!
+				</span>
 			{/if}
 		{:else}
 			<form class="form-blocks">
 				<label for="nameInput">Display name</label>
 				<input id="nameInput" type="text" bind:value={profile.name}>
+
+				<div class="option">
+					<!-- svelte-ignore a11y-click-events-have-key-events -->
+					<button id="togglePublic" style="font-size: 1.75rem;" class="toggle" class:enabled={profile.profile_public} on:click|preventDefault={() => { profile.profile_public = !profile.profile_public; }}></button>
+					<label for="togglePublic">Profile public</label>
+				</div>
 
 				<label for="aboutInput">About (plaintext)</label>
 				<textarea id="aboutInput" type="text" bind:value={profile.about}></textarea>
@@ -358,6 +377,27 @@
 		.corner-buttons {
 			width: 100%;
 		}
+	}
+
+	.profile-public {
+		--color: var(--cc-gray);
+		display: inline-block;
+		font-size: 1.5rem;
+		border: solid 0.25rem var(--color);
+		border-radius: 1rem;
+		padding: 0.5rem 1rem;
+		margin-block: 1rem;
+		color: var(--text-color-medium);
+	}
+	.profile-public i {
+		margin-right: 0.5em;
+		color: var(--color);
+	}
+	.profile-public.public {
+		--color: var(--cc-blue);
+	}
+	.profile-public.hidden {
+		--color: var(--cc-red);
 	}
 
 	.form-blocks > * {
