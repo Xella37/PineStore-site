@@ -1,5 +1,5 @@
 import { error } from "@sveltejs/kit";
-import { getJam } from "$lib/database.js";
+import { getJam, getUser } from "$lib/database.js";
 
 export const prerender = false;
 export const ssr = true;
@@ -10,7 +10,16 @@ export async function load({ params, cookies }) {
 	if (!jamData.success)
 		throw error(404, jamData.error);
 
+	let judges = [];
+	for (let judge of jamData.jam.judges) {
+		let judgeRes = getUser(judge);
+		judges.push(judgeRes);
+	}
+	judges = await Promise.all(judges);
+	judges = judges.map(judge => judge.user);
+
 	return {
 		jam: jamData.jam,
+		judges: judges
 	};
 };

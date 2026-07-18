@@ -22,6 +22,7 @@
 	
 	export let data;
 	let jam = data.jam;
+	$: judges = data.judges;
 
 	$: if (data) {
 		jam = data.jam;
@@ -232,6 +233,22 @@
 			{/if}
 		{/if}
 
+		{#if judges.length > 0}
+			<div class="judges-container">
+				<h2>Judges</h2>
+				<div class="judges">
+					{#each judges as judge}
+						<a href={`/user/${judge.discord_id}`} class="no-link">
+							<div class="judge">
+								<img src={`${BASE_URL}/pfp/${judge.discord_id}.png`} alt={judge.name} on:error={e => e.target.src = "/pfp-placeholder.png"}>
+								<span class="judge-name">{judge.name}</span>
+							</div>
+						</a>
+					{/each}
+				</div>
+			</div>
+		{/if}
+
 		<div id="description" class="markdown-container">
 			<Markdown source={jam.description_markdown} />
 		</div>
@@ -343,6 +360,39 @@
 			width: 3rem;
 			padding: 0.3rem 0.15rem;
 		}
+	}
+
+	.judges-container {
+		margin-block: 3rem;
+	}
+	.judges-container h2 {
+		text-align: center;
+
+	}
+	.judges {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 2rem;
+		justify-content: center;
+		margin-block: 2rem;
+	}
+	.judge {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 0.5rem;
+		transition: transform 0.2s ease;
+	}
+	.judge:hover {
+		transform: translateY(-0.25rem);
+	}
+	.judge img {
+		border-radius: 100%;
+		max-width: 6rem;
+	}
+	.judge-name {
+		color: var(--text-color-medium);
+		font-size: 1.25rem;
 	}
 
 	.actions {
