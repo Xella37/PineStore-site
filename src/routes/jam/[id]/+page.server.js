@@ -16,7 +16,7 @@ export async function load({ params, cookies }) {
 		judges.push(judgeRes);
 	}
 	judges = await Promise.all(judges);
-	judges = judges.map(judge => judge.user);
+	judges = judges.map(judge => judge.user).filter(judge => judge != null);
 
 	return {
 		jam: jamData.jam,
