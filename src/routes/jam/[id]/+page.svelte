@@ -103,6 +103,17 @@
 		}
 	}
 
+	function formatShortDate(d) {
+		let projectDate = new Date(d);
+		return projectDate.toLocaleDateString("en-US", {
+			hour: "numeric",
+			minute: "numeric",
+			day: "numeric",
+			month: "short",
+			year: "numeric",
+		});
+	}
+
 	let days = 0;
 	let hours = 0;
 	let minutes = 0;
@@ -196,6 +207,8 @@
 				</div>
 			</div>
 		</div>
+
+		<span class="period">from {formatShortDate(jam.date_start)} to {formatShortDate(jam.date_end)}</span>
 
 		<div class="actions">
 			{#if joined}
@@ -393,6 +406,14 @@
 	.judge-name {
 		color: var(--text-color-medium);
 		font-size: 1.25rem;
+	}
+
+	span.period {
+		color: var(--text-color-dark);
+		text-align: center;
+		display: block;
+		font-size: 1.25rem;
+		margin-block: 1.5rem;
 	}
 
 	.actions {
