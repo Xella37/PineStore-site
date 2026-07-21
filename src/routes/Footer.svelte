@@ -1,4 +1,8 @@
 
+<script>
+	const year = new Date().getFullYear();
+</script>
+
 <div id="footer">
 	<div id="footerItems">
 		<div>
@@ -17,7 +21,7 @@
 			<div><a href="/documentation"><i class="fas fa-book"/>Docs</a></div>
 		</div>
 		<div>
-			<div>© Xella 2023</div>
+			<div>© Xella {year}</div>
 		</div>
 	</div>
 </div>
