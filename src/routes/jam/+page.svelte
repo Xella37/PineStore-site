@@ -61,12 +61,11 @@
 			{#each jams as jam}
 				<a href="/jam/{jam.id}" class="no-link">
 					<div class="jam" class:status-starting={jam.status === "starting"} class:status-ongoing={jam.status === "ongoing"} class:status-judging={jam.status === "judging"} class:status-results={jam.status === "results"}>
+						<img src="{BASE_URL}/{jam.id}.png" alt="Banner for {jam.title}" class="jam-logo" />
+
 						<h2>{jam.title}</h2>
 						<span class="period">{formatShortDate(jam.date_start)} / {formatShortDate(jam.date_end)}</span>
-
 						<span class="status">{STATUS_MAP[jam.status]}</span>
-
-						<img src="{BASE_URL}/{jam.id}.png" alt="Banner for {jam.title}" class="jam-logo" />
 					</div>
 				</a>
 			{/each}
@@ -115,6 +114,7 @@
 		--status-color: #FFF;
 		border-radius: 1rem;
 		padding: 1rem;
+		padding-right: 22rem;
 	}
 	.jam:hover {
 		background-color: var(--cc-gray);
@@ -172,5 +172,18 @@
 		height: calc(min(8rem, 100% - 2rem));
 		transform: translateY(-50%);
 		object-fit: contain;
+	}
+
+	@media screen and (max-width: 700px) {
+		.jam {
+			padding-right: unset;
+		}
+		.jam img {
+			max-width: 100%;
+			height: auto;
+			position: relative;
+			transform: none;
+			margin-bottom: 1rem;
+		}
 	}
 </style>
