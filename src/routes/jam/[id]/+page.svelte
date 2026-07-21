@@ -372,7 +372,7 @@
 	.judges {
 		display: flex;
 		flex-wrap: wrap;
-		gap: 2rem;
+		gap: 1rem;
 		justify-content: center;
 		margin-block: 2rem;
 	}
