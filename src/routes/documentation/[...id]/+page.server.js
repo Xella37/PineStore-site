@@ -492,6 +492,213 @@ The returned JSON object always has a "success" value with an "error" value as a
 }`,
 		},
 		{
+			id: "jams",
+			path: "/api/jams",
+			type: "GET",
+			playground_enabled: true,
+			first_of_group: true,
+			body: `Returns a full list of all jams.`,
+			example_return: `{
+	"success": true,
+	"jams": [
+		{
+			"judges": [
+				"176749952641400833",
+				"1153273351129800764",
+				"862377905891966985",
+				"508577166405926913",
+				"236628809158230018"
+			],
+			"id": "pinejam2026",
+			"title": "PineJam 2026",
+			"organizer_discord": "302427405023313920",
+			"description_markdown": "Markdown description of the jam",
+			"date_start": 1784973600000,
+			"date_end": 1786183200000,
+			"judging_finished": false,
+			"contestant_count": 137,
+			"submission_count": 0
+		},
+	]
+}`,
+		},
+		{
+			id: "jam",
+			path: "/api/jam/:id",
+			type: "GET",
+			playground_enabled: true,
+			url_params: [
+				{
+					name: "id",
+					description: "id of the jam",
+				},
+			],
+			body: `Get all info for a specific jam.`,
+			example_return: `{
+	"success": true,
+	"jam": {
+		"judges": [
+			"176749952641400833",
+			"1153273351129800764",
+			"862377905891966985",
+			"508577166405926913",
+			"236628809158230018"
+		],
+		"id": "pinejam2026",
+		"title": "PineJam 2026",
+		"organizer_discord": "302427405023313920",
+		"description_markdown": "Markdown description of the jam",
+		"date_start": 1784973600000,
+		"date_end": 1786183200000,
+		"judging_finished": false,
+		"contestant_count": 137,
+		"submission_count": 0
+	}
+}`
+		},
+		{
+			id: "jam-submissions",
+			path: "/api/jam/:id/submissions",
+			type: "GET",
+			playground_enabled: true,
+			url_params: [
+				{
+					name: "id",
+					description: "id of the jam",
+				},
+			],
+			body: `Get all submissions for a specific jam.`,
+			example_return: `{
+	"success": true,
+	"submissions": [
+		{
+			"co_owner_ids": [
+				""
+			],
+			"tags": [
+				"action",
+				"fun"
+			],
+			"keywords": [
+				"car",
+				"racing",
+				"pine3D"
+			],
+			"id": 167,
+			"date_added": 1753197226796,
+			"date_updated": 0,
+			"date_release": 0,
+			"date_publish": 1753198015508,
+			"owner_discord": "329631860219052032",
+			"owner_name": "Remie",
+			"name": "Racing Game",
+			"install_command": "pastebin run kk8ut3G2",
+			"download_url": null,
+			"target_file": null,
+			"repository": "https://github.com/remie92/Computer-Racer",
+			"description_short": "This is a small game that's all about racing a little car through some checkpoints!",
+			"description": "This is a small game that's all about racing a little car through some checkpoints! It's made using the pine3D library for graphics, and made for pinejam 2025.\n\nControls:\nMovement: Arrow keys/WASD, and space for jump.\n\nFeature:\nToggleable ground patterns.\n\nToggleable random vehicles.\n\nOption to change how chaotic the road is.\n\nPoint system!\n\nInstall the game using the provided link, or run this pastebin command in the terminal of an advanced computer: \\"pastebin run kk8ut3G2\\", but that shouldn't be necessary anymore!",
+			"description_markdown": null,
+			"has_thumbnail": true,
+			"hide_thumbnail": false,
+			"media_count": 1,
+			"downloads": 122,
+			"downloads_recent": 12,
+			"views": 316,
+			"views_recent": 18,
+			"likes": 1,
+			"comment_count": 8,
+			"visible": true,
+			"JamContestant": {
+				"scores": {
+				"Creativity": 8,
+				"Theme": 9.333333333333334,
+				"Design": 7.333333333333333,
+				"Appeal": 8,
+				"Final": 8.166666666666668
+				},
+				"user_discord": "329631860219052032",
+				"jam_id": "pinejam2025",
+				"project_id": 167,
+				"date_submitted": 1753198021690
+			}
+		},
+	]
+}`
+		},
+		{
+			id: "jam-submission",
+			path: "/api/jam/:id/submission/:project",
+			type: "GET",
+			playground_enabled: true,
+			url_params: [
+				{
+					name: "id",
+					description: "id of the jam",
+				},
+				{
+					name: "project",
+					description: "id of the project",
+				},
+			],
+			body: `Get a specific submission for a specific jam.`,
+			example_return: `{
+	"success": true,
+	"submission": {
+		"co_owner_ids": [
+			""
+		],
+		"tags": [
+			"action",
+			"fun"
+		],
+		"keywords": [
+			"car",
+			"racing",
+			"pine3D"
+		],
+		"id": 167,
+		"date_added": 1753197226796,
+		"date_updated": 0,
+		"date_release": 0,
+		"date_publish": 1753198015508,
+		"owner_discord": "329631860219052032",
+		"owner_name": "Remie",
+		"name": "Racing Game",
+		"install_command": "pastebin run kk8ut3G2",
+		"download_url": null,
+		"target_file": null,
+		"repository": "https://github.com/remie92/Computer-Racer",
+		"description_short": "This is a small game that's all about racing a little car through some checkpoints!",
+		"description": "This is a small game that's all about racing a little car through some checkpoints! It's made using the pine3D library for graphics, and made for pinejam 2025.\n\nControls:\nMovement: Arrow keys/WASD, and space for jump.\n\nFeature:\nToggleable ground patterns.\n\nToggleable random vehicles.\n\nOption to change how chaotic the road is.\n\nPoint system!\n\nInstall the game using the provided link, or run this pastebin command in the terminal of an advanced computer: \\"pastebin run kk8ut3G2\\", but that shouldn't be necessary anymore!",
+		"description_markdown": null,
+		"has_thumbnail": true,
+		"hide_thumbnail": false,
+		"media_count": 1,
+		"downloads": 122,
+		"downloads_recent": 12,
+		"views": 316,
+		"views_recent": 18,
+		"likes": 1,
+		"comment_count": 8,
+		"visible": true,
+		"JamContestant": {
+			"scores": {
+			"Creativity": 8,
+			"Theme": 9.333333333333334,
+			"Design": 7.333333333333333,
+			"Appeal": 8,
+			"Final": 8.166666666666668
+			},
+			"user_discord": "329631860219052032",
+			"jam_id": "pinejam2025",
+			"project_id": 167,
+			"date_submitted": 1753198021690
+		}
+	}
+}`
+		},
+		{
 			id: "logview",
 			path: "/api/log/view",
 			type: "POST",
