@@ -88,6 +88,13 @@ body {
 	}
 }
 
+.page-full {
+	max-width: 100%;
+	width: 100%;
+	border-radius: 0;
+	box-sizing: border-box;
+}
+
 #backgroundContainer {
 	position: absolute;
 	z-index: -1;
@@ -485,4 +492,10 @@ code.hljs span.hljs-comment {
 
 .apexcharts-theme-dark .apexcharts-gridline {
 	stroke: #545454;
+}
+
+.model-form {
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
 }
