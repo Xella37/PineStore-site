@@ -23,28 +23,41 @@
 
 <!-- svelte-ignore missing-declaration -->
 <!-- svelte-ignore a11y-click-events-have-key-events -->
-<pre type="text" class:copied={copied} on:click={copyText}>{#if copied}<i id="copiedText" in:fade="{{ duration: 100 }}">Copied!</i>{/if}{text}<i id="copyButton" class="fas fa-copy"></i></pre>
+<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
+<pre type="text" class:copied={copied} on:click={copyText}>
+	{#if copied}
+		<i id="copiedText" in:fade="{{ duration: 100 }}">Copied!</i>
+	{/if}
+	<!-- {text} -->
+	<span>{text}</span>
+	<i id="copyButton" class="fas fa-copy"></i>
+</pre>
 
 <style>
 	pre {
 		background-color: rgba(0, 0, 0, 0.5);
 		padding: 0.5rem 1rem;
 		border-radius: 1rem;
-		font-size: 1.5rem;
+		font-size: 1.25rem;
 		margin-block: 1rem;
+		height: 1.5rem;
 	}
 
 	pre {
 		position: relative;
-		user-select: none;
-		overflow: hidden;
-		text-overflow: ellipsis;
 		white-space: nowrap;
-		padding-right: 3rem;
 	}
 	pre:hover {
 		cursor: pointer;
 		color: grey;
+	}
+
+	span {
+		position: absolute;
+		max-width: calc(100% - 4rem);
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
 	}
 
 	#copyButton {

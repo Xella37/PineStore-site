@@ -15,7 +15,7 @@
 <script>
 	import { fade } from "svelte/transition";
 	import { onMount, onDestroy } from "svelte";
-	import { getProjectLink, addToast, tagToDisplay } from "$lib/util.js";
+	import { getProjectLink, addToast, tagToDisplay, formatShortDate } from "$lib/util.js";
 	import { BASE_URL, getMyProfile, reportProjectView, reportProjectDownload, saveProject, checkSavedProject, unsaveProject, likeProject, checkLikedProject, unlikeProject } from "$lib/database.js";
 	
 	import Markdown from "$lib/svelte/Markdown.svelte";
@@ -23,6 +23,7 @@
 	import Modal from "$lib/svelte/Modal.svelte";
     import CommentSection from "./CommentSection.svelte";
     import ImageGallery from "$lib/svelte/ImageGallery.svelte";
+    import ChangeLog from "$lib/svelte/ChangeLog.svelte";
 
 	export let data;
 	let project = data.project;
@@ -63,14 +64,6 @@
 		}
 	}
 
-	function formatShortDate(d) {
-		let projectDate = new Date(d);
-		return projectDate.toLocaleDateString("en-US", {
-			day: "numeric",
-			month: "short",
-			year: "numeric",
-		});
-	}
 	let projectDate = formatShortDate(Math.max(project.date_added, project.date_updated));
 
 	let timerText = "TIME";
@@ -154,8 +147,6 @@
 				addToast("Failed!", "Failed to unsave project. Error: " + (res.error ?? "no error"), "error");
 		}
 	}
-
-	let changelogOpened = false;
 
 	onMount(async () => {
 		setTimeout(reportProjectView, 3000, project.id); // report a view if the page is open for at least 3 seconds
@@ -264,18 +255,8 @@
 		</div>
 
 		{#if changelog != null && changelog.body?.length > 0}
-			<!-- svelte-ignore a11y-click-events-have-key-events -->
-			<!-- svelte-ignore a11y-no-static-element-interactions -->
-			<div class="changelog markdown-container" on:click|preventDefault={() => { changelogOpened = !changelogOpened; }}>
-				<span>Updated {formatShortDate(changelog.timestamp)}</span>
-				{#if changelogOpened}
-					<!-- {#each changelog.body.split("\n") as paragraph}
-						<p>{paragraph}</p>
-					{/each} -->
-					<Markdown source={changelog.body} />
-				{:else}
-					<p class="collapsed">{changelog.body}</p>
-				{/if}
+			<div class="changelog-container">
+				<ChangeLog log={changelog} />
 			</div>
 		{/if}
 
@@ -404,9 +385,6 @@
 		text-align: center;
 		min-width: 9rem;
 	}
-	.top-buttons > * i {
-		margin-right: 0.5rem;
-	}
 	@media screen and (max-width: 32rem) {
 		.top-buttons {
 			position: relative;
@@ -483,25 +461,9 @@
 		color: black;
 	}
 
-	.changelog {
-		background-color: var(--cc-gray);
-		border-radius: 1rem;
-		padding: 0.5rem 1rem;
+	.changelog-container {
 		margin-top: 1.5rem;
 		margin-bottom: 0.5rem;
-		cursor: pointer;
-	}
-	.changelog:hover {
-		background-color: #666;
-	}
-	.changelog p.collapsed {
-		margin-bottom: 0.5rem;
-		display: -webkit-box;
-		-webkit-line-clamp: 2;
-		-webkit-box-orient: vertical;
-		overflow: hidden;
-		-webkit-user-select: none;
-	    user-select: none;
 	}
 
 	#description {

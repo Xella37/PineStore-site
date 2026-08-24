@@ -59,7 +59,7 @@
 		bottom: 0;
 		right: 0;
 		width: 25rem;
-		max-width: 100vw;
+		max-width: calc(100vw - 2rem);
 		padding: 1rem;
 	}
 

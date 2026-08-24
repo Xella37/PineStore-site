@@ -27,7 +27,7 @@
 <div class="flex-list margin-small">
 	{#each tags as tag}
 		{#if !hideSaved || tag.id != "saved"}
-			<button class="tag-link shadow" class:selected={selectedTag == tag.id || selectedTags?.includes(tag.id)} on:click|preventDefault={() => { selectTag(tag.id); }}>
+			<button class="button tag-link shadow" class:gray={!(selectedTag == tag.id || selectedTags?.includes(tag.id))} on:click|preventDefault={() => { selectTag(tag.id); }}>
 				<span>
 					{#if tag.id == "saved"}
 						<i class="tag-icon fa-solid fa-star"></i>
@@ -58,7 +58,6 @@
 	.tag-link {
 		border-radius: 10rem;
 		overflow: hidden;
-		background-color: #444;
 		padding: 0.5rem 1.75rem;
 		color: white;
 		transition: all ease 100ms;
@@ -70,9 +69,6 @@
 		text-align: center;
 		font-size: 1.25rem;
 		white-space: nowrap;
-	}
-	.tag-link.selected {
-		background-color: var(--cc-blue);
 	}
 	@media screen and (max-width: 40rem) {
 		.tag-link {

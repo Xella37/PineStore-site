@@ -71,6 +71,8 @@ export const searchProjects = (query) =>
 
 export const getUser = (id) =>
 	api("GET", "user/" + id);
+export const searchUsers = (query) =>
+	api("GET", "user/search?q=" + encodeURIComponent(query));
 export const getUserProjects = (id) =>
 	api("GET", "user/" + id + "/projects");
 export const authDiscord = (code) =>

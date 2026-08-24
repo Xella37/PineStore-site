@@ -277,9 +277,6 @@
 		text-align: center;
 		min-width: 9rem;
 	}
-	.follow-container > * i {
-		margin-right: 0.5rem;
-	}
 	@media screen and (max-width: 35rem) {
 		.follow-container {
 			position: absolute;

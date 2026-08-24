@@ -16,8 +16,9 @@
 <div id="backgroundContainer"></div>
 
 <div class="page-container">
-	<div class="page page-full shadow">
-		<div class="sidebar">
+	<!-- <div class="page page-full shadow"> -->
+	<div class="columns">
+		<div class="column sidebar island">
 			<!-- svelte-ignore a11y-click-events-have-key-events -->
 			<!-- svelte-ignore a11y-no-static-element-interactions -->
 			<div class="tab" class:selected={selectedTab == "profile"} on:click|preventDefault={() => { selectedTab = "profile"; }}>
@@ -44,24 +45,58 @@
 			</div>
 		</div>
 
-		{#if selectedTab == "profile"}
-			<div class="tab-content"><ConfigProfile /></div>
-		{:else if selectedTab == "options"}
-			<div class="tab-content"><ConfigOptions /></div>
-		{:else if selectedTab == "projects"}
-			<div class="tab-content"><ConfigProjects /></div>
-		{:else if selectedTab == "analytics"}
-			<div class="tab-content"><ConfigAnalytics /></div>
-		{/if}
+		<div class="column tab-content island">
+			{#if selectedTab == "profile"}
+				<ConfigProfile />
+			{:else if selectedTab == "options"}
+				<ConfigOptions />
+			{:else if selectedTab == "projects"}
+				<ConfigProjects />
+			{:else if selectedTab == "analytics"}
+				<ConfigAnalytics />
+			{/if}
+		</div>
 	</div>
 </div>
 
 <style>
-	.page {
+	.page-container {
+		--island-spacing: 4rem;
+		--island-padding: 2rem;
+	}
+
+	.columns {
+		position: relative;
 		display: flex;
 		flex-direction: row;
-		gap: 2rem;
-		min-height: 100vh;
+		gap: var(--island-spacing);
+		padding: var(--island-spacing);
+		align-items: flex-start;
+	}
+	.column {
+		flex: 1;
+	}
+
+	@media (max-width: 1270px) {
+		.columns {
+			flex-direction: column;
+		}
+		.column {
+			width: 100%;
+			box-sizing: border-box;
+		}
+	}
+
+	@media (max-width: 800px) {
+		.page-container {
+			--island-spacing: 2rem;
+		}
+	}
+	@media (max-width: 450px) {
+		.page-container {
+			--island-spacing: 1rem;
+			--island-padding: 1rem;
+		}
 	}
 
 	.sidebar {
@@ -91,27 +126,23 @@
 	}
 
 	.tab-content {
-		/* flex-grow: 4; */
 		flex: 4;
 		min-width: 0;
 	}
 
 	@media (max-width: 800px) {
-		.page {
-			flex-direction: column;
-			gap: 1rem;
-		}
 		.sidebar {
 			flex-direction: row;
-			/* max-width: 100%; */
 			overflow-x: auto;
-			margin-inline: -2rem;
+			margin-inline: calc(0rem - var(--island-spacing));
+			width: calc(100% + 2*var(--island-spacing));
 			box-sizing: border-box;
 			padding: 2rem;
 			flex: 0;
 			min-width: unset;
 			background-color: #222;
-			margin-top: -2rem;
+			margin-top: -1rem;
+			border-radius: 0;
 			
 		}
 		.tab {

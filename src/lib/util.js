@@ -79,6 +79,15 @@ export function calcTimeAgo(timestamp, fullLength=false) {
 		return `${y}y`;
 }
 
+export function formatShortDate(d) {
+	let projectDate = new Date(d);
+	return projectDate.toLocaleDateString("en-US", {
+		day: "numeric",
+		month: "short",
+		year: "numeric",
+	});
+}
+
 const allTags = [
 	{
 		id: "saved",
