@@ -13,7 +13,7 @@
 </svelte:head>
 
 <script>
-	import { fade } from "svelte/transition";
+	import CopyField from "$lib/svelte/CopyField.svelte";
 	import { onMount, onDestroy } from "svelte";
 	import { getProjectLink, addToast, tagToDisplay, formatShortDate } from "$lib/util.js";
 	import { BASE_URL, getMyProfile, reportProjectView, reportProjectDownload, saveProject, checkSavedProject, unsaveProject, likeProject, checkLikedProject, unlikeProject } from "$lib/database.js";
@@ -40,21 +40,6 @@
 	}
 
 	const DESCRIPTION_PLACEHOLDER = `*This project does not have any description set.*\n\nUse the Discord bot to edit your poject with the /editproject command to configure a description.`;
-
-	let copied = false;
-	function copyInstall() {
-		let temp = document.createElement("input");
-		temp.setAttribute("type", "text");
-		temp.value = project.install_command && `wget run ${BASE_URL}/d/${project.id}` || "No command";
-		document.body.appendChild(temp);
-
-		temp.select();
-		document.execCommand("copy");
-		document.body.removeChild(temp);
-
-		copied = true;
-		addToast("Copied!", "Copied install link.", "info", 3);
-	}
 
 	let imageLinks = [];
 	$: if (data) {
@@ -279,11 +264,8 @@
 		</div>
 
 		<div id="sources">
-			<!-- svelte-ignore a11y-click-events-have-key-events -->
-			<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
-			{#if project.install_command || !project.download_url}
-				<pre type="text" class="command" class:copied={copied} on:click={copyInstall}>{#if copied}<i id="copiedText" in:fade="{{ duration: 100 }}">Copied!</i>{/if}{project.install_command ? `wget run ${BASE_URL}/d/${project.id}` : "no install command"}<i id="copyInstallButton" class="fas fa-copy"></i></pre>
-			{/if}
+			<CopyField text={(project.install_command || project.run_command) ? `wget run ${BASE_URL}/d/${project.id}` : "no install command"} />
+			
 			{#if project.download_url}
 				<a on:click={downloadLinkOpened} target="_blank" rel="noreferrer" class="button green" href="{project.download_url}">Download <i style="margin-left:0.5rem;" class="fa-solid fa-download"></i></a>
 			{/if}
@@ -482,49 +464,6 @@
 		display: block;
 		text-align: center;
 		margin-bottom: 1rem;
-	}
-
-	.command {
-		position: relative;
-		user-select: none;
-		overflow: hidden;
-		text-overflow: ellipsis;
-		white-space: nowrap;
-	}
-	.command:hover {
-		cursor: pointer;
-		color: grey;
-	}
-
-	#copyInstallButton {
-		position: absolute;
-		right: 0.75rem;
-		top: 50%;
-		transform: translateY(-50%);
-		color: grey;
-		pointer-events: none;
-	}
-	#copiedText {
-		color: #57A64E;
-		position: absolute;
-		left: 1rem;
-	}
-
-	@media screen and (max-width: 48rem) {
-		#copiedText {
-			display: none;
-		}
-		.command.copied {
-			background-color: #3d620d;
-		}
-		.command.copied #copyInstallButton {
-			color: var(--cc-lightGray);
-		}
-	}
-	@media screen and (max-width: 40rem) {
-		.command {
-			padding-right: 3rem;
-		}
 	}
 
 	.modal-button {

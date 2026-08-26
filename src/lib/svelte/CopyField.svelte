@@ -54,10 +54,11 @@
 
 	span {
 		position: absolute;
-		max-width: calc(100% - 4rem);
+		width: calc(100% - 4rem);
 		overflow: hidden;
 		text-overflow: ellipsis;
 		white-space: nowrap;
+		text-align: center;
 	}
 
 	#copyButton {
