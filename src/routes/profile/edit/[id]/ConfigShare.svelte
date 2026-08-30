@@ -1,8 +1,62 @@
 
 <script>
     import { onMount } from "svelte";
+	
+	import Modal from "$lib/svelte/Modal.svelte";
+	import { BASE_URL} from "$lib/database.js";
+	import { addToast } from "$lib/util.js";
 
 	export let project;
+
+	let configureInstallerModal = false;
+	let loadingGitHubFiles = false;
+	let gitFiles = [];
+	let gitError = null;
+	async function fetchGitHubFiles(githubLink) {
+		const userRepo = githubLink.match(/github\.com\/(.+)$/)?.[1];
+		if (!userRepo) throw new Error("Invalid GitHub URL");
+
+		const branch = "main";
+		const apiUrl = `https://api.github.com/repos/${userRepo}/git/trees/${branch}?recursive=1`;
+
+		const response = await fetch(apiUrl);
+		if (!response.ok) throw new Error(`GitHub API error: ${response.statusText}`);
+		
+		const data = await response.json();
+		gitFiles = await data.tree
+			.filter(item => item.type === "blob")
+			.map(file => ({
+				path: file.path,
+			}));
+	}
+
+	async function openInstallerModal() {
+		if (project.repository == null) {
+			addToast("Failed!", "Missing a GitHub link.", "error");
+			return;
+		}
+
+		loadingGitHubFiles = true
+		configureInstallerModal = true;
+		gitError = null;
+
+		try {
+			await fetchGitHubFiles(project.repository);
+		} catch(e) {
+			gitError = e;
+			addToast("Failed!", "Error fetching GitHub files. Please check Git repository. Error: " + (e ?? "unknown error"), "error");
+		}
+		loadingGitHubFiles = false;
+	}
+
+	let targetFile = "";
+	async function saveDefaultInstaller() {
+		project.install_command = `wget run ${BASE_URL}/d/psi/${project.id}`;
+		project.target_file = targetFile;
+		configureInstallerModal = false;
+		addToast("Done!", "Installer configured. Make sure to save changes.", "success", 3);
+	}
+
 
 	let warnings = [];
 	let warningsMinor = [];
@@ -43,6 +97,20 @@
 	onMount(checkWarnings);
 </script>
 
+<div class="form-list">	
+	<label for="repoInput">Git repository</label>
+	<input id="repoInput" type="text" bind:value={project.repository} maxlength="150" placeholder="https://github.com/username/repository">
+
+	<label for="configureInstaller">Installer creator tool, GitHub only. Uses Git repository link to download files, so you don't have to create your own installer (optional)</label>
+	<button id="configureInstaller" class="button green" on:click|preventDefault={openInstallerModal}>
+		<i class="fa-solid fa-gears" style="margin-right: 0.5rem;"></i>
+		Configure default installer
+	</button>
+	
+	<label for="visibleInput">Display in PineStore clients</label>
+	<button id="visibleInput" class="toggle" style="font-size: 1.75rem;" class:enabled={project.visible_clients} on:click|preventDefault={() => { project.visible_clients = !project.visible_clients; }} />
+</div>
+
 <div class="cols installer-info">
 	<div class="col form-list">
 		<h3>
@@ -78,14 +146,6 @@
 	</div>
 </div>
 
-<div class="form-list">	
-	<label for="visibleInput">Display in PineStore clients</label>
-	<button id="visibleInput" class="toggle" style="font-size: 1.75rem;" class:enabled={project.visible_clients} on:click|preventDefault={() => { project.visible_clients = !project.visible_clients; }} />
-		
-	<label for="repoInput">Git repository</label>
-	<input id="repoInput" type="text" bind:value={project.repository} maxlength="150" placeholder="https://github.com/username/repository">
-</div>
-
 {#each warnings as warning}
 	<div class="info-block warning">
 		<i class="fa-solid fa-triangle-exclamation"></i>
@@ -99,9 +159,30 @@
 	</div>
 {/each}
 
+<Modal title="Configure installer" bind:opened={configureInstallerModal}>
+	<p>The default installer downloads all files from your configured GitHub repository. Please select the target file to launch your application.</p>
+
+	<form class="model-form" on:submit|preventDefault={saveDefaultInstaller}>
+		{#if loadingGitHubFiles}
+			<p>Loading files...</p>
+		{:else if gitError != null}
+			<p>Ran into an error while fetching git files: {gitError ?? "unknown error"}</p>
+		{:else}
+			<select bind:value={targetFile}>
+				<option disabled selected value="">Please select a file</option>
+				{#each gitFiles as file}
+					<option value="{file.path}">{file.path}</option>
+				{/each}
+			</select>
+		{/if}
+
+		<button type="submit" class="button">Save</button>
+	</form>
+</Modal>
+
 <style>
 	.installer-info {
-		margin-bottom: 3rem;
+		margin-top: 3rem;
 	}
 	.installer-info label {
 		margin-top: 0;
