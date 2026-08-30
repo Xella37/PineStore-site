@@ -13,7 +13,8 @@
 	let gitFiles = [];
 	let gitError = null;
 	async function fetchGitHubFiles(githubLink) {
-		const userRepo = githubLink.match(/github\.com\/(.+)$/)?.[1];
+		const cleanUrl = githubLink.replace(/\/$/, ""); // remove trailing slash
+		const userRepo = cleanUrl.match(/github\.com\/(.+)$/)?.[1];
 		if (!userRepo) throw new Error("Invalid GitHub URL");
 
 		const branch = "main";
@@ -174,9 +175,9 @@
 					<option value="{file.path}">{file.path}</option>
 				{/each}
 			</select>
-		{/if}
 
-		<button type="submit" class="button">Save</button>
+			<button type="submit" class="button">Save</button>
+		{/if}
 	</form>
 </Modal>
 
