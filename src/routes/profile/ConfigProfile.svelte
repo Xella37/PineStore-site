@@ -2,18 +2,11 @@
 <script>
 	import Markdown from "$lib/svelte/Markdown.svelte";
 	import ConnectionIcon from "$lib/svelte/ConnectionIcon.svelte";
-	import { logoutUser, getMyProfile, setProfileInfo } from "$lib/database.js";
-    import { onMount } from "svelte";
+	import { logoutUser, setProfileInfo } from "$lib/database.js";
 	import { addToast } from "$lib/util.js";
     import Modal from "$lib/svelte/Modal.svelte";
 
-	let profile = {
-		name: "loading...",
-		profile_public: true,
-		joined_on: 0,
-		about: "loading...",
-		about_markdown: "loading...",
-	}
+	export let profile;
 	let editingProfile = false;
 
 	let connectionId = "link";
@@ -38,29 +31,14 @@
 		logoutUser();
 	}
 
-	async function loadProfile() {
-		let profileData = await getMyProfile();
-		if (!profileData.success)
-			return addToast("Failed!", "Error: " + (profileData.error ?? "no error"), "error");
-		profile = profileData.user;
-	}
-
 	async function saveProfile() {
 		await setProfileInfo(profile);
 		addToast("Saved!", "Your account info has successfully been saved.", "success", 3);
 	}
-
-	onMount(() => {
-		loadProfile();
-	});
 </script>
 
 <div class="corner-buttons">
 	{#if !editingProfile}
-		<a href="/user/{profile.discord_id}" target="_blank" class="button">
-			<i class="fa-solid fa-arrow-up-right-from-square"></i>
-			View profile
-		</a>
 		<button on:click={() => { editingProfile = true; }} id="editProfile" class="button">
 			<i class="fa-solid fa-pencil"></i>
 			Edit profile

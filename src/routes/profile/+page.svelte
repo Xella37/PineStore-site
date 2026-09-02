@@ -1,16 +1,52 @@
 
 <svelte:head>
 	<title>Profile</title>
-	<!-- <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script> -->
 </svelte:head>
 
 <script>
-    import ConfigProfile from "./ConfigProfile.svelte";
-    import ConfigOptions from "./ConfigOptions.svelte";
-    import ConfigProjects from "./ConfigProjects.svelte";
-    import ConfigAnalytics from "./ConfigAnalytics.svelte";
+	import { page } from "$app/stores";
+    import { goto } from "$app/navigation";
+    import { onMount } from "svelte";
+	import { BASE_URL, getMyProfile } from "$lib/database.js";
+	
+	import ConfigProfile from "./ConfigProfile.svelte";
+	import ConfigOptions from "./ConfigOptions.svelte";
+	import ConfigProjects from "./ConfigProjects.svelte";
+	import ConfigAnalytics from "./ConfigAnalytics.svelte";
 
-	let selectedTab = "profile";
+	const DEFAULT_TAB = "profile";
+
+	let profile = {
+		name: "loading...",
+		profile_public: true,
+		joined_on: 0,
+		about: "loading...",
+		about_markdown: "loading...",
+	}
+
+	$: selectedTab = $page.url.searchParams.get("tab") ?? DEFAULT_TAB;
+	function selectTab(newTab) {
+		const url = new URL($page.url);
+
+		if (newTab === DEFAULT_TAB) {
+			url.searchParams.delete("tab");
+		} else {
+			url.searchParams.set("tab", newTab);
+		}
+
+		goto(url, { keepFocus: true, noScroll: true });
+	}
+
+	async function loadProfile() {
+		let profileData = await getMyProfile();
+		if (!profileData.success)
+			return addToast("Failed!", "Error: " + (profileData.error ?? "no error"), "error");
+		profile = profileData.user;
+	}
+
+	onMount(() => {
+		loadProfile();
+	});
 </script>
 
 <div id="backgroundContainer"></div>
@@ -19,27 +55,37 @@
 	<!-- <div class="page page-full shadow"> -->
 	<div class="columns">
 		<div class="column sidebar island">
+			<a href="/user/{profile.discord_id}" target="_blank" class="no-link">
+				<div class="user">
+					<img class="pfp" src="{BASE_URL}/pfp/{profile.discord_id}.png" alt="profile">
+					
+					<span>{profile.name}</span>
+
+					<i class="fa-solid fa-arrow-up-right-from-square open-icon"></i>
+				</div>
+			</a>
+			
 			<!-- svelte-ignore a11y-click-events-have-key-events -->
 			<!-- svelte-ignore a11y-no-static-element-interactions -->
-			<div class="tab" class:selected={selectedTab == "profile"} on:click|preventDefault={() => { selectedTab = "profile"; }}>
+			<div class="tab" class:selected={selectedTab == "profile"} on:click|preventDefault={() => { selectTab("profile"); }}>
 				<i class="fa-solid fa-user"></i>
 				My profile
 			</div>
 			<!-- svelte-ignore a11y-click-events-have-key-events -->
 			<!-- svelte-ignore a11y-no-static-element-interactions -->
-			<div class="tab" class:selected={selectedTab == "options"} on:click|preventDefault={() => { selectedTab = "options"; }}>
+			<div class="tab" class:selected={selectedTab == "options"} on:click|preventDefault={() => { selectTab("options"); }}>
 				<i class="fa-solid fa-sliders"></i>
 				Options
 			</div>
 			<!-- svelte-ignore a11y-click-events-have-key-events -->
 			<!-- svelte-ignore a11y-no-static-element-interactions -->
-			<div class="tab" class:selected={selectedTab == "projects"} on:click|preventDefault={() => { selectedTab = "projects"; }}>
+			<div class="tab" class:selected={selectedTab == "projects"} on:click|preventDefault={() => { selectTab("projects"); }}>
 				<i class="fa-solid fa-list-ul"></i>
 				Projects
 			</div>
 			<!-- svelte-ignore a11y-click-events-have-key-events -->
 			<!-- svelte-ignore a11y-no-static-element-interactions -->
-			<div class="tab" class:selected={selectedTab == "analytics"} on:click|preventDefault={() => { selectedTab = "analytics"; }}>
+			<div class="tab" class:selected={selectedTab == "analytics"} on:click|preventDefault={() => { selectTab("analytics"); }}>
 				<i class="fa-solid fa-chart-column"></i>
 				Analytics
 			</div>
@@ -47,7 +93,7 @@
 
 		<div class="column tab-content island">
 			{#if selectedTab == "profile"}
-				<ConfigProfile />
+				<ConfigProfile bind:profile />
 			{:else if selectedTab == "options"}
 				<ConfigOptions />
 			{:else if selectedTab == "projects"}
@@ -152,5 +198,40 @@
 			padding: 0.5rem 1rem;
 			flex: 1;
 		}
+	}
+
+	.user {
+		position: relative;
+		padding-left: 7rem;
+		padding-right: 3rem;
+		padding-block: 2rem;
+		margin-bottom: 1rem;
+		border: solid 0.25rem var(--cc-gray);
+		border-radius: 1rem;
+		transition: all ease 100ms;
+	}
+	.user:hover {
+		border: solid 0.25rem var(--cc-lightGray);
+		background-color: var(--cc-gray);
+	}
+	.user img {
+		position: absolute;
+		left: 1rem;
+		top: 50%;
+		transform: translateY(-50%);
+		width: 4rem;
+		height: 4rem;
+		border-radius: 4rem;
+	}
+	.user span {
+		font-size: 1.5rem;
+		color: var(--text-color-medium);
+	}
+	.user .open-icon {
+		position: absolute;
+		top: 1rem;
+		right: 1rem;
+		font-size: 1.5rem;
+		color: var(--text-color-dark);
 	}
 </style>
