@@ -118,6 +118,8 @@
 		gap: var(--island-spacing);
 		padding: var(--island-spacing);
 		align-items: flex-start;
+		max-width: 1920px;
+		margin: auto;
 	}
 	.column {
 		flex: 1;
