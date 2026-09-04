@@ -9,22 +9,32 @@
 	export let project;
 
 	let configureInstallerModal = false;
-	let loadingGitHubFiles = false;
+	let loadingGitFiles = false;
 	let gitFiles = [];
 	let gitError = null;
-	async function fetchGitHubFiles(githubLink) {
-		const cleanUrl = githubLink.replace(/\/$/, ""); // remove trailing slash
-		const userRepo = cleanUrl.match(/github\.com\/(.+)$/)?.[1];
-		if (!userRepo) throw new Error("Invalid GitHub URL");
 
-		const branch = "main";
-		const apiUrl = `https://api.github.com/repos/${userRepo}/git/trees/${branch}?recursive=1`;
+	async function fetchGitFiles(repoLink) {
+		const cleanUrl = repoLink.replace(/\/$/, ""); // remove trailing slash
+
+		let apiUrl;
+		if (cleanUrl.includes("github.com")) {
+			let userRepo = cleanUrl.split("github.com/")[1];
+			apiUrl = `https://api.github.com/repos/${userRepo}/git/trees/main?recursive=1`;
+		} else if (cleanUrl.includes("codeberg.org")) {
+			let userRepo = cleanUrl.split("codeberg.org/")[1];
+			apiUrl = `https://codeberg.org/api/v1/repos/${userRepo}/git/trees/main?recursive=1`;
+		} else if (cleanUrl.includes("gitlab.com")) {
+			let userRepo = cleanUrl.split("gitlab.com/")[1];
+			apiUrl = `https://gitlab.com/api/v4/projects/${encodeURIComponent(userRepo)}/repository/tree?recursive=true&ref=main`;
+		} else {
+			throw new Error("Unsupported or invalid repository URL: " + repoLink);
+		}
 
 		const response = await fetch(apiUrl);
-		if (!response.ok) throw new Error(`GitHub API error: ${response.statusText}`);
+		if (!response.ok) throw new Error(`Git API error: ${response.statusText}`);
 		
 		const data = await response.json();
-		gitFiles = await data.tree
+		gitFiles = await (data.tree ?? data)
 			.filter(item => item.type === "blob")
 			.map(file => ({
 				path: file.path,
@@ -37,17 +47,17 @@
 			return;
 		}
 
-		loadingGitHubFiles = true
+		loadingGitFiles = true
 		configureInstallerModal = true;
 		gitError = null;
 
 		try {
-			await fetchGitHubFiles(project.repository);
+			await fetchGitFiles(project.repository);
 		} catch(e) {
 			gitError = e;
 			addToast("Failed!", "Error fetching GitHub files. Please check Git repository. Error: " + (e ?? "unknown error"), "error");
 		}
-		loadingGitHubFiles = false;
+		loadingGitFiles = false;
 	}
 
 	let targetFile = "";
@@ -102,7 +112,7 @@
 	<label for="repoInput">Git repository</label>
 	<input id="repoInput" type="text" bind:value={project.repository} maxlength="150" placeholder="https://github.com/username/repository">
 
-	<label for="configureInstaller">Installer creator tool, GitHub only. Uses Git repository link to download files, so you don't have to create your own installer (optional)</label>
+	<label for="configureInstaller">Installer creator tool. Supports: GitHub, Codeberg, GitLab. Uses Git repository link to download files, so you don't have to create your own installer (optional)</label>
 	<button id="configureInstaller" class="button green" on:click|preventDefault={openInstallerModal}>
 		<i class="fa-solid fa-gears" style="margin-right: 0.5rem;"></i>
 		Configure default installer
@@ -164,7 +174,7 @@
 	<p>The default installer downloads all files from your configured GitHub repository. Please select the target file to launch your application.</p>
 
 	<form class="model-form" on:submit|preventDefault={saveDefaultInstaller}>
-		{#if loadingGitHubFiles}
+		{#if loadingGitFiles}
 			<p>Loading files...</p>
 		{:else if gitError != null}
 			<p>Ran into an error while fetching git files: {gitError ?? "unknown error"}</p>
