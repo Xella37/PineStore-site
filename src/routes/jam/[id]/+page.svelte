@@ -13,12 +13,14 @@
 </svelte:head>
 
 <script>
-	import { onMount, onDestroy } from "svelte";
+	import { onMount } from "svelte";
 	import { addToast } from "$lib/util.js";
 	import { BASE_URL, getProject, getMyProfile, checkMyJamStatus, joinJam, leaveJam, getMyProjects, submitJam } from "$lib/database.js";
 	
 	import Modal from "$lib/svelte/Modal.svelte";
 	import Markdown from "$lib/svelte/Markdown.svelte";
+    import Timer from "./Timer.svelte";
+    import Judges from "./Judges.svelte";
 	
 	export let data;
 	let jam = data.jam;
@@ -27,6 +29,9 @@
 	$: if (data) {
 		jam = data.jam;
 	}
+
+	let started = false;
+	let ended = false;
 
 	let loginModalOpen = false;
 	let submissionModalOpen = false;
@@ -102,7 +107,7 @@
 			addToast("Failed!", "Error: " + (res.error ?? "no error"), "error");
 		}
 	}
-
+	
 	function formatShortDate(d) {
 		let projectDate = new Date(d);
 		return projectDate.toLocaleDateString("en-US", {
@@ -114,156 +119,83 @@
 		});
 	}
 
-	let days = 0;
-	let hours = 0;
-	let minutes = 0;
-	let seconds = 0;
-
-	let started = false;
-	let ended = false;
-
-	function updateTimerText() {
-		let start = jam.date_start;
-		let end = jam.date_end;
-		let now = Date.now();
-		started = now > start;
-		ended = now > end;
-
-		let dt = start - now;
-		if (started)
-			dt = end - now;
-		if (ended)
-			dt = 0;
-
-		let s = Math.floor(dt / 1000);
-		seconds = s % 60;
-		let m = Math.floor(s / 60);
-		minutes = m % 60;
-		let h = Math.floor(m / 60);
-		hours = h % 24;
-		days = Math.floor(h / 24);
-	}
-	updateTimerText();
-
-	let interval;
-
-	function resetInterval() {
-		clearInterval(interval);
-		interval = setInterval(updateTimerText, 1000);
-	}
-	onMount(() => {
-		resetInterval();
-	});
-	onDestroy(() => {
-		clearInterval(interval);
-	});
+	let innerWidth = 0;
 </script>
+
+<svelte:window bind:innerWidth={innerWidth} />
 
 <div id="backgroundContainer"></div>
 
 <div class="page-container">
-	<div class="page page-thin shadow">
-		<div class="jam-info">
-			<span>{jam.contestant_count} joined</span>
-			{#if started}
-				<span>{jam.submission_count} {jam.submission_count == 1 ? "submission" : "submissions"}</span>
+	<div class="columns">
+		<div class="column main-content island">
+			{#if innerWidth > 1270}
+				<Timer {jam} bind:started bind:ended />
+				<span class="period">from {formatShortDate(jam.date_start)} to {formatShortDate(jam.date_end)}</span>
 			{/if}
-		</div>
 
-		<h1>
-			{jam.title}
-		</h1>
-
-		<div class="info-block time">
-			<i class="fa-regular fa-hourglass-half"></i>
-
-			<div class="timer">
-				<div class="info">
-					{#if !started}
-						Starts in
-					{:else if !ended}
-						Ends in
-					{:else if !jam.judging_finished}
-						Judging in progress...
-					{:else}
-						JAM ENDED
-					{/if}
-				</div>
-				<div class="block">
-					<span class="count">{days}</span>
-					<span class="label">{days == 1 ? "day" : "days"}</span>
-				</div>
-				<div class="block">
-					<span class="count">{hours}</span>
-					<span class="label">{hours == 1 ? "hour" : "hours"}</span>
-				</div>
-				<div class="block">
-					<span class="count">{minutes}</span>
-					<span class="label">{minutes == 1 ? "minute" : "minutes"}</span>
-				</div>
-				<div class="block">
-					<span class="count">{seconds}</span>
-					<span class="label">{seconds == 1 ? "second" : "seconds"}</span>
-				</div>
+			<div id="description" class="markdown-container">
+				<Markdown source={jam.description_markdown} />
 			</div>
 		</div>
 
-		<span class="period">from {formatShortDate(jam.date_start)} to {formatShortDate(jam.date_end)}</span>
+		<div class="column sidebar island">
+			<div class="jam-info">
+				<span>{jam.contestant_count} joined</span>
+				{#if started}
+					<span>{jam.submission_count} {jam.submission_count == 1 ? "submission" : "submissions"}</span>
+				{/if}
+			</div>
 
-		<div class="actions">
-			{#if joined}
-				{#if submittedProject == null}
+			<h1>
+				{jam.title}
+			</h1>
+
+			{#if innerWidth <= 1270}
+				<Timer {jam} bind:started bind:ended />
+				<span class="period">from {formatShortDate(jam.date_start)} to {formatShortDate(jam.date_end)}</span>
+			{/if}
+
+			<div class="actions">
+				{#if joined}
+					{#if submittedProject == null}
+						{#if ended}
+							<span class="submission-text">You can no longer submit.</span>
+						{:else}
+							<button class="button" class:disabled={!started || ended} on:click|preventDefault={clickSubmit}>Submit project</button>
+							<button class="button red" on:click|preventDefault={clickLeave}>Leave jam</button>
+						{/if}
+					{:else}
+						<span class="submission-text">You have submitted "{submittedProject.name}"</span>
+					{/if}
+				{:else}
 					{#if ended}
-						<span class="submission-text">You can no longer submit.</span>
+						<span class="submission-text">You can no longer join.</span>
 					{:else}
-						<button class="button" class:disabled={!started || ended} on:click|preventDefault={clickSubmit}>Submit project</button>
-						<button class="button red" on:click|preventDefault={clickLeave}>Leave jam</button>
+						<button class="button" on:click|preventDefault={clickJoin}>Join jam</button>
 					{/if}
-				{:else}
-					<span class="submission-text">You have submitted "{submittedProject.name}"</span>
 				{/if}
-			{:else}
-				{#if ended}
-					<span class="submission-text">You can no longer join.</span>
-				{:else}
-					<button class="button" on:click|preventDefault={clickJoin}>Join jam</button>
-				{/if}
-			{/if}
-		</div>
-
-		{#if started}
-			{#if jam.judging_finished}
-				<a class="button view-submission-button" href="/jam/{jam.id}/submissions">View results</a>
-			{:else}
-				{#if user?.discord_id == jam.organizer_discord}
-					<div class="button-group">
-						<a class="button overview-button" href="/jam/{jam.id}/organizer">Overview</a>
-						<a class="button view-submission-button" href="/jam/{jam.id}/submissions">View submissions</a>
-					</div>
-				{:else}
-					<a class="button view-submission-button" href="/jam/{jam.id}/submissions">View submissions</a>
-				{/if}
-			{/if}
-		{/if}
-
-		{#if judges.length > 0}
-			<div class="judges-container">
-				<h2>Judges</h2>
-				<div class="judges">
-					{#each judges as judge}
-						<a href={`/user/${judge.discord_id}`} class="no-link">
-							<div class="judge">
-								<img src={`${BASE_URL}/pfp/${judge.discord_id}.png`} alt={judge.name} on:error={e => e.target.src = "/pfp-placeholder.png"}>
-								<span class="judge-name">{judge.name}</span>
-							</div>
-						</a>
-					{/each}
-				</div>
 			</div>
-		{/if}
 
-		<div id="description" class="markdown-container">
-			<Markdown source={jam.description_markdown} />
+			{#if started}
+				{#if jam.judging_finished}
+					<a class="button view-submission-button" href="/jam/{jam.id}/submissions">View results</a>
+				{:else}
+					{#if user?.discord_id == jam.organizer_discord}
+						<div class="button-group">
+							<a class="button overview-button" href="/jam/{jam.id}/organizer">Overview</a>
+							<a class="button view-submission-button" href="/jam/{jam.id}/submissions">View submissions</a>
+						</div>
+					{:else}
+						<a class="button view-submission-button" href="/jam/{jam.id}/submissions">View submissions</a>
+					{/if}
+				{/if}
+			{/if}
+
+			{#if judges.length > 0}
+				<span class="ruler-text">judges</span>
+				<Judges {judges} />
+			{/if}
 		</div>
 	</div>
 </div>
@@ -295,16 +227,69 @@
 </Modal>
 
 <style>
-	h1 {
-		font-size: 4rem;
-		margin-bottom: 1rem;
+	.page-container {
+		--island-spacing: 4rem;
+		--island-padding: 2rem;
+	}
+
+	.columns {
+		position: relative;
+		display: flex;
+		flex-direction: row;
+		gap: var(--island-spacing);
+		padding: var(--island-spacing);
+		align-items: flex-start;
+		justify-content: center;
+	}
+	.column {
+		flex: 1;
+	}
+
+	@media (max-width: 1270px) {
+		.columns {
+			flex-direction: column-reverse;
+		}
+		.column {
+			width: 100%;
+			max-width: 100%!important;
+			box-sizing: border-box;
+		}
+	}
+
+	@media (max-width: 800px) {
+		.page-container {
+			--island-spacing: 2rem;
+		}
+	}
+	@media (max-width: 450px) {
+		.page-container {
+			--island-spacing: 1rem;
+			--island-padding: 1rem;
+		}
+	}
+
+	.main-content {
+		flex: 5;
+		max-width: 50rem;
+	}
+
+	.sidebar {
+		flex: 2;
+		min-width: 14rem;
+		max-width: 26rem;
+	}
+
+	.sidebar h1 {
+		font-size: 2rem;
+		margin-top: 0rem;
+		margin-bottom: 2rem;
 	}
 
 	.jam-info {
 		display: flex;
 		flex-direction: column;
 		float: right;
-		margin-top: 3rem;
+		/* margin-top: 0; */
 		font-size: 1.5rem;
 		font-weight: normal;
 		color: var(--cc-lightGray);
@@ -322,90 +307,6 @@
 			margin-top: 2rem;
 			margin-bottom: 2rem;
 		}
-	}
-
-	.info-block.time {
-		background-color: var(--cc-green);
-	}
-
-	.timer {
-		display: flex;
-		flex-direction: row;
-		gap: 1.5rem;
-		justify-content: center;
-		flex-wrap: wrap;
-	}
-	.timer > div.block {
-		display: flex;
-		flex-direction: column;
-		border: 0.125rem white solid;
-		border-radius: 1rem;
-		min-width: 4.5rem;
-		padding: 0.5rem 0.25rem;
-	}
-	.timer .count {
-
-	}
-	.timer .label {
-		font-size: 0.75rem;
-	}
-	.timer div.info {
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-	}
-
-	@media (width < 720px) {
-		.info-block.time {
-			padding-left: 5rem;
-		}
-
-		.timer {
-			gap: 1rem;
-		}
-
-		.timer div.info {
-			width: 100%;
-		}
-
-		.timer > div.block {
-			min-width: 34%;
-			width: 3rem;
-			padding: 0.3rem 0.15rem;
-		}
-	}
-
-	.judges-container {
-		margin-block: 3rem;
-	}
-	.judges-container h2 {
-		text-align: center;
-
-	}
-	.judges {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 1rem;
-		justify-content: center;
-		margin-block: 2rem;
-	}
-	.judge {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		gap: 0.5rem;
-		transition: transform 0.2s ease;
-	}
-	.judge:hover {
-		transform: translateY(-0.25rem);
-	}
-	.judge img {
-		border-radius: 100%;
-		max-width: 6rem;
-	}
-	.judge-name {
-		color: var(--text-color-medium);
-		font-size: 1.25rem;
 	}
 
 	span.period {
