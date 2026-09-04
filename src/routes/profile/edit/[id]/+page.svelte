@@ -4,6 +4,7 @@
 </svelte:head>
 
 <script>
+	import { goto } from "$app/navigation";
 	import { onMount } from "svelte";
 	import { getProject, setProjectInfo } from "$lib/database.js";
 	import { getProjectLink, addToast } from "$lib/util.js";
@@ -53,8 +54,13 @@
 
 	async function loadProject() {
 		let projectData = await getProject(projectId, "SESSION");
-		if (!projectData.success)
+		if (!projectData.success) {
+			savedProject = {
+				description_markdown: "no markdown description",
+			};
+			project = {...savedProject};
 			return addToast("Failed!", "Failed to load project. Error: " + (projectData.error ?? "no error"), "error");
+		}
 
 		let loadedProject = projectData.project;
 		savedProject = loadedProject;
@@ -87,7 +93,26 @@
 	$: badgeLinkMarkdown = `[![Download on PineStore](${badgeLink})](${"https://pinestore.cc" + getProjectLink(project.id, savedProject.name ?? "untitled")})`;
 	
 	onMount(loadProject);
+
+	// Ctrl + Left/Right increases/decreases the id of the project in the url, allowing for quick navigation between projects
+	function handleKeydown(event) {
+		if (event.ctrlKey && !event.shiftKey && !event.altKey) {
+			if (event.key == "ArrowLeft") {
+				let nextId = parseInt(projectId) - 1;
+				goto(`/profile/edit/${nextId}`, { keepFocus: true, noScroll: true });
+				projectId = nextId;
+				loadProject();
+			} else if (event.key == "ArrowRight") {
+				let nextId = parseInt(projectId) + 1;
+				goto(`/profile/edit/${nextId}`, { keepFocus: true, noScroll: true });
+				projectId = nextId;
+				loadProject();
+			}
+		}
+	}
 </script>
+
+<svelte:window on:keydown={handleKeydown} />
 
 <div id="backgroundContainer"></div>
 
