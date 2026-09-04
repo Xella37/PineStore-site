@@ -7,12 +7,13 @@
 	import { page } from "$app/stores";
     import { goto } from "$app/navigation";
     import { onMount } from "svelte";
-	import { BASE_URL, getMyProfile } from "$lib/database.js";
+	import { getMyProfile } from "$lib/database.js";
 	
 	import ConfigProfile from "./ConfigProfile.svelte";
 	import ConfigOptions from "./ConfigOptions.svelte";
 	import ConfigProjects from "./ConfigProjects.svelte";
 	import ConfigAnalytics from "./ConfigAnalytics.svelte";
+    import ProfileDisplay from "./ProfileDisplay.svelte";
 
 	const DEFAULT_TAB = "profile";
 
@@ -47,7 +48,11 @@
 	onMount(() => {
 		loadProfile();
 	});
+
+	let innerWidth = 0;
 </script>
+
+<svelte:window bind:innerWidth={innerWidth} />
 
 <div id="backgroundContainer"></div>
 
@@ -55,15 +60,9 @@
 	<!-- <div class="page page-full shadow"> -->
 	<div class="columns">
 		<div class="column sidebar island">
-			<a href="/user/{profile.discord_id}" target="_blank" class="no-link">
-				<div class="user">
-					<img class="pfp" src="{BASE_URL}/pfp/{profile.discord_id}.png" alt="profile">
-					
-					<span>{profile.name}</span>
-
-					<i class="fa-solid fa-arrow-up-right-from-square open-icon"></i>
-				</div>
-			</a>
+			{#if innerWidth > 800}
+				<ProfileDisplay {profile} />
+			{/if}
 			
 			<!-- svelte-ignore a11y-click-events-have-key-events -->
 			<!-- svelte-ignore a11y-no-static-element-interactions -->
@@ -92,6 +91,10 @@
 		</div>
 
 		<div class="column tab-content island">
+			{#if innerWidth <= 800}
+				<ProfileDisplay {profile} />
+			{/if}
+
 			{#if selectedTab == "profile"}
 				<ConfigProfile bind:profile />
 			{:else if selectedTab == "options"}
@@ -200,40 +203,5 @@
 			padding: 0.5rem 1rem;
 			flex: 1;
 		}
-	}
-
-	.user {
-		position: relative;
-		padding-left: 7rem;
-		padding-right: 3rem;
-		padding-block: 2rem;
-		margin-bottom: 1rem;
-		border: solid 0.25rem var(--cc-gray);
-		border-radius: 1rem;
-		transition: all ease 100ms;
-	}
-	.user:hover {
-		border: solid 0.25rem var(--cc-lightGray);
-		background-color: var(--cc-gray);
-	}
-	.user img {
-		position: absolute;
-		left: 1rem;
-		top: 50%;
-		transform: translateY(-50%);
-		width: 4rem;
-		height: 4rem;
-		border-radius: 4rem;
-	}
-	.user span {
-		font-size: 1.5rem;
-		color: var(--text-color-medium);
-	}
-	.user .open-icon {
-		position: absolute;
-		top: 1rem;
-		right: 1rem;
-		font-size: 1.5rem;
-		color: var(--text-color-dark);
 	}
 </style>
