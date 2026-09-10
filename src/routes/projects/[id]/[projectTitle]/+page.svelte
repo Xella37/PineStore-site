@@ -15,15 +15,16 @@
 <script>
 	import CopyField from "$lib/svelte/CopyField.svelte";
 	import { onMount, onDestroy } from "svelte";
-	import { getProjectLink, addToast, tagToDisplay, formatShortDate } from "$lib/util.js";
+	import { getProjectLink, addToast, formatShortDate } from "$lib/util.js";
 	import { BASE_URL, getMyProfile, reportProjectView, reportProjectDownload, saveProject, checkSavedProject, unsaveProject, likeProject, checkLikedProject, unlikeProject } from "$lib/database.js";
 	
 	import Markdown from "$lib/svelte/Markdown.svelte";
 	
 	import Modal from "$lib/svelte/Modal.svelte";
-    import CommentSection from "./CommentSection.svelte";
-    import ImageGallery from "$lib/svelte/ImageGallery.svelte";
-    import ChangeLog from "$lib/svelte/ChangeLog.svelte";
+	import CommentSection from "./CommentSection.svelte";
+	import ImageGallery from "$lib/svelte/ImageGallery.svelte";
+	import ChangeLog from "$lib/svelte/ChangeLog.svelte";
+	import TagsDisplay from "$lib/svelte/TagsDisplay.svelte";
 
 	export let data;
 	let project = data.project;
@@ -230,14 +231,7 @@
 			</span>
 		</h1>
 
-		<div class="tags-container">
-			{#if jam}
-				<a class="button tag submission" href="/jam/{jam.id}">{jam.title}</a>
-			{/if}
-			{#each project.tags ?? [] as tag}
-				<a class="button tag gray" href="/projects?tag={encodeURIComponent(tag)}">{tagToDisplay[tag]}</a>
-			{/each}
-		</div>
+		<TagsDisplay jam={jam} project={project} />
 
 		{#if changelog != null && changelog.body?.length > 0}
 			<div class="changelog-container">
@@ -427,20 +421,6 @@
 			max-width: unset;
 			overflow: inherit;
 		}
-	}
-
-	.tags-container {
-		display: flex;
-		gap: 0.5rem;
-		flex-wrap: wrap;
-	}
-	.tag {
-		font-size: 1rem;
-		padding: 0.25rem 0.75rem;
-	}
-	.tag.submission {
-		background-color: var(--cc-pink);
-		color: black;
 	}
 
 	.changelog-container {

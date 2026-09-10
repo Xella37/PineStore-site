@@ -424,6 +424,14 @@ code.hljs span.hljs-comment {
 	color: #888;
 }
 
+.ruler {
+	display: block;
+	margin-top: 2rem;
+	margin-bottom: 1rem;
+	background-color: #444;
+	height: 0.25rem;
+	border-radius: 1rem;
+}
 .ruler-text {
 	display: flex!important;
 	justify-content: space-between;

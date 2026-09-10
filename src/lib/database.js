@@ -55,6 +55,8 @@ function removeEmptyStrings(data) {
 	return data;
 }
 
+export const getCommentsRecent = () =>
+	api("GET", "project/comments/recent");
 export const getProject = (id, session) =>
 	api("GET", "project/" + id, null, session);
 export const getComments = (projectId) =>
@@ -153,8 +155,10 @@ export const checkSavedProject = (id) =>
 	api("GET", "auth/saved/check/" + id);
 export const unsaveProject = (id) =>
 	api("POST", "auth/saved/remove", { project_id: id });
-export const getMySavedProjects = (id) =>
+export const getMySavedProjects = () =>
 	api("GET", "auth/saved");
+export const getMyRecommendedProjects = () =>
+	api("GET", "auth/recommended");
 
 export const getJams = () =>
 	api("GET", "jams");
