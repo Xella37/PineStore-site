@@ -13,7 +13,6 @@ export async function load() {
 	projectsData = await projectsData;
 	jamsData = await jamsData;
 	recentComments = await recentComments;
-	console.log(recentComments);
 
 	if (!projectsData.success)
 		throw error(404, projectsData.error);
