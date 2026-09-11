@@ -118,8 +118,8 @@
 		Configure default installer
 	</button>
 	
-	<label for="visibleInput">Display in PineStore clients</label>
-	<button id="visibleInput" class="toggle" style="font-size: 1.75rem;" class:enabled={project.visible_clients} on:click|preventDefault={() => { project.visible_clients = !project.visible_clients; }} />
+	<label for="visibleClientInput">Display in PineStore clients</label>
+	<button id="visibleClientInput" class="toggle" style="font-size: 1.75rem;" class:enabled={project.visible_clients} on:click|preventDefault={() => { project.visible_clients = !project.visible_clients; }} />
 </div>
 
 <div class="cols installer-info">
