@@ -57,6 +57,7 @@
 		if (!projectData.success) {
 			savedProject = {
 				description_markdown: "no markdown description",
+				media_count: 0,
 			};
 			project = {...savedProject};
 			return addToast("Failed!", "Failed to load project. Error: " + (projectData.error ?? "no error"), "error");
@@ -96,7 +97,7 @@
 
 	// Ctrl + Left/Right increases/decreases the id of the project in the url, allowing for quick navigation between projects
 	function handleKeydown(event) {
-		if (event.ctrlKey && !event.shiftKey && !event.altKey) {
+		if (event.shiftKey && !event.ctrlKey && !event.altKey) {
 			if (event.key == "ArrowLeft") {
 				let nextId = parseInt(projectId) - 1;
 				goto(`/profile/edit/${nextId}`, { keepFocus: true, noScroll: true });
