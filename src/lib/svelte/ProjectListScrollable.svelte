@@ -90,7 +90,8 @@
 							<div class="image-container">
 								{#if maxSelectedPage >= pageIndex-1 || maxVisiblePage >= pageIndex-1}
 									{#if project.has_thumbnail}
-										<div class="div-img" style="background-image: url({BASE_URL}/project/{project.id}/thumbnail.webp)" alt="project"></div>
+										<div class="div-img normal" style="background-image: url({BASE_URL}/project/{project.id}/thumbnail.webp)" alt="project"></div>
+										<div class="div-img full" style="background-image: url({BASE_URL}/project/{project.id}/thumbnail_full.webp); animation-delay: 200ms" alt="project"></div>
 									{:else}
 										<div class="div-img" style="background-image: url(/project-placeholder.webp)" alt="project placeholder"></div>
 									{/if}
@@ -196,7 +197,6 @@
 		border-radius: 1rem;
 		overflow: hidden;
 		background-color: #444;
-		/* height: 100%; */
 		color: white;
 		transition: transform ease 100ms;
 		opacity: 0;
@@ -253,6 +253,17 @@
 		bottom: 0;
 		left: 0;
 		right: 0;
+	}
+	.div-img.full {
+		display: none;
+		opacity: 0;
+	}
+	.project-tile:hover .div-img.normal {
+		/* display: none; */
+	}
+	.project-tile:hover .div-img.full {
+		display: block;
+		animation: fade-in forwards 50ms;
 	}
 	.display-time {
 		position: absolute;
