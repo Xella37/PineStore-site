@@ -171,7 +171,7 @@
 {/each}
 
 <Modal title="Configure installer" bind:opened={configureInstallerModal}>
-	<p>The default installer downloads all files from your configured GitHub repository. Please select the target file to launch your application.</p>
+	<p>The default installer downloads all files from your configured git repository. Please select the target file to launch your application.</p>
 
 	<form class="model-form" on:submit|preventDefault={saveDefaultInstaller}>
 		{#if loadingGitFiles}
